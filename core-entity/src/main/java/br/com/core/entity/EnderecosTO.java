@@ -1,0 +1,231 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.com.core.entity;
+
+import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+/**
+ *
+ * @author marce
+ */
+@Entity
+@Table(name = "enderecos", catalog = "bdg", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "EnderecosTO.findAll", query = "SELECT e FROM EnderecosTO e")})
+public class EnderecosTO implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(nullable = false)
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(nullable = false, length = 10)
+    private String cep;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 300)
+    @Column(nullable = false, length = 300)
+    private String logracompl;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 300)
+    @Column(nullable = false, length = 300)
+    private String logradouro;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 300)
+    @Column(nullable = false, length = 300)
+    private String nomeclog;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 300)
+    @Column(nullable = false, length = 300)
+    private String nomeslog;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
+    @Column(nullable = false, length = 2)
+    private String uf;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "uf_cod", nullable = false)
+    private Integer ufCod;
+    @ManyToMany(mappedBy = "enderecosTOList")
+    private List<ComplementosTO> complementosTOList;
+    @JoinTable(name = "pessoas_enderecos", joinColumns = {
+        @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
+    @ManyToMany
+    private List<PessoasTO> pessoasTOList;
+    @JoinColumn(name = "idBairro", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private BairrosTO idBairro;
+    @JoinColumn(name = "idCidade", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private CidadesTO idCidade;
+
+    public EnderecosTO() {
+    }
+
+    public EnderecosTO(Integer id) {
+        this.id = id;
+    }
+
+    public EnderecosTO(Integer id, String cep, String logracompl, String logradouro, String nomeclog, String nomeslog, String uf, Integer ufCod) {
+        this.id = id;
+        this.cep = cep;
+        this.logracompl = logracompl;
+        this.logradouro = logradouro;
+        this.nomeclog = nomeclog;
+        this.nomeslog = nomeslog;
+        this.uf = uf;
+        this.ufCod = ufCod;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getLogracompl() {
+        return logracompl;
+    }
+
+    public void setLogracompl(String logracompl) {
+        this.logracompl = logracompl;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getNomeclog() {
+        return nomeclog;
+    }
+
+    public void setNomeclog(String nomeclog) {
+        this.nomeclog = nomeclog;
+    }
+
+    public String getNomeslog() {
+        return nomeslog;
+    }
+
+    public void setNomeslog(String nomeslog) {
+        this.nomeslog = nomeslog;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public Integer getUfCod() {
+        return ufCod;
+    }
+
+    public void setUfCod(Integer ufCod) {
+        this.ufCod = ufCod;
+    }
+
+    @XmlTransient
+    public List<ComplementosTO> getComplementosTOList() {
+        return complementosTOList;
+    }
+
+    public void setComplementosTOList(List<ComplementosTO> complementosTOList) {
+        this.complementosTOList = complementosTOList;
+    }
+
+    @XmlTransient
+    public List<PessoasTO> getPessoasTOList() {
+        return pessoasTOList;
+    }
+
+    public void setPessoasTOList(List<PessoasTO> pessoasTOList) {
+        this.pessoasTOList = pessoasTOList;
+    }
+
+    public BairrosTO getIdBairro() {
+        return idBairro;
+    }
+
+    public void setIdBairro(BairrosTO idBairro) {
+        this.idBairro = idBairro;
+    }
+
+    public CidadesTO getIdCidade() {
+        return idCidade;
+    }
+
+    public void setIdCidade(CidadesTO idCidade) {
+        this.idCidade = idCidade;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof EnderecosTO)) {
+            return false;
+        }
+        EnderecosTO other = (EnderecosTO) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "br.com.core.entity.EnderecosTO[ id=" + id + " ]";
+    }
+    
+}
