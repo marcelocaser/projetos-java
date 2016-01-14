@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="RPS_PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>br.com.core.entity.AgendasTO</class>
+    <class>br.com.core.entity.AnimaisTO</class>
+    <class>br.com.core.entity.BairrosTO</class>
+    <class>br.com.core.entity.CidadesTO</class>
+    <class>br.com.core.entity.ClientesTO</class>
+    <class>br.com.core.entity.ComplementosTO</class>
+    <class>br.com.core.entity.ConsultasTO</class>
+    <class>br.com.core.entity.DependentesTO</class>
+    <class>br.com.core.entity.EnderecosTO</class>
+    <class>br.com.core.entity.EstadosTO</class>
+    <class>br.com.core.entity.PessoasTO</class>
+    <class>br.com.core.entity.UsuariosTO</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <validation-mode>NONE</validation-mode>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bdg?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.user" value="marcelocaser"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="123456"/>
+      <property name="eclipselink.jdbc.native-sql" value="true"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+    </properties>
+  </persistence-unit>
+</persistence>

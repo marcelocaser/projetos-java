@@ -1,0 +1,180 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <style type="text/css">
+        .ui-datatable .ui-datatable-sticky.ui-sticky.Top146 {
+            top: 146px !important;
+        }
+        .ui-datatable .ui-datatable-sticky.ui-sticky.Top80 {
+            top: 80px !important;
+        }
+    </style>
+
+    <script type="text/javascript">
+//<![CDATA[
+        PrimeFaces.widget.DataTable.prototype.setupStickyHeader = function () {
+            var table = this.thead.parent(),
+                    offset = table.offset(),
+                    win = $(window),
+                    $this = this,
+                    stickyNS = 'scroll.' + this.id,
+                    resizeNS = 'resize.sticky-' + this.id,
+                    menuWrapper = $('#layout-menu-cover');
+
+            this.cloneContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
+            this.clone = this.thead.clone(true);
+            this.cloneContainer.children('table').append(this.clone);
+
+            this.cloneContainer.css({
+                position: 'absolute',
+                width: table.outerWidth(),
+                top: offset.top,
+                left: offset.left,
+                'z-index': ++PrimeFaces.zindex
+            })
+                    .appendTo(this.jq);
+
+            win.off(stickyNS).on(stickyNS, function () {
+                var scrollTop = win.scrollTop(),
+                        tableOffset = table.offset(),
+                        top = menuWrapper.hasClass('active-menu') ? '146px' : '80px';
+
+                if ((scrollTop + parseInt(top)) > tableOffset.top) {
+                    $this.cloneContainer.css({
+                        'position': 'fixed'
+                    })
+                            .addClass('ui-shadow ui-sticky');
+
+                    if (menuWrapper.hasClass('active-menu')) {
+                        $this.cloneContainer.removeClass('Top80').addClass('Top146');
+                    }
+                    else {
+                        $this.cloneContainer.removeClass('Top146').addClass('Top80');
+                    }
+
+                    if (scrollTop >= (tableOffset.top + $this.tbody.height()))
+                        $this.cloneContainer.hide();
+                    else
+                        $this.cloneContainer.show();
+                }
+                else {
+                    $this.cloneContainer.css({
+                        'position': 'absolute',
+                        'top': tableOffset.top
+                    })
+                            .removeClass('ui-shadow ui-sticky');
+                }
+            })
+                    .off(resizeNS).on(resizeNS, function () {
+                $this.cloneContainer.width(table.outerWidth());
+            });
+
+            //filter support
+            this.thead.find('.ui-column-filter').prop('disabled', true);
+
+            //Adamantium Menu
+            var menulinks = menuWrapper.find('ul.layout-menu a.menulink'),
+                    menuButton = $('#menu-button'),
+                    stickyHeader = $('.ui-datatable.ui-datatable-sticky'),
+                    menuButtonClick;
+
+            menuWrapper.css({'z-index': ++PrimeFaces.zindex});
+            $('#layout-topbar').css({'z-index': ++PrimeFaces.zindex});
+
+            menuButton.on('click', function () {
+                menuButtonClick = true;
+                if (menuWrapper.hasClass('active-menu')) {
+                    stickyHeader.removeClass('Top80').addClass('Top146');
+
+                }
+                else {
+                    stickyHeader.removeClass('Top146').addClass('Top80');
+                }
+            });
+
+            menulinks.clickOff(function (e) {
+                if (menuButtonClick) {
+                    menuButtonClick = false;
+                } else {
+                    stickyHeader.removeClass('Top146').addClass('Top80');
+                }
+            });
+
+        };
+
+//]]>
+    </script>
+
+    <ui:define name="subheader">
+        DataTable
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="Container100">
+            <div class="ContainerIndent">
+                <div class="Card">
+                    <div class="CardTopic TexAlCenter">DataTable</div>
+                    <div class="SeparatorFull"></div>
+                    <div class="Container100">
+                        <div class="ContainerIndent">
+
+                            <h:form id="form">
+                                <p:dataTable id="singleDT" var="car" value="#{dtSelectionView.cars7}" selectionMode="single" selection="#{dtSelectionView.selectedCar}" rowKey="#{car.id}"
+                                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15" emptyMessage="No cars found with given criteria" reflow="true" stickyHeader="true">
+                                    <f:facet name="header">
+                                        Car Sales Ranks
+                                    </f:facet>
+
+                                    <p:ajax event="rowSelect" update=":form:carDetail" oncomplete="PF('carDialog').show()" />
+
+                                    <p:column headerText="Id" sortBy="#{car.id}" footerText="Id">
+                                        <h:outputText value="#{car.id}" />
+                                    </p:column>
+                                    <p:column headerText="Year" sortBy="#{car.year}" footerText="Year">
+                                        <h:outputText value="#{car.year}" />
+                                    </p:column>
+                                    <p:column headerText="Brand" sortBy="#{car.brand}" footerText="Brand">
+                                        <h:outputText value="#{car.brand}" />
+                                    </p:column>
+                                    <p:column headerText="Color" sortBy="#{car.color}" footerText="Color">
+                                        <h:outputText value="#{car.color}" />
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" responsive="true">
+                                    <p:outputPanel id="carDetail" style="text-align:center;">
+                                        <p:panelGrid  columns="2" rendered="#{not empty dtSelectionView.selectedCar}" layout="grid" styleClass="ui-panelgrid-blank">
+                                            <f:facet name="header">
+                                                <p:graphicImage name="demo/images/car/#{dtSelectionView.selectedCar.brand}-big.gif"/> 
+                                            </f:facet>
+
+                                            <h:outputText value="Id:" style="font-weight: bold"/>
+                                            <h:outputText value="#{dtSelectionView.selectedCar.id}" />
+
+                                            <h:outputText value="Year" style="font-weight: bold"/>
+                                            <h:outputText value="#{dtSelectionView.selectedCar.year}" />
+
+                                            <h:outputText value="Color:" style="font-weight: bold"/>
+                                            <h:outputText value="#{dtSelectionView.selectedCar.color}" style="color:#{dtSelectionView.selectedCar.color}"/>
+
+                                            <h:outputText value="Price" style="font-weight: bold"/>
+                                            <h:outputText value="\$#{dtSelectionView.selectedCar.price}" />
+                                        </p:panelGrid>
+                                    </p:outputPanel>
+                                </p:dialog>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

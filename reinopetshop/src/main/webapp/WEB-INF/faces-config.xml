@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    
+    <application>
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+        
+        <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+        
+        <resource-bundle>
+            <base-name>br.com.reinopetshop.messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+
+        <!-- ** INTERNACIONALIZACAO ** -->
+        <locale-config>
+            <default-locale>pt</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+    </application>
+    
+    <factory>
+        <exception-handler-factory>
+            org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory
+        </exception-handler-factory>
+    </factory>
+    
+    <converter>
+        <converter-id>ConverterTelefone</converter-id>
+        <converter-class>br.com.core.converter.ConverterTelefone</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>ConverterUpperCase</converter-id>
+        <converter-class>br.com.core.converter.ConverterUpperCase</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>SimpleIndexConverter</converter-id>
+        <converter-class>br.com.core.converter.SimpleIndexConverter</converter-class>
+    </converter>
+</faces-config>

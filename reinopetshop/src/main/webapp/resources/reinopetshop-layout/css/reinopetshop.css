@@ -1,0 +1,12 @@
+@charset "UTF-8";
+/* CSS Document */
+.noHeader.ui-datatable table thead tr {
+    display: none;
+}
+
+/* Width */
+.telefoneInput{ width:40% !important;}
+.idInput{ width:20% !important;}
+.cpfInput{ width:40% !important;}
+.identidadeInput{ width:40% !important;}
+.dataNascimentoInput{ width:30% !important;}

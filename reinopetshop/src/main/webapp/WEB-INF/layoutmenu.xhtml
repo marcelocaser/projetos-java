@@ -1,0 +1,43 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pm="http://primefaces.org/adamantium">
+
+    <div class="layout-menu-cover-top Animated05" id="layout-menu-cover">
+        <h:form id="menuform">
+            <pm:menu>
+                <p:menuitem id="rm_dashboard" value=" #{msg.menuPainel}" icon="icon-home" outcome="/app/dashboard"/>
+                <p:submenu id="rm_reinopet" label=" #{msg.menuPetShop}" icon="icon-menu">
+                    <p:submenu id="rm_cadastrar" label=" #{msg.menuPetShopCadastar}">
+                        <p:menuitem id="rm_clientes" value=" #{msg.menuCadastarClientes}" icon="fa fa-user" action="#{clientesBean.listar()}" />
+                        <p:menuitem id="rm_usuarios" value=" #{msg.menuCadastarUsuarios}" action="#" />
+                    </p:submenu>
+                    <p:submenu id="rm_animais" label=" #{msg.menuPetShopAnimais}" >
+                    </p:submenu>
+                    <p:menuitem id="rm_caixa" value=" #{msg.menuPetShopCaixa}" action="#" />
+                    <p:menuitem id="rm_agenda" value=" #{msg.menuPetShopAgenda}" action="#" />
+                    <p:menuitem id="rm_teleEntrega" value=" #{msg.menuPetShopTeleEntrega}" action="#" />
+                    <p:submenu id="rm_malaDireta" label=" #{msg.menuPetShopMalaDireta}" >
+                    </p:submenu>
+                    <p:menuitem id="rm_trocarUsuario" value=" #{msg.menuTrocaUsuario}" icon="icon-lock-stroke" action="#" />
+                </p:submenu>
+                <p:submenu id="rm_orientation" label=" #{msg.menuFinanceiro}" icon="icon-menu">
+                </p:submenu>
+                <p:submenu id="rm_default" label=" #{msg.menuRelatorios}" icon="icon-list">
+                </p:submenu>
+                <p:submenu id="rm_hierarchy" label=" #{msg.menuConfigurações}" icon="icon-folder-stroke">
+                </p:submenu>
+                <p:submenu id="rm_links" label=" #{msg.menuAjuda}" icon="icon-inbox">
+                    <p:menuitem id="rm_teamviewer" value=" #{msg.menuAjudaTeamViewerDownload}" icon="fa fa-download" url="#{msg.menuAjudaTeamViewerDownloadUrl}" target="_blank" />
+                    <p:menuitem id="rm_teamviewer_suporte" value=" #{msg.menuAjudaTeamViewerSuporte}" icon="fa fa-eye"/>
+                    <p:menuitem id="rm_sobre" value=" #{msg.menuAjudaSobre}" icon="fa fa-info"/>
+                </p:submenu>
+            </pm:menu>
+        </h:form>
+
+    </div>
+
+</ui:composition>
