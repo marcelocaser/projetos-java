@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.core.entity;
 
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "EnderecosTO.findAll", query = "SELECT e FROM EnderecosTO e")})
 public class EnderecosTO implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -73,13 +71,13 @@ public class EnderecosTO implements Serializable {
     @NotNull
     @Column(name = "uf_cod", nullable = false)
     private Integer ufCod;
-    @ManyToMany(mappedBy = "enderecosTOList")
-    private List<ComplementosTO> complementosTOList;
     @JoinTable(name = "pessoas_enderecos", joinColumns = {
         @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
     @ManyToMany
     private List<PessoasTO> pessoasTOList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "enderecosTO")
+    private ComplementosTO complementosTO;
     @JoinColumn(name = "idBairro", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private BairrosTO idBairro;
@@ -170,21 +168,20 @@ public class EnderecosTO implements Serializable {
     }
 
     @XmlTransient
-    public List<ComplementosTO> getComplementosTOList() {
-        return complementosTOList;
-    }
-
-    public void setComplementosTOList(List<ComplementosTO> complementosTOList) {
-        this.complementosTOList = complementosTOList;
-    }
-
-    @XmlTransient
     public List<PessoasTO> getPessoasTOList() {
         return pessoasTOList;
     }
 
     public void setPessoasTOList(List<PessoasTO> pessoasTOList) {
         this.pessoasTOList = pessoasTOList;
+    }
+
+    public ComplementosTO getComplementosTO() {
+        return complementosTO;
+    }
+
+    public void setComplementosTO(ComplementosTO complementosTO) {
+        this.complementosTO = complementosTO;
     }
 
     public BairrosTO getIdBairro() {
@@ -227,5 +224,5 @@ public class EnderecosTO implements Serializable {
     public String toString() {
         return "br.com.core.entity.EnderecosTO[ id=" + id + " ]";
     }
-    
+
 }
