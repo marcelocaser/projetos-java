@@ -56,12 +56,12 @@ public class CidadesTO implements Serializable {
     @Column(nullable = false, length = 2)
     private String uf;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCidade")
-    private List<EnderecosTO> enderecosTOList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCidade")
     private List<BairrosTO> bairrosTOList;
     @JoinColumn(name = "idEstado", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EstadosTO idEstado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCidade")
+    private List<EnderecosTO> enderecosTOList;
 
     public CidadesTO() {
     }
@@ -119,15 +119,6 @@ public class CidadesTO implements Serializable {
     }
 
     @XmlTransient
-    public List<EnderecosTO> getEnderecosTOList() {
-        return enderecosTOList;
-    }
-
-    public void setEnderecosTOList(List<EnderecosTO> enderecosTOList) {
-        this.enderecosTOList = enderecosTOList;
-    }
-
-    @XmlTransient
     public List<BairrosTO> getBairrosTOList() {
         return bairrosTOList;
     }
@@ -142,6 +133,15 @@ public class CidadesTO implements Serializable {
 
     public void setIdEstado(EstadosTO idEstado) {
         this.idEstado = idEstado;
+    }
+
+    @XmlTransient
+    public List<EnderecosTO> getEnderecosTOList() {
+        return enderecosTOList;
+    }
+
+    public void setEnderecosTOList(List<EnderecosTO> enderecosTOList) {
+        this.enderecosTOList = enderecosTOList;
     }
 
     @Override

@@ -7,10 +7,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -37,11 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class AnimaisTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
+    @EmbeddedId
+    protected AnimaisTOPK animaisTOPK;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
@@ -64,11 +59,6 @@ public class AnimaisTO implements Serializable {
     @Size(max = 45)
     @Column(length = 45)
     private String chip;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(nullable = false, length = 45)
-    private String raca;
     @Size(max = 45)
     @Column(length = 45)
     private String pelagem;
@@ -98,30 +88,36 @@ public class AnimaisTO implements Serializable {
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
     @ManyToOne
     private ClientesTO idCliente;
+    @JoinColumn(name = "idRaca", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private RacasTO racasTO;
 
     public AnimaisTO() {
     }
 
-    public AnimaisTO(Integer id) {
-        this.id = id;
+    public AnimaisTO(AnimaisTOPK animaisTOPK) {
+        this.animaisTOPK = animaisTOPK;
     }
 
-    public AnimaisTO(Integer id, String nome, Character sexo, String especie, String raca, Character castrado, Date alteracao) {
-        this.id = id;
+    public AnimaisTO(AnimaisTOPK animaisTOPK, String nome, Character sexo, String especie, Character castrado, Date alteracao) {
+        this.animaisTOPK = animaisTOPK;
         this.nome = nome;
         this.sexo = sexo;
         this.especie = especie;
-        this.raca = raca;
         this.castrado = castrado;
         this.alteracao = alteracao;
     }
 
-    public Integer getId() {
-        return id;
+    public AnimaisTO(int id, int idRaca) {
+        this.animaisTOPK = new AnimaisTOPK(id, idRaca);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public AnimaisTOPK getAnimaisTOPK() {
+        return animaisTOPK;
+    }
+
+    public void setAnimaisTOPK(AnimaisTOPK animaisTOPK) {
+        this.animaisTOPK = animaisTOPK;
     }
 
     public String getNome() {
@@ -170,14 +166,6 @@ public class AnimaisTO implements Serializable {
 
     public void setChip(String chip) {
         this.chip = chip;
-    }
-
-    public String getRaca() {
-        return raca;
-    }
-
-    public void setRaca(String raca) {
-        this.raca = raca;
     }
 
     public String getPelagem() {
@@ -277,10 +265,18 @@ public class AnimaisTO implements Serializable {
         this.idCliente = idCliente;
     }
 
+    public RacasTO getRacasTO() {
+        return racasTO;
+    }
+
+    public void setRacasTO(RacasTO racasTO) {
+        this.racasTO = racasTO;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (animaisTOPK != null ? animaisTOPK.hashCode() : 0);
         return hash;
     }
 
@@ -291,7 +287,7 @@ public class AnimaisTO implements Serializable {
             return false;
         }
         AnimaisTO other = (AnimaisTO) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.animaisTOPK == null && other.animaisTOPK != null) || (this.animaisTOPK != null && !this.animaisTOPK.equals(other.animaisTOPK))) {
             return false;
         }
         return true;
@@ -299,7 +295,7 @@ public class AnimaisTO implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.core.entity.AnimaisTO[ id=" + id + " ]";
+        return "br.com.core.entity.AnimaisTO[ animaisTOPK=" + animaisTOPK + " ]";
     }
-
+    
 }

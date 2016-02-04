@@ -6,13 +6,17 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,45 +27,45 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author marce
  */
 @Entity
-@Table(name = "bairros", catalog = "bdg", schema = "")
+@Table(name = "ra\u00e7as", catalog = "bdg", schema = "", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"nome", "idEspecie"})})
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BairrosTO.findAll", query = "SELECT b FROM BairrosTO b")})
-public class BairrosTO implements Serializable {
+    @NamedQuery(name = "RacasTO.findAll", query = "SELECT r FROM RacasTO r")})
+public class RacasTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(nullable = false)
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 200)
-    @Column(nullable = false, length = 200)
+    @Size(min = 1, max = 60)
+    @Column(nullable = false, length = 60)
     private String nome;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2)
-    @Column(nullable = false, length = 2)
-    private String uf;
-    @JoinColumn(name = "idCidade", referencedColumnName = "id", nullable = false)
+    @Size(max = 100)
+    @Column(length = 100)
+    private String detalhes;
+    @Lob
+    private byte[] foto;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "racasTO")
+    private List<AnimaisTO> animaisTOList;
+    @JoinColumn(name = "idEspecie", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private CidadesTO idCidade;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBairro")
-    private List<EnderecosTO> enderecosTOList;
+    private EspeciesTO idEspecie;
 
-    public BairrosTO() {
+    public RacasTO() {
     }
 
-    public BairrosTO(Integer id) {
+    public RacasTO(Integer id) {
         this.id = id;
     }
 
-    public BairrosTO(Integer id, String nome, String uf) {
+    public RacasTO(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
-        this.uf = uf;
     }
 
     public Integer getId() {
@@ -80,29 +84,37 @@ public class BairrosTO implements Serializable {
         this.nome = nome;
     }
 
-    public String getUf() {
-        return uf;
+    public String getDetalhes() {
+        return detalhes;
     }
 
-    public void setUf(String uf) {
-        this.uf = uf;
+    public void setDetalhes(String detalhes) {
+        this.detalhes = detalhes;
     }
 
-    public CidadesTO getIdCidade() {
-        return idCidade;
+    public byte[] getFoto() {
+        return foto;
     }
 
-    public void setIdCidade(CidadesTO idCidade) {
-        this.idCidade = idCidade;
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
 
     @XmlTransient
-    public List<EnderecosTO> getEnderecosTOList() {
-        return enderecosTOList;
+    public List<AnimaisTO> getAnimaisTOList() {
+        return animaisTOList;
     }
 
-    public void setEnderecosTOList(List<EnderecosTO> enderecosTOList) {
-        this.enderecosTOList = enderecosTOList;
+    public void setAnimaisTOList(List<AnimaisTO> animaisTOList) {
+        this.animaisTOList = animaisTOList;
+    }
+
+    public EspeciesTO getIdEspecie() {
+        return idEspecie;
+    }
+
+    public void setIdEspecie(EspeciesTO idEspecie) {
+        this.idEspecie = idEspecie;
     }
 
     @Override
@@ -115,10 +127,10 @@ public class BairrosTO implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BairrosTO)) {
+        if (!(object instanceof RacasTO)) {
             return false;
         }
-        BairrosTO other = (BairrosTO) object;
+        RacasTO other = (RacasTO) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -127,7 +139,7 @@ public class BairrosTO implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.core.entity.BairrosTO[ id=" + id + " ]";
+        return "br.com.core.entity.RacasTO[ id=" + id + " ]";
     }
 
 }
