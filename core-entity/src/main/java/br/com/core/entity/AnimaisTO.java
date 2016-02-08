@@ -297,5 +297,5 @@ public class AnimaisTO implements Serializable {
     public String toString() {
         return "br.com.core.entity.AnimaisTO[ animaisTOPK=" + animaisTOPK + " ]";
     }
-    
+
 }

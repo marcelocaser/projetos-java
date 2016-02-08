@@ -56,17 +56,23 @@ public class PessoasTO implements Serializable {
     @Size(max = 4)
     @Column(length = 4)
     private String aniversario;
-    private Integer dddResidencial;
-    private Integer telefoneResidencial;
-    private Integer dddComercial;
-    private Integer telefoneComercial;
-    private Integer dddCelularPessoal;
-    private Integer telefoneCelularPessoal;
+    @Size(max = 11)
+    @Column(length = 11)
+    private String telefoneResidencial;
+    @Size(max = 11)
+    @Column(length = 11)
+    private String telefoneComercial;
+    @Size(max = 11)
+    @Column(length = 11)
+    private String telefoneCelularPessoal;
+    @Size(max = 11)
+    @Column(length = 11)
+    private String telefoneCelularOutro;
     private Character celularPessoalWhatsapp;
-    private Integer dddCelularOutro;
-    private Integer telefoneCelularOutro;
     private Character telefoneOutroWhatsApp;
-    private Integer registroGeral;
+    @Size(max = 15)
+    @Column(length = 15)
+    private String registroGeral;
     @Size(max = 11)
     @Column(length = 11)
     private String cpf;
@@ -141,53 +147,37 @@ public class PessoasTO implements Serializable {
     public void setAniversario(String aniversario) {
         this.aniversario = aniversario;
     }
-    
-    public Integer getDddResidencial() {
-        return dddResidencial;
-    }
 
-    public void setDddResidencial(Integer dddResidencial) {
-        this.dddResidencial = dddResidencial;
-    }
-
-    public Integer getTelefoneResidencial() {
+    public String getTelefoneResidencial() {
         return telefoneResidencial;
     }
 
-    public void setTelefoneResidencial(Integer telefoneResidencial) {
+    public void setTelefoneResidencial(String telefoneResidencial) {
         this.telefoneResidencial = telefoneResidencial;
     }
 
-    public Integer getDddComercial() {
-        return dddComercial;
-    }
-
-    public void setDddComercial(Integer dddComercial) {
-        this.dddComercial = dddComercial;
-    }
-
-    public Integer getTelefoneComercial() {
+    public String getTelefoneComercial() {
         return telefoneComercial;
     }
 
-    public void setTelefoneComercial(Integer telefoneComercial) {
+    public void setTelefoneComercial(String telefoneComercial) {
         this.telefoneComercial = telefoneComercial;
     }
 
-    public Integer getDddCelularPessoal() {
-        return dddCelularPessoal;
-    }
-
-    public void setDddCelularPessoal(Integer dddCelularPessoal) {
-        this.dddCelularPessoal = dddCelularPessoal;
-    }
-
-    public Integer getTelefoneCelularPessoal() {
+    public String getTelefoneCelularPessoal() {
         return telefoneCelularPessoal;
     }
 
-    public void setTelefoneCelularPessoal(Integer telefoneCelularPessoal) {
+    public void setTelefoneCelularPessoal(String telefoneCelularPessoal) {
         this.telefoneCelularPessoal = telefoneCelularPessoal;
+    }
+
+    public String getTelefoneCelularOutro() {
+        return telefoneCelularOutro;
+    }
+
+    public void setTelefoneCelularOutro(String telefoneCelularOutro) {
+        this.telefoneCelularOutro = telefoneCelularOutro;
     }
 
     public Character getCelularPessoalWhatsapp() {
@@ -198,22 +188,6 @@ public class PessoasTO implements Serializable {
         this.celularPessoalWhatsapp = celularPessoalWhatsapp;
     }
 
-    public Integer getDddCelularOutro() {
-        return dddCelularOutro;
-    }
-
-    public void setDddCelularOutro(Integer dddCelularOutro) {
-        this.dddCelularOutro = dddCelularOutro;
-    }
-
-    public Integer getTelefoneCelularOutro() {
-        return telefoneCelularOutro;
-    }
-
-    public void setTelefoneCelularOutro(Integer telefoneCelularOutro) {
-        this.telefoneCelularOutro = telefoneCelularOutro;
-    }
-
     public Character getTelefoneOutroWhatsApp() {
         return telefoneOutroWhatsApp;
     }
@@ -222,11 +196,11 @@ public class PessoasTO implements Serializable {
         this.telefoneOutroWhatsApp = telefoneOutroWhatsApp;
     }
 
-    public Integer getRegistroGeral() {
+    public String getRegistroGeral() {
         return registroGeral;
     }
 
-    public void setRegistroGeral(Integer registroGeral) {
+    public void setRegistroGeral(String registroGeral) {
         this.registroGeral = registroGeral;
     }
 

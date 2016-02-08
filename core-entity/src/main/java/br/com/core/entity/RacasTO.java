@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author marce
  */
 @Entity
-@Table(name = "ra\u00e7as", catalog = "bdg", schema = "", uniqueConstraints = {
+@Table(name = "racas", catalog = "bdg", schema = "", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"nome", "idEspecie"})})
 @XmlRootElement
 @NamedQueries({
@@ -50,11 +50,11 @@ public class RacasTO implements Serializable {
     private String detalhes;
     @Lob
     private byte[] foto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "racasTO")
-    private List<AnimaisTO> animaisTOList;
     @JoinColumn(name = "idEspecie", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EspeciesTO idEspecie;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "racasTO")
+    private List<AnimaisTO> animaisTOList;
 
     public RacasTO() {
     }
@@ -100,6 +100,14 @@ public class RacasTO implements Serializable {
         this.foto = foto;
     }
 
+    public EspeciesTO getIdEspecie() {
+        return idEspecie;
+    }
+
+    public void setIdEspecie(EspeciesTO idEspecie) {
+        this.idEspecie = idEspecie;
+    }
+
     @XmlTransient
     public List<AnimaisTO> getAnimaisTOList() {
         return animaisTOList;
@@ -107,14 +115,6 @@ public class RacasTO implements Serializable {
 
     public void setAnimaisTOList(List<AnimaisTO> animaisTOList) {
         this.animaisTOList = animaisTOList;
-    }
-
-    public EspeciesTO getIdEspecie() {
-        return idEspecie;
-    }
-
-    public void setIdEspecie(EspeciesTO idEspecie) {
-        this.idEspecie = idEspecie;
     }
 
     @Override
