@@ -47,17 +47,11 @@ public class ClientesTO implements Serializable {
     @Size(max = 15)
     @Column(length = 15)
     private String bonificacao;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date clienteDesde;
     @Size(max = 150)
     @Column(length = 150)
     private String observacao;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
@@ -79,11 +73,9 @@ public class ClientesTO implements Serializable {
         this.id = id;
     }
 
-    public ClientesTO(Integer id, Character status, Date clienteDesde, Date alteracao) {
+    public ClientesTO(Integer id, Character status) {
         this.id = id;
         this.status = status;
-        this.clienteDesde = clienteDesde;
-        this.alteracao = alteracao;
     }
 
     public Integer getId() {

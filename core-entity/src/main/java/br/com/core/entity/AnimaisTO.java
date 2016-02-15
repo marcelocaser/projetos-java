@@ -76,9 +76,6 @@ public class AnimaisTO implements Serializable {
     private Date ultimaVisita;
     @Lob
     private byte[] foto;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
@@ -99,16 +96,15 @@ public class AnimaisTO implements Serializable {
         this.animaisTOPK = animaisTOPK;
     }
 
-    public AnimaisTO(AnimaisTOPK animaisTOPK, String nome, Character sexo, String especie, Character castrado, Date alteracao) {
+    public AnimaisTO(AnimaisTOPK animaisTOPK, String nome, Character sexo, String especie, Character castrado) {
         this.animaisTOPK = animaisTOPK;
         this.nome = nome;
         this.sexo = sexo;
         this.especie = especie;
         this.castrado = castrado;
-        this.alteracao = alteracao;
     }
 
-    public AnimaisTO(int id, int idRaca) {
+    public AnimaisTO(Integer id, Integer idRaca) {
         this.animaisTOPK = new AnimaisTOPK(id, idRaca);
     }
 

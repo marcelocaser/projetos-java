@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -65,24 +66,21 @@ public class AgendasTO implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
-    private int idFuncionario;
+    private Integer idFuncionario;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
-    private int idServico;
+    private Integer idServico;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
-    private int idCategoria;
+    private Integer idCategoria;
     private Integer idMotorista;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @JoinColumn(name = "idAnimal", referencedColumnName = "id", nullable = false)
+    @PrimaryKeyJoinColumn(name = "idAnimal", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private AnimaisTO idAnimal;
     @JoinColumn(name = "idCliente", referencedColumnName = "id", nullable = false)
@@ -96,7 +94,7 @@ public class AgendasTO implements Serializable {
         this.id = id;
     }
 
-    public AgendasTO(Integer id, Date data, Date hora, String statusDescricao, BigDecimal valor, int idFuncionario, int idServico, int idCategoria, Date alteracao) {
+    public AgendasTO(Integer id, Date data, Date hora, String statusDescricao, BigDecimal valor, Integer idFuncionario, Integer idServico, Integer idCategoria) {
         this.id = id;
         this.data = data;
         this.hora = hora;
@@ -105,7 +103,6 @@ public class AgendasTO implements Serializable {
         this.idFuncionario = idFuncionario;
         this.idServico = idServico;
         this.idCategoria = idCategoria;
-        this.alteracao = alteracao;
     }
 
     public Integer getId() {
@@ -172,27 +169,27 @@ public class AgendasTO implements Serializable {
         this.valor = valor;
     }
 
-    public int getIdFuncionario() {
+    public Integer getIdFuncionario() {
         return idFuncionario;
     }
 
-    public void setIdFuncionario(int idFuncionario) {
+    public void setIdFuncionario(Integer idFuncionario) {
         this.idFuncionario = idFuncionario;
     }
 
-    public int getIdServico() {
+    public Integer getIdServico() {
         return idServico;
     }
 
-    public void setIdServico(int idServico) {
+    public void setIdServico(Integer idServico) {
         this.idServico = idServico;
     }
 
-    public int getIdCategoria() {
+    public Integer getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
+    public void setIdCategoria(Integer idCategoria) {
         this.idCategoria = idCategoria;
     }
 

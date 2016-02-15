@@ -15,33 +15,33 @@ public class AnimaisTOPK implements Serializable {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private int id;
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
-    private int idRaca;
+    private Integer idRaca;
 
     public AnimaisTOPK() {
     }
 
-    public AnimaisTOPK(int id, int idRaca) {
+    public AnimaisTOPK(Integer id, Integer idRaca) {
         this.id = id;
         this.idRaca = idRaca;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getIdRaca() {
+    public Integer getIdRaca() {
         return idRaca;
     }
 
-    public void setIdRaca(int idRaca) {
+    public void setIdRaca(Integer idRaca) {
         this.idRaca = idRaca;
     }
 

@@ -58,9 +58,6 @@ public class ComplementosTO implements Serializable {
     private Double latitude;
     @Column(precision = 22)
     private Double longitude;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
@@ -76,10 +73,9 @@ public class ComplementosTO implements Serializable {
         this.id = id;
     }
 
-    public ComplementosTO(Integer id, String complemento, Date alteracao) {
+    public ComplementosTO(Integer id, String complemento) {
         this.id = id;
         this.complemento = complemento;
-        this.alteracao = alteracao;
     }
 
     public Integer getId() {

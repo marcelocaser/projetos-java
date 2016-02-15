@@ -19,7 +19,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -68,21 +67,22 @@ public class PessoasTO implements Serializable {
     @Size(max = 11)
     @Column(length = 11)
     private String telefoneCelularOutro;
-    private Character celularPessoalWhatsapp;
-    private Character telefoneOutroWhatsApp;
+    @Size(max = 11)
+    @Column(length = 11)
+    private String telefoneWhatsAppPessoal;
+    @Size(max = 11)
+    @Column(length = 11)
+    private String telefoneWhatsAppOutro;
     @Size(max = 15)
     @Column(length = 15)
     private String registroGeral;
     @Size(max = 11)
     @Column(length = 11)
     private String cpf;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 60)
     @Column(length = 60)
     private String email;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
@@ -101,11 +101,10 @@ public class PessoasTO implements Serializable {
         this.id = id;
     }
 
-    public PessoasTO(Integer id, String nome, Character sexo, Date alteracao) {
+    public PessoasTO(Integer id, String nome, Character sexo) {
         this.id = id;
         this.nome = nome;
         this.sexo = sexo;
-        this.alteracao = alteracao;
     }
 
     public Integer getId() {
@@ -180,20 +179,20 @@ public class PessoasTO implements Serializable {
         this.telefoneCelularOutro = telefoneCelularOutro;
     }
 
-    public Character getCelularPessoalWhatsapp() {
-        return celularPessoalWhatsapp;
+    public String getTelefoneWhatsAppPessoal() {
+        return telefoneWhatsAppPessoal;
     }
 
-    public void setCelularPessoalWhatsapp(Character celularPessoalWhatsapp) {
-        this.celularPessoalWhatsapp = celularPessoalWhatsapp;
+    public void setTelefoneWhatsAppPessoal(String telefoneWhatsAppPessoal) {
+        this.telefoneWhatsAppPessoal = telefoneWhatsAppPessoal;
     }
 
-    public Character getTelefoneOutroWhatsApp() {
-        return telefoneOutroWhatsApp;
+    public String getTelefoneWhatsAppOutro() {
+        return telefoneWhatsAppOutro;
     }
 
-    public void setTelefoneOutroWhatsApp(Character telefoneOutroWhatsApp) {
-        this.telefoneOutroWhatsApp = telefoneOutroWhatsApp;
+    public void setTelefoneWhatsAppOutro(String telefoneWhatsAppOutro) {
+        this.telefoneWhatsAppOutro = telefoneWhatsAppOutro;
     }
 
     public String getRegistroGeral() {

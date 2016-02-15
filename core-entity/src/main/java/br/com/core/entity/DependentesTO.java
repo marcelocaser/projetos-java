@@ -44,9 +44,6 @@ public class DependentesTO implements Serializable {
     @Size(max = 150)
     @Column(length = 150)
     private String observacao;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
@@ -65,10 +62,9 @@ public class DependentesTO implements Serializable {
         this.id = id;
     }
 
-    public DependentesTO(Integer id, Character status, Date alteracao) {
+    public DependentesTO(Integer id, Character status) {
         this.id = id;
         this.status = status;
-        this.alteracao = alteracao;
     }
 
     public Integer getId() {
