@@ -13,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -74,10 +74,10 @@ public class EnderecosTO implements Serializable {
     @JoinTable(name = "pessoas_enderecos", joinColumns = {
         @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<PessoasTO> pessoasTOList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "enderecosTO")
-    private ComplementosTO complementosTO;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco")
+    private List<ComplementosTO> complementosTOList;
     @JoinColumn(name = "idBairro", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private BairrosTO idBairro;
@@ -176,12 +176,13 @@ public class EnderecosTO implements Serializable {
         this.pessoasTOList = pessoasTOList;
     }
 
-    public ComplementosTO getComplementosTO() {
-        return complementosTO;
+    @XmlTransient
+    public List<ComplementosTO> getComplementosTOList() {
+        return complementosTOList;
     }
 
-    public void setComplementosTO(ComplementosTO complementosTO) {
-        this.complementosTO = complementosTO;
+    public void setComplementosTOList(List<ComplementosTO> complementosTOList) {
+        this.complementosTOList = complementosTOList;
     }
 
     public BairrosTO getIdBairro() {

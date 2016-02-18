@@ -9,9 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -62,9 +62,9 @@ public class ComplementosTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @JoinColumn(name = "id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private EnderecosTO enderecosTO;
+    @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private EnderecosTO idEndereco;
 
     public ComplementosTO() {
     }
@@ -158,12 +158,12 @@ public class ComplementosTO implements Serializable {
         this.exclusao = exclusao;
     }
 
-    public EnderecosTO getEnderecosTO() {
-        return enderecosTO;
+    public EnderecosTO getIdEndereco() {
+        return idEndereco;
     }
 
-    public void setEnderecosTO(EnderecosTO enderecosTO) {
-        this.enderecosTO = enderecosTO;
+    public void setIdEndereco(EnderecosTO idEndereco) {
+        this.idEndereco = idEndereco;
     }
 
     @Override

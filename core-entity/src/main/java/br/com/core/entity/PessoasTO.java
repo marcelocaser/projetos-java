@@ -87,7 +87,7 @@ public class PessoasTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @ManyToMany(mappedBy = "pessoasTOList")
+    @ManyToMany(mappedBy = "pessoasTOList", cascade = CascadeType.ALL)
     private List<EnderecosTO> enderecosTOList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pessoasTO")
     private DependentesTO dependentesTO;

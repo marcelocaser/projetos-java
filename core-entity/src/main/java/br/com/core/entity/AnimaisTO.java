@@ -51,11 +51,6 @@ public class AnimaisTO implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(precision = 3, scale = 3)
     private BigDecimal peso;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 8)
-    @Column(nullable = false, length = 8)
-    private String especie;
     @Size(max = 45)
     @Column(length = 45)
     private String chip;
@@ -63,9 +58,6 @@ public class AnimaisTO implements Serializable {
     @Column(length = 45)
     private String pelagem;
     private Character aVenda;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
     private Character castrado;
     private Character obito;
     private Character controleDeRacao;
@@ -100,11 +92,10 @@ public class AnimaisTO implements Serializable {
         this.animaisTOPK = animaisTOPK;
         this.nome = nome;
         this.sexo = sexo;
-        this.especie = especie;
         this.castrado = castrado;
     }
 
-    public AnimaisTO(Integer id, Integer idRaca) {
+    public AnimaisTO(int id, int idRaca) {
         this.animaisTOPK = new AnimaisTOPK(id, idRaca);
     }
 
@@ -146,14 +137,6 @@ public class AnimaisTO implements Serializable {
 
     public void setPeso(BigDecimal peso) {
         this.peso = peso;
-    }
-
-    public String getEspecie() {
-        return especie;
-    }
-
-    public void setEspecie(String especie) {
-        this.especie = especie;
     }
 
     public String getChip() {

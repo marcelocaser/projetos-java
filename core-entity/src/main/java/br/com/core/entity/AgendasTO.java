@@ -66,15 +66,15 @@ public class AgendasTO implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
-    private Integer idFuncionario;
+    private int idFuncionario;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
-    private Integer idServico;
+    private int idServico;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
-    private Integer idCategoria;
+    private int idCategoria;
     private Integer idMotorista;
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
@@ -94,7 +94,7 @@ public class AgendasTO implements Serializable {
         this.id = id;
     }
 
-    public AgendasTO(Integer id, Date data, Date hora, String statusDescricao, BigDecimal valor, Integer idFuncionario, Integer idServico, Integer idCategoria) {
+    public AgendasTO(Integer id, Date data, Date hora, String statusDescricao, BigDecimal valor, int idFuncionario, int idServico, int idCategoria) {
         this.id = id;
         this.data = data;
         this.hora = hora;
@@ -169,27 +169,27 @@ public class AgendasTO implements Serializable {
         this.valor = valor;
     }
 
-    public Integer getIdFuncionario() {
+    public int getIdFuncionario() {
         return idFuncionario;
     }
 
-    public void setIdFuncionario(Integer idFuncionario) {
+    public void setIdFuncionario(int idFuncionario) {
         this.idFuncionario = idFuncionario;
     }
 
-    public Integer getIdServico() {
+    public int getIdServico() {
         return idServico;
     }
 
-    public void setIdServico(Integer idServico) {
+    public void setIdServico(int idServico) {
         this.idServico = idServico;
     }
 
-    public Integer getIdCategoria() {
+    public int getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(Integer idCategoria) {
+    public void setIdCategoria(int idCategoria) {
         this.idCategoria = idCategoria;
     }
 
