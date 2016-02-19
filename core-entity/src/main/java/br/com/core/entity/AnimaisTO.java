@@ -7,8 +7,10 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -35,8 +37,11 @@ import javax.xml.bind.annotation.XmlTransient;
 public class AnimaisTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected AnimaisTOPK animaisTOPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 60)
@@ -77,34 +82,29 @@ public class AnimaisTO implements Serializable {
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
     @ManyToOne
     private ClientesTO idCliente;
-    @JoinColumn(name = "idRaca", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "idRaca", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private RacasTO racasTO;
+    private RacasTO idRaca;
 
     public AnimaisTO() {
     }
 
-    public AnimaisTO(AnimaisTOPK animaisTOPK) {
-        this.animaisTOPK = animaisTOPK;
+    public AnimaisTO(Integer id) {
+        this.id = id;
     }
 
-    public AnimaisTO(AnimaisTOPK animaisTOPK, String nome, Character sexo, String especie, Character castrado) {
-        this.animaisTOPK = animaisTOPK;
+    public AnimaisTO(Integer id, String nome, Character sexo) {
+        this.id = id;
         this.nome = nome;
         this.sexo = sexo;
-        this.castrado = castrado;
     }
 
-    public AnimaisTO(int id, int idRaca) {
-        this.animaisTOPK = new AnimaisTOPK(id, idRaca);
+    public Integer getId() {
+        return id;
     }
 
-    public AnimaisTOPK getAnimaisTOPK() {
-        return animaisTOPK;
-    }
-
-    public void setAnimaisTOPK(AnimaisTOPK animaisTOPK) {
-        this.animaisTOPK = animaisTOPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -244,18 +244,18 @@ public class AnimaisTO implements Serializable {
         this.idCliente = idCliente;
     }
 
-    public RacasTO getRacasTO() {
-        return racasTO;
+    public RacasTO getIdRaca() {
+        return idRaca;
     }
 
-    public void setRacasTO(RacasTO racasTO) {
-        this.racasTO = racasTO;
+    public void setIdRaca(RacasTO idRaca) {
+        this.idRaca = idRaca;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (animaisTOPK != null ? animaisTOPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -266,7 +266,7 @@ public class AnimaisTO implements Serializable {
             return false;
         }
         AnimaisTO other = (AnimaisTO) object;
-        if ((this.animaisTOPK == null && other.animaisTOPK != null) || (this.animaisTOPK != null && !this.animaisTOPK.equals(other.animaisTOPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -274,7 +274,7 @@ public class AnimaisTO implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.core.entity.AnimaisTO[ animaisTOPK=" + animaisTOPK + " ]";
+        return "br.com.core.entity.AnimaisTO[ id=" + id + " ]";
     }
 
 }

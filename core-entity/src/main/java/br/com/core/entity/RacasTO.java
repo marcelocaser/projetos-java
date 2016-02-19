@@ -53,7 +53,7 @@ public class RacasTO implements Serializable {
     @JoinColumn(name = "idEspecie", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EspeciesTO idEspecie;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "racasTO")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRaca")
     private List<AnimaisTO> animaisTOList;
 
     public RacasTO() {

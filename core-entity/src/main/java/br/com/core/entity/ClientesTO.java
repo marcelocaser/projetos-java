@@ -7,6 +7,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,11 +57,11 @@ public class ClientesTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
     private List<AgendasTO> agendasTOList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
     private List<DependentesTO> dependentesTOList;
-    @OneToMany(mappedBy = "idCliente")
+    @OneToMany(mappedBy = "idCliente", fetch = FetchType.LAZY)
     private List<AnimaisTO> animaisTOList;
     @JoinColumn(name = "id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false)
