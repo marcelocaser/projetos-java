@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -80,10 +81,10 @@ public class AgendasTO implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
     @JoinColumn(name = "idAnimal", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private AnimaisTO idAnimal;
     @JoinColumn(name = "idCliente", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ClientesTO idCliente;
 
     public AgendasTO() {

@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +43,7 @@ public class EspeciesTO implements Serializable {
     @Size(min = 1, max = 45)
     @Column(nullable = false, length = 45)
     private String tipo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEspecie")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEspecie", fetch = FetchType.LAZY)
     private List<RacasTO> racasTOList;
 
     public EspeciesTO() {

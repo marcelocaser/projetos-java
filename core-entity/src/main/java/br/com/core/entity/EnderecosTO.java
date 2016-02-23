@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -74,15 +75,15 @@ public class EnderecosTO implements Serializable {
     @JoinTable(name = "pessoas_enderecos", joinColumns = {
         @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<PessoasTO> pessoasTOList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco", fetch = FetchType.LAZY)
     private List<ComplementosTO> complementosTOList;
     @JoinColumn(name = "idBairro", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BairrosTO idBairro;
     @JoinColumn(name = "idCidade", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private CidadesTO idCidade;
 
     public EnderecosTO() {

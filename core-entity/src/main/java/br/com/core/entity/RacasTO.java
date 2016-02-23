@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,9 +52,9 @@ public class RacasTO implements Serializable {
     @Lob
     private byte[] foto;
     @JoinColumn(name = "idEspecie", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private EspeciesTO idEspecie;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRaca")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRaca", fetch = FetchType.LAZY)
     private List<AnimaisTO> animaisTOList;
 
     public RacasTO() {

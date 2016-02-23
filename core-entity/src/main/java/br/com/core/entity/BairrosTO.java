@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -46,9 +47,9 @@ public class BairrosTO implements Serializable {
     @Column(nullable = false, length = 2)
     private String uf;
     @JoinColumn(name = "idCidade", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private CidadesTO idCidade;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBairro")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBairro", fetch = FetchType.LAZY)
     private List<EnderecosTO> enderecosTOList;
 
     public BairrosTO() {

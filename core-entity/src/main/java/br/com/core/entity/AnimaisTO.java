@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -77,13 +78,13 @@ public class AnimaisTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAnimal")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAnimal", fetch = FetchType.LAZY)
     private List<AgendasTO> agendasTOList;
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ClientesTO idCliente;
     @JoinColumn(name = "idRaca", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private RacasTO idRaca;
 
     public AnimaisTO() {

@@ -7,6 +7,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -85,7 +86,7 @@ public class UsuariosTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarios")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarios", fetch = FetchType.LAZY)
     private List<ConsultasTO> consultasTOList;
 
     public UsuariosTO() {
