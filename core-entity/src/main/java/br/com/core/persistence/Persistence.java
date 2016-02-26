@@ -18,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.eclipse.persistence.exceptions.QueryException;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -124,6 +125,8 @@ public abstract class Persistence<T extends Serializable> {
             return getEntityManager().createQuery(query).getResultList();
         } catch (NoResultException ex) {
             return null;
+        } catch (QueryException ex) {
+            return null;
         }
     }
 
@@ -221,4 +224,23 @@ public abstract class Persistence<T extends Serializable> {
         }
         return DateUtil.toDataOuHora(dataHora, formato);
     }
+
+    protected Date getDateMySQL() {
+        Query query = getEntityManager().createNativeQuery("SELECT CURDATE()");
+        Date date = (Date) query.getSingleResult();
+        return date;
+    }
+
+    protected Date getDateTimeMySQL() {
+        Query query = getEntityManager().createNativeQuery("SELECT CURTIME()");
+        Date date = (Date) query.getSingleResult();
+        return date;
+    }
+
+    protected Date getTimeMySQL() {
+        Query query = getEntityManager().createNativeQuery("SELECT NOW()");
+        Date date = (Date) query.getSingleResult();
+        return date;
+    }
+
 }
