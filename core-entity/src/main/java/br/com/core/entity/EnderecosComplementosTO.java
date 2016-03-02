@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,11 +25,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author marce
  */
 @Entity
-@Table(name = "dependentes", catalog = "bdg", schema = "")
+@Table(name = "endereco_complementos", catalog = "bdg", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DependentesTO.findAll", query = "SELECT d FROM DependentesTO d")})
-public class DependentesTO implements Serializable {
+    @NamedQuery(name = "EnderecoComplementosTO.findAll", query = "SELECT e FROM EnderecoComplementosTO e")})
+public class EnderecosComplementosTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,34 +37,46 @@ public class DependentesTO implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
+    @Size(max = 8)
+    @Column(length = 8)
+    private String cep;
     @Basic(optional = false)
     @NotNull
-    @Column(nullable = false)
-    private Character status;
+    @Size(min = 1, max = 150)
+    @Column(nullable = false, length = 150)
+    private String complemento;
+    @Size(max = 5)
+    @Column(length = 5)
+    private String numero;
+    @Size(max = 15)
+    @Column(length = 15)
+    private String tipo;
     @Size(max = 150)
     @Column(length = 150)
     private String observacao;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(precision = 22)
+    private Double latitude;
+    @Column(precision = 22)
+    private Double longitude;
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @JoinColumn(name = "idCliente", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private ClientesTO idCliente;
-    @JoinColumn(name = "id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    private PessoasTO pessoasTO;
+    private EnderecosTO idEndereco;
 
-    public DependentesTO() {
+    public EnderecosComplementosTO() {
     }
 
-    public DependentesTO(Integer id) {
+    public EnderecosComplementosTO(Integer id) {
         this.id = id;
     }
 
-    public DependentesTO(Integer id, Character status) {
+    public EnderecosComplementosTO(Integer id, String complemento) {
         this.id = id;
-        this.status = status;
+        this.complemento = complemento;
     }
 
     public Integer getId() {
@@ -76,12 +87,36 @@ public class DependentesTO implements Serializable {
         this.id = id;
     }
 
-    public Character getStatus() {
-        return status;
+    public String getCep() {
+        return cep;
     }
 
-    public void setStatus(Character status) {
-        this.status = status;
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getObservacao() {
@@ -90,6 +125,22 @@ public class DependentesTO implements Serializable {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public Date getAlteracao() {
@@ -108,20 +159,12 @@ public class DependentesTO implements Serializable {
         this.exclusao = exclusao;
     }
 
-    public ClientesTO getIdCliente() {
-        return idCliente;
+    public EnderecosTO getIdEndereco() {
+        return idEndereco;
     }
 
-    public void setIdCliente(ClientesTO idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public PessoasTO getPessoasTO() {
-        return pessoasTO;
-    }
-
-    public void setPessoasTO(PessoasTO pessoasTO) {
-        this.pessoasTO = pessoasTO;
+    public void setIdEndereco(EnderecosTO idEndereco) {
+        this.idEndereco = idEndereco;
     }
 
     @Override
@@ -134,10 +177,10 @@ public class DependentesTO implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DependentesTO)) {
+        if (!(object instanceof EnderecosComplementosTO)) {
             return false;
         }
-        DependentesTO other = (DependentesTO) object;
+        EnderecosComplementosTO other = (EnderecosComplementosTO) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -146,7 +189,7 @@ public class DependentesTO implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.core.entity.DependentesTO[ id=" + id + " ]";
+        return "br.com.core.entity.EnderecoComplementosTO[ id=" + id + " ]";
     }
 
 }

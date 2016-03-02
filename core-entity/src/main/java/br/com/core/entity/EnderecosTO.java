@@ -77,14 +77,14 @@ public class EnderecosTO implements Serializable {
         @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PessoasTO> pessoasTOList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco", fetch = FetchType.LAZY)
-    private List<ComplementosTO> complementosTOList;
     @JoinColumn(name = "idBairro", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BairrosTO idBairro;
     @JoinColumn(name = "idCidade", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private CidadesTO idCidade;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco", fetch = FetchType.LAZY)
+    private List<EnderecosComplementosTO> enderecoComplementosTOList;
 
     public EnderecosTO() {
     }
@@ -93,7 +93,7 @@ public class EnderecosTO implements Serializable {
         this.id = id;
     }
 
-    public EnderecosTO(Integer id, String cep, String logracompl, String logradouro, String nomeclog, String nomeslog, String uf, Integer ufCod) {
+    public EnderecosTO(Integer id, String cep, String logracompl, String logradouro, String nomeclog, String nomeslog, String uf, int ufCod) {
         this.id = id;
         this.cep = cep;
         this.logracompl = logracompl;
@@ -160,11 +160,11 @@ public class EnderecosTO implements Serializable {
         this.uf = uf;
     }
 
-    public Integer getUfCod() {
+    public int getUfCod() {
         return ufCod;
     }
 
-    public void setUfCod(Integer ufCod) {
+    public void setUfCod(int ufCod) {
         this.ufCod = ufCod;
     }
 
@@ -175,15 +175,6 @@ public class EnderecosTO implements Serializable {
 
     public void setPessoasTOList(List<PessoasTO> pessoasTOList) {
         this.pessoasTOList = pessoasTOList;
-    }
-
-    @XmlTransient
-    public List<ComplementosTO> getComplementosTOList() {
-        return complementosTOList;
-    }
-
-    public void setComplementosTOList(List<ComplementosTO> complementosTOList) {
-        this.complementosTOList = complementosTOList;
     }
 
     public BairrosTO getIdBairro() {
@@ -200,6 +191,15 @@ public class EnderecosTO implements Serializable {
 
     public void setIdCidade(CidadesTO idCidade) {
         this.idCidade = idCidade;
+    }
+
+    @XmlTransient
+    public List<EnderecosComplementosTO> getEnderecoComplementosTOList() {
+        return enderecoComplementosTOList;
+    }
+
+    public void setEnderecoComplementosTOList(List<EnderecosComplementosTO> enderecoComplementosTOList) {
+        this.enderecoComplementosTOList = enderecoComplementosTOList;
     }
 
     @Override

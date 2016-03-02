@@ -63,6 +63,10 @@ public class AgendasTO implements Serializable {
     @NotNull
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal valor;
+    @Column(precision = 5, scale = 2)
+    private BigDecimal valorACobrar;
+    private Integer iraRepetirEm;
+    private Integer mesesIraRepetir;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
@@ -167,6 +171,30 @@ public class AgendasTO implements Serializable {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public BigDecimal getValorACobrar() {
+        return valorACobrar;
+    }
+
+    public void setValorACobrar(BigDecimal valorACobrar) {
+        this.valorACobrar = valorACobrar;
+    }
+
+    public Integer getIraRepetirEm() {
+        return iraRepetirEm;
+    }
+
+    public void setIraRepetirEm(Integer iraRepetirEm) {
+        this.iraRepetirEm = iraRepetirEm;
+    }
+
+    public Integer getMesesIraRepetir() {
+        return mesesIraRepetir;
+    }
+
+    public void setMesesIraRepetir(Integer mesesIraRepetir) {
+        this.mesesIraRepetir = mesesIraRepetir;
     }
 
     public int getIdFuncionario() {
