@@ -61,7 +61,7 @@ public class ClientesTO implements Serializable {
     private List<AgendasTO> agendasTOList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
     private List<DependentesTO> dependentesTOList;
-    @OneToMany(mappedBy = "idCliente", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
     private List<AnimaisTO> animaisTOList;
     @JoinColumn(name = "id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)

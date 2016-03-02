@@ -72,10 +72,10 @@ public class EnderecosTO implements Serializable {
     @NotNull
     @Column(name = "uf_cod", nullable = false)
     private Integer ufCod;
-    @JoinTable(name = "pessoas_enderecos", joinColumns = {
+    @JoinTable(name = "aux_pessoas_enderecos", joinColumns = {
         @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PessoasTO> pessoasTOList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco", fetch = FetchType.LAZY)
     private List<ComplementosTO> complementosTOList;
