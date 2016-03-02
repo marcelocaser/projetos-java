@@ -137,7 +137,7 @@ public class DateUtil {
      *
      * @param date
      * @param formato
-     * @return Data formatada dd/MM/yyyy.
+     * @return Data formatada.
      */
     public static String dataFormatter(Date date, String formato) {
         if (date != null) {
