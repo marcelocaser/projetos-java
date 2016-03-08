@@ -25,10 +25,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author marce
  */
 @Entity
-@Table(name = "endereco_complementos", catalog = "bdg", schema = "")
+@Table(name = "enderecos_complementos", catalog = "bdg", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "EnderecoComplementosTO.findAll", query = "SELECT e FROM EnderecoComplementosTO e")})
+    @NamedQuery(name = "EnderecosComplementosTO.findAll", query = "SELECT e FROM EnderecosComplementosTO e")})
 public class EnderecosComplementosTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -189,7 +189,7 @@ public class EnderecosComplementosTO implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.core.entity.EnderecoComplementosTO[ id=" + id + " ]";
+        return "br.com.core.entity.EnderecosComplementosTO[ id=" + id + " ]";
     }
 
 }

@@ -66,19 +66,8 @@ public class AgendasTO implements Serializable {
     @Column(precision = 5, scale = 2)
     private BigDecimal valorACobrar;
     private Integer iraRepetirEm;
-    private Integer mesesIraRepetir;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
-    private int idFuncionario;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
-    private int idServico;
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false)
-    private int idCategoria;
+    private Integer idFuncionario;
+    private Integer idCategoria;
     private Integer idMotorista;
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
@@ -90,6 +79,9 @@ public class AgendasTO implements Serializable {
     @JoinColumn(name = "idCliente", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ClientesTO idCliente;
+    @JoinColumn(name = "idServico", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ServicosTO idServico;
 
     public AgendasTO() {
     }
@@ -98,15 +90,12 @@ public class AgendasTO implements Serializable {
         this.id = id;
     }
 
-    public AgendasTO(Integer id, Date data, Date hora, String statusDescricao, BigDecimal valor, int idFuncionario, int idServico, int idCategoria) {
+    public AgendasTO(Integer id, Date data, Date hora, String statusDescricao, BigDecimal valor) {
         this.id = id;
         this.data = data;
         this.hora = hora;
         this.statusDescricao = statusDescricao;
         this.valor = valor;
-        this.idFuncionario = idFuncionario;
-        this.idServico = idServico;
-        this.idCategoria = idCategoria;
     }
 
     public Integer getId() {
@@ -189,35 +178,19 @@ public class AgendasTO implements Serializable {
         this.iraRepetirEm = iraRepetirEm;
     }
 
-    public Integer getMesesIraRepetir() {
-        return mesesIraRepetir;
-    }
-
-    public void setMesesIraRepetir(Integer mesesIraRepetir) {
-        this.mesesIraRepetir = mesesIraRepetir;
-    }
-
-    public int getIdFuncionario() {
+    public Integer getIdFuncionario() {
         return idFuncionario;
     }
 
-    public void setIdFuncionario(int idFuncionario) {
+    public void setIdFuncionario(Integer idFuncionario) {
         this.idFuncionario = idFuncionario;
     }
 
-    public int getIdServico() {
-        return idServico;
-    }
-
-    public void setIdServico(int idServico) {
-        this.idServico = idServico;
-    }
-
-    public int getIdCategoria() {
+    public Integer getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
+    public void setIdCategoria(Integer idCategoria) {
         this.idCategoria = idCategoria;
     }
 
@@ -259,6 +232,14 @@ public class AgendasTO implements Serializable {
 
     public void setIdCliente(ClientesTO idCliente) {
         this.idCliente = idCliente;
+    }
+
+    public ServicosTO getIdServico() {
+        return idServico;
+    }
+
+    public void setIdServico(ServicosTO idServico) {
+        this.idServico = idServico;
     }
 
     @Override
