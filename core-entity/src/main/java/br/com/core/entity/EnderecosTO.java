@@ -77,14 +77,14 @@ public class EnderecosTO implements Serializable {
         @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PessoasTO> pessoasTOList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco", fetch = FetchType.LAZY)
+    private List<EnderecosComplementosTO> enderecosComplementosTOList;
     @JoinColumn(name = "idBairro", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BairrosTO idBairro;
     @JoinColumn(name = "idCidade", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private CidadesTO idCidade;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco", fetch = FetchType.LAZY)
-    private List<EnderecosComplementosTO> enderecoComplementosTOList;
 
     public EnderecosTO() {
     }
@@ -177,6 +177,15 @@ public class EnderecosTO implements Serializable {
         this.pessoasTOList = pessoasTOList;
     }
 
+    @XmlTransient
+    public List<EnderecosComplementosTO> getEnderecosComplementosTOList() {
+        return enderecosComplementosTOList;
+    }
+
+    public void setEnderecosComplementosTOList(List<EnderecosComplementosTO> enderecosComplementosTOList) {
+        this.enderecosComplementosTOList = enderecosComplementosTOList;
+    }
+
     public BairrosTO getIdBairro() {
         return idBairro;
     }
@@ -191,15 +200,6 @@ public class EnderecosTO implements Serializable {
 
     public void setIdCidade(CidadesTO idCidade) {
         this.idCidade = idCidade;
-    }
-
-    @XmlTransient
-    public List<EnderecosComplementosTO> getEnderecoComplementosTOList() {
-        return enderecoComplementosTOList;
-    }
-
-    public void setEnderecoComplementosTOList(List<EnderecosComplementosTO> enderecoComplementosTOList) {
-        this.enderecoComplementosTOList = enderecoComplementosTOList;
     }
 
     @Override
