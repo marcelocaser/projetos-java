@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -63,11 +62,12 @@ public class ServicosTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @ManyToMany(mappedBy = "servicosTOList", fetch = FetchType.LAZY)
-    private List<ServicosCategoriasTO> servicosCategoriasTOList;
     @JoinColumn(name = "idGrupo", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ServicosGruposTO idGrupo;
+    @JoinColumn(name = "idCategoriaServico", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ServicosCategoriasTO idCategoriaServico;
     @JoinColumn(name = "idTabelaPreco", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TabelasPrecosTO idTabelaPreco;
@@ -151,21 +151,20 @@ public class ServicosTO implements Serializable {
         this.exclusao = exclusao;
     }
 
-    @XmlTransient
-    public List<ServicosCategoriasTO> getServicosCategoriasTOList() {
-        return servicosCategoriasTOList;
-    }
-
-    public void setServicosCategoriasTOList(List<ServicosCategoriasTO> servicosCategoriasTOList) {
-        this.servicosCategoriasTOList = servicosCategoriasTOList;
-    }
-
     public ServicosGruposTO getIdGrupo() {
         return idGrupo;
     }
 
     public void setIdGrupo(ServicosGruposTO idGrupo) {
         this.idGrupo = idGrupo;
+    }
+
+    public ServicosCategoriasTO getIdCategoriaServico() {
+        return idCategoriaServico;
+    }
+
+    public void setIdCategoriaServico(ServicosCategoriasTO idCategoriaServico) {
+        this.idCategoriaServico = idCategoriaServico;
     }
 
     public TabelasPrecosTO getIdTabelaPreco() {

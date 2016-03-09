@@ -70,7 +70,6 @@ public class AgendasTO implements Serializable {
     @Column(length = 50)
     private String idSchedule;
     private Integer idFuncionario;
-    private Integer idCategoria;
     private Integer idMotorista;
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
@@ -194,14 +193,6 @@ public class AgendasTO implements Serializable {
 
     public void setIdFuncionario(Integer idFuncionario) {
         this.idFuncionario = idFuncionario;
-    }
-
-    public Integer getIdCategoria() {
-        return idCategoria;
-    }
-
-    public void setIdCategoria(Integer idCategoria) {
-        this.idCategoria = idCategoria;
     }
 
     public Integer getIdMotorista() {

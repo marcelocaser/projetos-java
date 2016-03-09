@@ -11,11 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -52,10 +51,7 @@ public class ServicosCategoriasTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @JoinTable(name = "aux_servicos_categorias", joinColumns = {
-        @JoinColumn(name = "idServicoCategoria", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "idServico", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idCategoriaServico", fetch = FetchType.LAZY)
     private List<ServicosTO> servicosTOList;
     @JoinColumn(name = "idTabelaPreco", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
