@@ -17,7 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,8 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author marce
  */
 @Entity
-@Table(name = "agendas", catalog = "bdg", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"idSchedule"})})
+@Table(name = "agendas", catalog = "bdg", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AgendasTO.findAll", query = "SELECT a FROM AgendasTO a")})
@@ -66,9 +64,6 @@ public class AgendasTO implements Serializable {
     @Column(precision = 5, scale = 2)
     private BigDecimal valorACobrar;
     private Integer iraRepetirEm;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String idSchedule;
     private Integer idFuncionario;
     private Integer idMotorista;
     @Temporal(TemporalType.TIMESTAMP)
@@ -177,14 +172,6 @@ public class AgendasTO implements Serializable {
 
     public void setIraRepetirEm(Integer iraRepetirEm) {
         this.iraRepetirEm = iraRepetirEm;
-    }
-
-    public String getIdSchedule() {
-        return idSchedule;
-    }
-
-    public void setIdSchedule(String idSchedule) {
-        this.idSchedule = idSchedule;
     }
 
     public Integer getIdFuncionario() {
