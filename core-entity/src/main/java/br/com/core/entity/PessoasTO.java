@@ -45,43 +45,43 @@ public class PessoasTO implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 60)
+    @Size(min = 3, max = 60)
     @Column(nullable = false, length = 60)
     private String nome;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
     private Character sexo;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date nascimento;
-    @Size(max = 4)
-    @Column(length = 4)
+    @Size(min = 4, max = 5)
+    @Column(length = 5)
     private String aniversario;
-    @Size(max = 11)
-    @Column(length = 11)
+    @Size(min = 10, max = 14)
+    @Column(length = 14)
     private String telefoneResidencial;
-    @Size(max = 11)
-    @Column(length = 11)
+    @Size(min = 10, max = 14)
+    @Column(length = 14)
     private String telefoneComercial;
-    @Size(max = 11)
-    @Column(length = 11)
+    @Size(min = 10, max = 14)
+    @Column(length = 14)
     private String telefoneCelularPessoal;
-    @Size(max = 11)
-    @Column(length = 11)
+    @Size(min = 10, max = 14)
+    @Column(length = 14)
     private String telefoneCelularOutro;
-    @Size(max = 11)
-    @Column(length = 11)
+    @Size(min = 10, max = 14)
+    @Column(length = 14)
     private String telefoneWhatsAppPessoal;
-    @Size(max = 11)
-    @Column(length = 11)
+    @Size(min = 10, max = 14)
+    @Column(length = 14)
     private String telefoneWhatsAppOutro;
     @Size(max = 15)
     @Column(length = 15)
     private String registroGeral;
-    @Size(max = 11)
-    @Column(length = 11)
+    @Size(min = 11, max = 14)
+    @Column(length = 14)
     private String cpf;
-    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 60)
     @Column(length = 60)
     private String email;
@@ -89,7 +89,7 @@ public class PessoasTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @ManyToMany(mappedBy = "pessoasTOList", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "pessoasTOList", fetch = FetchType.LAZY)
     private List<EnderecosTO> enderecosTOList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pessoasTO", fetch = FetchType.LAZY)
     private DependentesTO dependentesTO;

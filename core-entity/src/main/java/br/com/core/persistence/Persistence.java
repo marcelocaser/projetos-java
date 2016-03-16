@@ -60,6 +60,10 @@ public abstract class Persistence<T extends Serializable> {
         return getEntityManager().find(clazz, id);
     }
 
+    protected T findOne(Integer id) {
+        return getEntityManager().find(clazz, id);
+    }
+
     protected List< T> findAll() {
         CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(clazz));
@@ -147,7 +151,7 @@ public abstract class Persistence<T extends Serializable> {
         getEntityManager().remove(entity);
     }
 
-    protected void deleteById(long entityId) {
+    protected void deleteById(Integer entityId) {
         T entity = findOne(entityId);
         delete(entity);
     }

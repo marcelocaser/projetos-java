@@ -57,9 +57,7 @@ public class AgendasTO implements Serializable {
     @Column(length = 150)
     private String observacao;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(nullable = false, precision = 5, scale = 2)
+    @Column(precision = 5, scale = 2)
     private BigDecimal valor;
     @Column(precision = 5, scale = 2)
     private BigDecimal valorACobrar;
@@ -87,11 +85,10 @@ public class AgendasTO implements Serializable {
         this.id = id;
     }
 
-    public AgendasTO(Integer id, Date data, Date hora, BigDecimal valor) {
+    public AgendasTO(Integer id, Date data, Date hora) {
         this.id = id;
         this.data = data;
         this.hora = hora;
-        this.valor = valor;
     }
 
     public Integer getId() {

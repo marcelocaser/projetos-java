@@ -75,7 +75,7 @@ public class EnderecosTO implements Serializable {
     @JoinTable(name = "aux_pessoas_enderecos", joinColumns = {
         @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
         @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<PessoasTO> pessoasTOList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco", fetch = FetchType.LAZY)
     private List<EnderecosComplementosTO> enderecosComplementosTOList;
