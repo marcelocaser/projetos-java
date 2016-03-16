@@ -48,7 +48,7 @@ public class ClientesTO implements Serializable {
     @Size(max = 15)
     @Column(length = 15)
     private String bonificacao;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date clienteDesde;
     @Size(max = 150)
     @Column(length = 150)

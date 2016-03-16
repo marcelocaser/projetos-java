@@ -55,7 +55,7 @@ public class AnimaisTO implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date nascimento;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(precision = 3, scale = 3)
+    @Column(precision = 5, scale = 2)
     private BigDecimal peso;
     @Size(max = 45)
     @Column(length = 45)
