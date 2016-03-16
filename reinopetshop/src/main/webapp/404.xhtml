@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <f:facet name="first">
@@ -19,10 +19,10 @@
     </h:head>
 
     <h:body>
-        
+
         <div class="Container100 BordBottom GrayBack loginback">
             <div class="EmptyBox50"></div>
-            
+
             <div class="Wid90 MarAuto">
                 <div class="Wid30 DispBlock MarAuto WidAutoOnMobile">
                     <div class="Card TexAlCenter" style="margin-bottom:-100px;">
@@ -30,19 +30,19 @@
                             <div class="EmptyBox20"></div>
                             <i class="icon-cord DispBlock Fs100 Orange"></i>
                             <div class="EmptyBox40"></div>
-                            <div class="Wid80 Fs30 FontAdamantiumBold Orange MarAuto">404 Page Not Found !</div>
+                            <div class="Wid80 Fs30 FontAdamantiumBold Orange MarAuto">#{msg.erro404PaginaNaoEncontrada}</div>
                             <div class="EmptyBox10"></div>
-                            <div class="Wid80 Fs18 FontAdamantiumRegular Fnone MarAuto">Sorry, but the resource you are looking for has not been found.</div>
+                            <div class="Wid80 Fs18 FontAdamantiumRegular Fnone MarAuto">#{msg.erro404Descricao}</div>
                         </div>
                         <div class="Separator"></div>
-                        <p:button value="Back To Dashboard" icon="fa fa-sign-in" href="app/dashboard.reinopet" styleClass="OrangeButton"/>
+                        <p:button value="#{msg.voltarAoPainel}" icon="fa fa-sign-in" href="app/dashboard.reinopet" styleClass="OrangeButton"/>
                     </div>
                 </div>
             </div>
-            
+
             <div class="EmptyBox10"></div>
         </div>
-        
+
         <h:outputStylesheet name="css/core-layout.css" library="adamantium-layout" />
         <h:outputStylesheet name="css/animate.css" library="adamantium-layout" />
         <h:outputStylesheet name="css/adamantium-font.css" library="adamantium-layout" />

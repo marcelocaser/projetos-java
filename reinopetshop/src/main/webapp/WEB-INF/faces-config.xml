@@ -37,8 +37,8 @@
         <converter-class>br.com.core.converter.ConverterUpperCase</converter-class>
     </converter>
     
-    <converter>
-        <converter-id>SimpleIndexConverter</converter-id>
-        <converter-class>br.com.core.converter.SimpleIndexConverter</converter-class>
+        <converter>
+        <converter-id>ConverterSemCaracteres</converter-id>
+        <converter-class>br.com.core.converter.ConverterSemCaracteres</converter-class>
     </converter>
 </faces-config>

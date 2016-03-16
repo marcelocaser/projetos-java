@@ -3,13 +3,17 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
+                xmlns:reinopet="http://xmlns.jcp.org/jsf/composite/reinopet"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="subheader">
         Meus Clientes
     </ui:define>
 
     <ui:define name="content">
+
+        <reinopet:modalConfirmDialog mensagem="#{msg.desejaExcluir}" update=":frmClientesListar:clientes" managedBean="#{clientesBean.excluir()}"/>
 
         <div class="Container100">
             <div class="ContainerIndent">
@@ -29,25 +33,47 @@
                                 </h:form>
                             </p:toolbarGroup>
                         </p:toolbar>
-                        <h:form id="form">
-                            <p:dataTable id="pessoas" var="clientesTO" value="#{clientesBean.clientesTOs}" selectionMode="single" selection="#{clientesBean.clientesTO}" rowKey="#{clientesTO.id}" paginatorPosition="bottom"
+                        <h:form id="frmClientesListar">
+                            <p:dataTable id="clientes" var="clientesTO" value="#{clientesBean.clientesTOs}" selectionMode="single" selection="#{clientesBean.clientesTO}" rowKey="#{clientesTO.id}" paginatorPosition="bottom"
                                          rows="5" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                         rowsPerPageTemplate="5,10,15" emptyMessage="#{msg.clientesNenhumClienteCadastrado}" reflow="true">
+                                         rowsPerPageTemplate="5,10,15" emptyMessage="#{msg.clientesNenhumClienteCadastrado}" reflow="true" >
 
-                                <p:column headerText="#{msg.pessoasNomeCompleto}" sortBy="#{clientesTO.pessoasTO.nome}" footerText="#{msg.pessoasNomeCompleto}">
+                                <p:column headerText="#{msg.pessoasNomeCompleto}" sortBy="#{clientesTO.pessoasTO.nome}">
                                     <h:outputText value="#{clientesTO.pessoasTO.nome}" />
                                 </p:column>
-                                <p:column headerText="#{msg.pessoasCelularPessoal}" sortBy="#{clientesTO.pessoasTO.telefoneCelularPessoal}" footerText="#{msg.pessoasCelularPessoal}">
+                                <p:column headerText="#{msg.animal}">
+                                    <ui:repeat var="meusAnimais" value="#{clientesTO.animaisTOList}" varStatus="status" >
+                                       #{meusAnimais.nome}<h:outputText value="," rendered="#{!status.last}" />
+                                    </ui:repeat>
+                                </p:column>
+                                <p:column headerText="#{msg.pessoasCelularPessoal}" sortBy="#{clientesTO.pessoasTO.telefoneCelularPessoal}">
                                     <h:outputText value="#{clientesTO.pessoasTO.telefoneCelularPessoal}" converter="ConverterTelefone" />
                                 </p:column>
-                                <p:column headerText="#{msg.pessoasTelefoneResidencial}" sortBy="#{clientesTO.pessoasTO.telefoneResidencial}" footerText="#{msg.pessoasTelefoneResidencial}">
+                                <p:column headerText="#{msg.pessoasTelefoneResidencial}" sortBy="#{clientesTO.pessoasTO.telefoneResidencial}">
                                     <h:outputText value="#{clientesTO.pessoasTO.telefoneResidencial}" converter="ConverterTelefone" />
                                 </p:column>
-                                <p:column headerText="#{msg.pessoasCelularPessoalWhatsApp}" sortBy="#{clientesTO.pessoasTO.celularPessoalWhatsapp}" footerText="#{msg.pessoasCelularPessoalWhatsApp}">
-                                    <h:outputText value="#{clientesTO.pessoasTO.celularPessoalWhatsapp}" converter="ConverterTelefone" />
+                                <p:column headerText="#{msg.pessoasCelularPessoalWhatsApp}" sortBy="#{clientesTO.pessoasTO.telefoneWhatsAppPessoal}">
+                                    <h:outputText value="#{clientesTO.pessoasTO.telefoneWhatsAppPessoal}" converter="ConverterTelefone" />
                                 </p:column>
-                                <p:column headerText="#{msg.status}" sortBy="#{clientesTO.status}" footerText="#{msg.status}">
+                                <p:column headerText="#{msg.status}" sortBy="#{clientesTO.status}">
                                     <h:outputText value="#{clientesTO.status}" />
+                                </p:column>
+                                <p:column styleClass="alignCenter">
+                                    <p:commandButton id="consultar" icon="fa fa-search-plus" 
+                                                     action="#{clientesBean.consultar()}">
+                                        <p:tooltip for="consultar"
+                                                   value="#{msg.menuOpcoesToolTipoConsultar}" />
+                                        <f:setPropertyActionListener value="#{clientesTO}"
+                                                                     target="#{clientesBean.clientesTO}" />
+                                    </p:commandButton>
+                                    <p:spacer width="5" />
+                                    <p:commandButton id="exclusao" icon="fa fa-remove" oncomplete="PF('confirmacao').show()" process="clientes">
+                                        <p:tooltip for="exclusao"
+                                                   value="#{msg.menuOpcoesToolTipoExcluir}" />
+                                        <f:setPropertyActionListener value="#{clientesTO}"
+                                                                     target="#{clientesBean.clientesTO}" />
+                                    </p:commandButton>
+
                                 </p:column>
                                 <f:facet name="footer">
                                     #{msg.vocePossui} <h2 class="BigTopic">#{clientesBean.clientesTOs.size()}</h2> #{msg.clientes} #{msg.jaCadastrado}

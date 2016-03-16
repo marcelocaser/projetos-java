@@ -22,7 +22,7 @@ public class PessoasBean extends ReinoPetController {
     /* Métodos para tratamento do negócio. */
     public String consultar() {
         try {
-            return "/app/clientes/clientesConsultar";
+            return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -30,7 +30,7 @@ public class PessoasBean extends ReinoPetController {
 
     public String editar() {
         try {
-            return "/app/clientes/clientesEditar";
+            return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -54,7 +54,7 @@ public class PessoasBean extends ReinoPetController {
 
     public String listar() {
         try {
-            return "/app/clientes/clientesListar";
+            return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -62,18 +62,27 @@ public class PessoasBean extends ReinoPetController {
 
     public String novo() {
         pessoasTO = new PessoasTO();
-        return "/app/clientes/clientesNovo";
+        return "";
     }
 
     public String salvar() {
         try {
-            return this.consultar();
+            this.pessoasNegocio.incluir(pessoasTO);
+            return null;
         } catch (Exception e) {
             return tratarExcecao(e);
         }
     }
 
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */
+    public PessoasBO getPessoasNegocio() {
+        return pessoasNegocio;
+    }
+
+    public void setPessoasNegocio(PessoasBO pessoasNegocio) {
+        this.pessoasNegocio = pessoasNegocio;
+    }
+
     public PessoasTO getPessoasTO() {
         return pessoasTO;
     }

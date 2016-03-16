@@ -17,6 +17,7 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewExpiredException;
 import javax.persistence.PersistenceException;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -36,7 +37,7 @@ public class ReinoPetController extends Controller implements ReinoPetConstantes
     public UsuariosTO getUsuarioLogado() {
         return (UsuariosTO) getParamSession(EnumSecurity.USUARIO_LOGADO);
     }
-
+    
     /**
      * Retorna o sistema logado.
      *
@@ -244,6 +245,8 @@ public class ReinoPetController extends Controller implements ReinoPetConstantes
             mensagens.add(new Mensagem(getMessage("admDataIntegrityViolationException")));
         } else if (e instanceof NullPointerException) {
             mensagens.add(new Mensagem(getMessage("admNullPointerException")));
+        } else if (e instanceof ViewExpiredException) {
+            mensagens.add(new Mensagem("sessaoExpirada"));
         } else {
             mensagens.add(new Mensagem(e.getMessage()));
         }
@@ -251,5 +254,4 @@ public class ReinoPetController extends Controller implements ReinoPetConstantes
         this.setMessage(mensagens, EnumTipoMensagem.ERRO);
         return null;
     }
-
 }

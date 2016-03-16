@@ -2,9 +2,12 @@ package br.com.reinopetshop.web.controller.bean;
 
 import br.com.core.entity.ClientesTO;
 import br.com.core.entity.PessoasTO;
+import br.com.core.enumerator.EnumTipoMensagem;
 import br.com.reinopetshop.business.controller.ReinoPetController;
 import br.com.reinopetshop.business.controller.business.ClientesBO;
+import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import org.primefaces.event.FlowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,12 +21,19 @@ import org.springframework.stereotype.Component;
 @Scope
 public class ClientesBean extends ReinoPetController {
 
+    private static final Integer maximoDeCliente = 6;
     @Autowired
-    private EnderecoBean enderecoBean;
+    private EnderecosBean enderecosBean;
+    @Autowired
+    private AnimaisBean animaisBean;
+    @Autowired
+    private PessoasBean pessoasBean;
     @Autowired
     private ClientesBO clientesNegocio;
     private ClientesTO clientesTO;
     private List<ClientesTO> clientesTOs;
+    private List<ClientesTO> ultimosClientesAdicionados;
+    private Integer totalClientesCadastrados;
     private boolean skip;
 
     /* Métodos para tratamento do negócio. */
@@ -45,10 +55,17 @@ public class ClientesBean extends ReinoPetController {
 
     public String excluir() {
         try {
+            clientesNegocio.excluir(clientesTO);
             return this.listar();
         } catch (Exception e) {
             return tratarExcecao(e);
         }
+    }
+
+    @PostConstruct
+    public void init() {
+        this.listarUltimosClientes();
+        this.listar();
     }
 
     public String incluir() {
@@ -61,42 +78,110 @@ public class ClientesBean extends ReinoPetController {
 
     public String listar() {
         try {
-            setClientesTOs(clientesNegocio.listar(new ClientesTO()));
+            clientesTOs = clientesNegocio.listarClientes();
+            totalClientesCadastrados = clientesTOs.size();
             return "/app/clientes/clientesListar";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
     }
 
+    public List<String> listarClientesPeloNome(String nome) {
+        try {
+            this.novo();
+            List<ClientesTO> clientesTOs = clientesNegocio.listarClientesPeloNome(nome);
+            List<String> nomes = new ArrayList<>();
+            for (ClientesTO clientes : clientesTOs) {
+                nomes.add(clientes.getPessoasTO().getNome());
+            }
+            return nomes;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void listarUltimosClientes() {
+        ultimosClientesAdicionados = clientesNegocio.listarUltimosClientes(maximoDeCliente);
+    }
+
     public String novo() {
         clientesTO = new ClientesTO();
         clientesTO.setPessoasTO(new PessoasTO());
-        //clientesTO.getPessoasTO().setEnderecosTOList(new ArrayList<>());
-        
-        enderecoBean.novo();
+
+        enderecosBean.novo();
+        animaisBean.novo();
 
         return "/app/clientes/clientesNovo";
     }
 
     public String salvar() {
         try {
-            return this.consultar();
+            // Verifica se CPF não cadastrado!
+            if (clientesTO.getPessoasTO().getCpf() != null) {
+                if (!this.clientesNegocio.isPessoaJaCadastrada(clientesTO)) {
+                    pessoasBean.setPessoasTO(clientesTO.getPessoasTO());
+                    pessoasBean.salvar();
+                    //Verifica se inseriu nova pessoa.
+                    if (pessoasBean.getPessoasTO() != null && pessoasBean.getPessoasTO().getId() != null) {
+                        //Salva o endereço
+                        enderecosBean.adicionarMaisEndereco();
+                        enderecosBean.salvar();
+                        this.clientesNegocio.incluir(clientesTO);
+                        if (clientesTO.getId() != null) {
+                            //Salva animais
+                            animaisBean.adicionarMaisAnimal();
+                            animaisBean.salvar();
+                        } else {
+                            setMessage("clientesNaoInserido", EnumTipoMensagem.ATENCAO);
+                            return "";
+                        }
+                    } else {
+                        setMessage("clientesPessoaNaoInserida", EnumTipoMensagem.ATENCAO);
+                        return "";
+                    }
+                } else {
+                    setMessage("clientesJaCadastradoComEsseCPF", EnumTipoMensagem.ATENCAO);
+                    return "";
+                }
+            }
+            setMessage("clientesCadastradoComSucesso", EnumTipoMensagem.INFO);
+            return this.listar();
         } catch (Exception e) {
             return tratarExcecao(e);
         }
     }
 
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */
-    /**
-     * Método usado para tratar os eventos, Next e Back (passos) do Wizard.
-     */
-    public String onFlowProcess(FlowEvent event) {
-        if (skip) {
-            skip = false;	//reseta Wizard, no caso do usuário voltar.
-            return "confirm";
-        } else {
-            return event.getNewStep();
-        }
+    public EnderecosBean getEnderecosBean() {
+        return enderecosBean;
+    }
+
+    public void setEnderecosBean(EnderecosBean enderecosBean) {
+        this.enderecosBean = enderecosBean;
+    }
+
+    public AnimaisBean getAnimaisBean() {
+        return animaisBean;
+    }
+
+    public void setAnimaisBean(AnimaisBean animaisBean) {
+        this.animaisBean = animaisBean;
+    }
+
+    public PessoasBean getPessoasBean() {
+        return pessoasBean;
+    }
+
+    public void setPessoasBean(PessoasBean pessoasBean) {
+        this.pessoasBean = pessoasBean;
+    }
+
+    public ClientesBO getClientesNegocio() {
+        return clientesNegocio;
+    }
+
+    public void setClientesNegocio(ClientesBO clientesNegocio) {
+        this.clientesNegocio = clientesNegocio;
     }
 
     public ClientesTO getClientesTO() {
@@ -113,6 +198,34 @@ public class ClientesBean extends ReinoPetController {
 
     public void setClientesTOs(List<ClientesTO> clientesTOs) {
         this.clientesTOs = clientesTOs;
+    }
+
+    public List<ClientesTO> getUltimosClientesAdicionados() {
+        return ultimosClientesAdicionados;
+    }
+
+    public void setUltimosClientesAdicionados(List<ClientesTO> ultimosClientesAdicionados) {
+        this.ultimosClientesAdicionados = ultimosClientesAdicionados;
+    }
+
+    public Integer getTotalClientesCadastrados() {
+        return totalClientesCadastrados;
+    }
+
+    public void setTotalClientesCadastrados(Integer totalClientesCadastrados) {
+        this.totalClientesCadastrados = totalClientesCadastrados;
+    }
+
+    /**
+     * Método usado para tratar os eventos, Next e Back (passos) do Wizard.
+     */
+    public String onFlowProcess(FlowEvent event) {
+        if (skip) {
+            skip = false;	//reseta Wizard, no caso do usuário voltar.
+            return "confirm";
+        } else {
+            return event.getNewStep();
+        }
     }
 
 }

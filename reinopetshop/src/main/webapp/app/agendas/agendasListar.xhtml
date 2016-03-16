@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:reinopet="http://xmlns.jcp.org/jsf/composite/reinopet"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:poue="http://primefaces.org/ui/extensions">
+
+    <ui:define name="subheader">
+        Minha Agenda
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="Container100">
+            <div class="ContainerIndent">
+                <div class="Container100">
+                    <div class="ContainerIndent">
+                        <p:toolbar>
+                            <p:toolbarGroup align="left">
+                                <div class="EmptyBox10"></div>
+                                <h:outputText class="CardTopic TexAlLeft" value=" #{msg.agendasMinhaAgenda}" />
+                            </p:toolbarGroup>
+
+                            <p:toolbarGroup align="right">
+                                <h:form>
+                                    <p:menuButton value="#{msg.menuOpcoes}">
+                                        <p:menuitem value="#{msg.menuOpcoesNovo}" icon="ui-icon-plus fa fa-plus Fs15" action="#{agendasBean.novo()}"/>
+                                    </p:menuButton>
+                                </h:form>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <h:form id="form">
+                            <p:dataTable id="pessoas" var="agendasTO" value="#{agendasBean.agendasTOs}" stickyHeader="true" selectionMode="single" selection="#{agendasBean.agendasTO}" rowKey="#{agendasTO.id}" paginatorPosition="bottom"
+                                         rows="5" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" emptyMessage="#{msg.agendasNenhumAgendamento}" reflow="true">
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

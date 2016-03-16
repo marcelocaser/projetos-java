@@ -3,37 +3,23 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:poue="http://primefaces.org/ui/extensions"
                 xmlns:reinopet="http://xmlns.jcp.org/jsf/composite/reinopet"
-                template="/WEB-INF/template.xhtml"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                template="/WEB-INF/template.xhtml">
 
     <ui:define name="content">
 
-        <reinopet:modalConfirmDialog mensagem="#{msg.desejaExcluir}" update=":frmClienteNovo:enderecos" managedBean="#{enderecoBean.removerMaisEndereco()}"/>
+        <reinopet:modalConfirmDialog mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecos" managedBean="#{enderecosBean.removerMaisEndereco()}"/>
 
         <div class="EmptyBox10"></div>
-        <h:form id="frmClienteNovo" prependId="false">
+        <h:form id="frmClientesNovo" prependId="false">
             <p:wizard flowListener="#{clientesBean.onFlowProcess}" nextLabel="#{msg.menuOpcoesProximo}" backLabel="#{msg.menuOpcoesAnterior}">
                 <p:tab title="#{msg.pessoasDadosPessoais}">
                     <div class="Container100 ui-fluid">
-                        <p:focus for="nomeCompleto"/>
+                        <p:focus id="fcsNomeCompleto" for="nomeCompleto"/>
                         <div class="ContainerIndent">
-                            <!--<p:toolbar> Implementação que não utiliza Wizard.
-                                <p:toolbarGroup align="left">
-                                    <div class="EmptyBox10"></div>
-                                    <h:outputText class="CardTopic TexAlLeft" value=" #{msg.clientesNovoCliente}" />
-                                </p:toolbarGroup>
-
-                                <p:toolbarGroup align="right">
-                                    <p:menuButton value="#{msg.menuOpcoes}" >
-                                        <p:menuitem value="#{msg.menuOpcoesSalvar}" icon="ui-icon-disk fa fa-save Fs15"
-                                                    action="#{clientesBean.salvar()}" update="@form" />
-                                        <p:menuitem value="#{msg.menuOpcoesRetornar}" icon="ui-icon-arrowthick-1-w fa  fa-arrow-left Fs15"
-                                                    action="#{clientesBean.listar()}" immediate="true" />
-                                    </p:menuButton>
-                                </p:toolbarGroup>
-                            </p:toolbar>-->
                             <div class="Card">
                                 <p:panelGrid id="dadosPessoais" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel for="id" value="#{msg.id}:" class="ShowOnDesktop" />
@@ -43,22 +29,21 @@
                                     <p:outputLabel/>
 
                                     <p:outputLabel for="nomeCompleto" value="#{msg.pessoasNomeCompleto}"/>
-                                    <p:inputText id="nomeCompleto" value="#{clientesBean.clientesTO.pessoasTO.nome}" required="true"/>
+                                    <p:inputText id="nomeCompleto" value="#{clientesBean.clientesTO.pessoasTO.nome}" required="true">
+                                    </p:inputText>
 
                                     <p:outputLabel for="cpf" value="#{msg.pessoasCPF}"/>
-                                    <p:inputMask id="cpf" value="#{clientesBean.clientesTO.pessoasTO.cpf}" mask="999.999.999-99">
-                                        <f:validateBean disabled="true" for="cpf" />
+                                    <p:inputMask id="cpf" value="#{clientesBean.clientesTO.pessoasTO.cpf}" converter="ConverterSemCaracteres" mask="999.999.999-99" required="true">
                                     </p:inputMask>
 
                                     <p:outputLabel for="email" value="#{msg.email}"/>
-                                    <p:inputText id="email" value="#{clientesBean.clientesTO.pessoasTO.email}" />
+                                    <p:inputText id="email" value="#{clientesBean.clientesTO.pessoasTO.email}" styleClass="lowercase" required="true" />
 
                                     <p:outputLabel for="registroGeral" value="#{msg.pessoasIdentidade}"/>
                                     <p:inputText id="registroGeral" value="#{clientesBean.clientesTO.pessoasTO.registroGeral}" />
 
                                     <p:outputLabel for="aniversario" value="#{msg.pessoasAniversario}"/>
-                                    <p:inputMask id="aniversario" value="#{clientesBean.clientesTO.pessoasTO.aniversario}" mask="99/99">
-                                        <f:validateBean disabled="true" for="aniversario" />
+                                    <p:inputMask id="aniversario" value="#{clientesBean.clientesTO.pessoasTO.aniversario}" converter="ConverterSemCaracteres" mask="99/99">
                                     </p:inputMask>
 
                                     <p:outputLabel for="sexo" value="#{msg.pessoasSexo}"/>
@@ -67,35 +52,29 @@
                                         <f:selectItem itemLabel="#{msg.pessoasFeminino}" itemValue="F"/>
                                     </p:selectOneRadio>
 
-                                    <span >#{msg.pessoasTelefoneResidencial} </span><i class="fa fa-phone Fs15"></i>
-                                    <p:inputText id="telefoneResidencial" value="#{clientesBean.clientesTO.pessoasTO.telefoneResidencial}" required="true">
-                                        <f:validateBean disabled="true" for="telefoneResidencial" />
-                                    </p:inputText>
-
                                     <span>#{msg.pessoasCelularPessoal} </span><i class="fa fa-mobile-phone Fs15"></i>
-                                    <p:inputText id="celularPessoal" value="#{clientesBean.clientesTO.pessoasTO.telefoneCelularPessoal}" required="true">
-                                        <f:validateBean disabled="true" for="celularPessoal" />
-                                    </p:inputText>
+                                    <p:inputMask id="celularPessoal" value="#{clientesBean.clientesTO.pessoasTO.telefoneCelularPessoal}" converter="ConverterSemCaracteres" mask="(99) 9999-9999" required="true">
+                                    </p:inputMask>
+
+                                    <span >#{msg.pessoasTelefoneResidencial} </span><i class="fa fa-phone Fs15"></i>
+                                    <p:inputMask id="telefoneResidencial" value="#{clientesBean.clientesTO.pessoasTO.telefoneResidencial}" converter="ConverterSemCaracteres" mask="(99) 9999-9999">
+                                    </p:inputMask>
 
                                     <span>#{msg.pessoasCelularPessoalWhatsApp} </span><i class="fa fa-whatsapp Fs15 Green"></i>
-                                    <p:inputText id="whatsAppPessoal" value="#{clientesBean.clientesTO.pessoasTO.celularPessoalWhatsapp}">
-                                        <f:validateBean for="whatsAppPessoal" />
-                                    </p:inputText>
+                                    <p:inputMask id="whatsAppPessoal" value="#{clientesBean.clientesTO.pessoasTO.telefoneWhatsAppPessoal}" converter="ConverterSemCaracteres" mask="(99) 9999-9999">
+                                    </p:inputMask>
 
                                     <span>#{msg.pessoasTelefoneComercial} </span><i class="fa fa-phone-square Fs15"></i>
-                                    <p:inputText id="telefoneComercial" value="#{clientesBean.clientesTO.pessoasTO.telefoneComercial}">
-                                        <f:validateBean for="telefoneComercial" />
-                                    </p:inputText>
+                                    <p:inputMask id="telefoneComercial" value="#{clientesBean.clientesTO.pessoasTO.telefoneComercial}" converter="ConverterSemCaracteres" mask="(99) 9999-9999">
+                                    </p:inputMask>
 
                                     <span>#{msg.pessoasCelularOutro} </span><i class="fa fa-mobile-phone Fs15"></i>
-                                    <p:inputText id="celularOutro" value="#{clientesBean.clientesTO.pessoasTO.telefoneCelularOutro}">
-                                        <f:validateBean for="celularOutro" />
-                                    </p:inputText>
+                                    <p:inputMask id="celularOutro" value="#{clientesBean.clientesTO.pessoasTO.telefoneCelularOutro}" converter="ConverterSemCaracteres" mask="(99) 9999-9999">
+                                    </p:inputMask>
 
                                     <span>#{msg.pessoasCelularWhatsAppOutro} </span><i class="fa fa-whatsapp Fs15"></i>
-                                    <p:inputText id="whatsAppOutro" value="#{clientesBean.clientesTO.pessoasTO.telefoneOutroWhatsApp}">
-                                        <f:validateBean for="whatsAppOutro" />
-                                    </p:inputText>
+                                    <p:inputMask id="whatsAppOutro" value="#{clientesBean.clientesTO.pessoasTO.telefoneWhatsAppOutro}" converter="ConverterSemCaracteres" mask="(99) 9999-9999">
+                                    </p:inputMask>
                                 </p:panelGrid>
                             </div>
                         </div>
@@ -109,57 +88,51 @@
                                 <p:focus for="cep"/>
                                 <p:panelGrid id="consultaCep" columns="3" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel for="cep" value="#{msg.enderecosCep}"/>
-                                    <p:inputMask id="cep" value="#{enderecoBean.enderecosTO.cep}" mask="99.999-999">
-                                        <f:validateBean for="cep" />
+                                    <p:inputMask id="cep" value="#{enderecosBean.enderecosTO.cep}" converter="ConverterSemCaracteres" mask="99.999-999">
                                     </p:inputMask>
-                                    <p:commandButton value="#{msg.enderecosConsultaCEP}" action="#{enderecoBean.consultarCEP()}" update="dadosEndereco" process="consultaCep" icon="fa fa-envelope Fs15 White" styleClass="BlueButton RaisedButton"/>
+                                    <p:commandButton value="#{msg.enderecosConsultaCEP}" action="#{enderecosBean.consultarCEP()}" update="dadosEndereco" process="consultaCep" icon="fa fa-envelope Fs15 White" styleClass="BlueButton RaisedButton"/>
                                 </p:panelGrid>
                                 <!--</p:fragment>-->
                                 <p:panelGrid id="dadosEndereco" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel for="logradouro" value="#{msg.enderecosLogradouro}"/>
-                                    <p:inputText id="logradouro" value="#{enderecoBean.enderecosTO.logracompl}" required="true">
-                                        <f:validateBean for="logradouro" />
+                                    <p:inputText id="logradouro" value="#{enderecosBean.enderecosTO.logracompl}" required="true" readonly="true">
                                     </p:inputText>
 
                                     <p:outputLabel for="complemento" value="#{msg.enderecosComplemento}"/>
-                                    <p:inputText id="complemento" value="#{enderecoBean.complementosTO.complemento}" required="true">
-                                        <f:validateBean for="complemento" />
+                                    <p:inputText id="complemento" value="#{enderecosBean.enderecosComplementosTO.complemento}" required="true">
                                     </p:inputText>
 
                                     <p:outputLabel for="numero" value="#{msg.enderecosNumero}"/>
-                                    <p:inputText id="numero" value="#{enderecoBean.complementosTO.numero}" required="true">
-                                        <f:validateBean for="numero" />
+                                    <p:inputText id="numero" value="#{enderecosBean.enderecosComplementosTO.numero}" required="true">
                                     </p:inputText>
 
                                     <p:outputLabel for="bairro" value="#{msg.enderecosBairro}"/>
-                                    <p:inputText id="bairro" value="#{enderecoBean.enderecosTO.idBairro.nome}" required="true">
-                                        <f:validateBean for="bairro" />
+                                    <p:inputText id="bairro" value="#{enderecosBean.enderecosTO.idBairro.nome}" required="true" readonly="true">
                                     </p:inputText>
 
                                     <p:outputLabel for="estado" value="#{msg.enderecosEstado}"/>
-                                    <p:selectOneMenu id="estado" value="#{enderecoBean.idEstado}" required="true">
-                                        <p:ajax listener="#{enderecoBean.listarCidades}" update="cidade" />
+                                    <p:selectOneMenu id="estado" value="#{enderecosBean.idEstado}" required="true" disabled="true">
+                                        <p:ajax listener="#{enderecosBean.listarCidades}" update="cidade" />
                                         <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
-                                        <f:selectItems value="#{enderecoBean.estadosTOs}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado.id}" />
+                                        <f:selectItems value="#{enderecosBean.estadosTOs}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado.id}" />
                                     </p:selectOneMenu>
 
                                     <p:outputLabel for="cidade" value="#{msg.enderecosCidade}"/>
-                                    <p:selectOneMenu id="cidade" value="#{enderecoBean.idCidade}" required="true">
+                                    <p:selectOneMenu id="cidade" value="#{enderecosBean.idCidade}" required="true" disabled="true"> 
                                         <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
-                                        <f:selectItems value="#{enderecoBean.cidadesTOs}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade.id}" />
+                                        <f:selectItems value="#{enderecosBean.cidadesTOs}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade.id}" />
                                     </p:selectOneMenu>
 
                                     <p:outputLabel for="observacao" value="#{msg.observacao}"/>
-                                    <p:inputTextarea id="observacao" value="#{enderecoBean.complementosTO.observacao}">
-                                        <f:validateBean for="observacao" />
+                                    <p:inputTextarea id="observacao" value="#{enderecosBean.enderecosComplementosTO.observacao}">
                                     </p:inputTextarea>
 
-                                    <p:commandButton value="#{msg.enderecosAdicionarNovo}" action="#{enderecoBean.adicionarMaisEndereco()}" update="consultaCep dadosEndereco enderecos" icon="fa fa-home" styleClass="BlueTextButton"/>
+                                    <p:commandButton value="#{msg.enderecosAdicionarNovo}" action="#{enderecosBean.adicionarMaisEndereco()}" update="consultaCep dadosEndereco enderecos :frmClientesNovo:fcsNomeCompleto" icon="fa fa-home" styleClass="BlueTextButton"/>
                                 </p:panelGrid>
                             </div>
                         </div>
-                        <div class="EmptyBox10" style="display: #{enderecoBean.mostraBlocoDeEnderecos}"></div>
-                        <p:dataTable id="enderecos" var="enderecos" value="#{enderecoBean.enderecosTOs}" rowKey="#{enderecos.cep}" style="display: #{enderecoBean.mostraBlocoDeEnderecos}" styleClass="noHeader">
+                        <div class="EmptyBox10" style="display: #{enderecosBean.mostraBlocoDeEnderecos}"></div>
+                        <p:dataTable id="enderecos" var="enderecos" value="#{enderecosBean.enderecosTOs}" rowKey="#{enderecos.cep}" style="display: #{enderecosBean.mostraBlocoDeEnderecos}" styleClass="noHeader">
                             <p:column style="border-style: none;">
                                 <i class="fa fa-envelope Fs15 Blue"></i>
                             </p:column>
@@ -172,22 +145,14 @@
                                 <h:outputText value="#{enderecos.logracompl}" />
                             </p:column>
 
-<!--                            <p:column style="border-style: none;">
-                                <p:dataTable id="complemento" var="complemento" value="#{enderecoBean.complementosTOs}" rowKey="#{complemento.cep}" style="display: #{enderecoBean.mostraBlocoDeEnderecos}; border-style: none;" styleClass="noHeader">
-                                    <p:column style="border-style: none">
-                                        <h:outputText value="#{complemento.complemento}" />
-                                    </p:column>
-
-                                    <p:column style="border-style: none">
-                                        <h:outputText value="#{complemento.numero}" />
-                                    </p:column>
-                                </p:dataTable>
-                            </p:column>-->
+                            <p:column style="border-style: none">
+                                <h:outputText value="#{enderecos.idBairro.nome}" />
+                            </p:column>
 
                             <p:column style="border-style: none">
                                 <p:commandButton oncomplete="PF('confirmacao').show()" process="enderecos" icon="fa fa-remove" styleClass="BlueTextButton" title="#{msg.excluirRegistro}">
                                     <f:setPropertyActionListener value="#{enderecos}"
-                                                                 target="#{enderecoBean.enderecosSelected}" />
+                                                                 target="#{enderecosBean.enderecosSelected}" />
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
@@ -197,15 +162,93 @@
                     <div class="Container100 ui-fluid">
                         <div class="ContainerIndent">
                             <div class="Card">
+                                <p:focus id="fcsNomeAnimal" for="nomeAnimal"/>
                                 <p:panelGrid id="dadosAnimais" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
-                                    <p:outputLabel />
-                                    <p:inputText />
+                                    <p:outputLabel for="nomeAnimal" value="#{msg.animaisNome}"/>
+                                    <p:inputText id="nomeAnimal" value="#{animaisBean.animaisTO.nome}" required="true">
+                                    </p:inputText>
+
+                                    <p:outputLabel for="nascimentoAnimal" value="#{msg.animaisNascimento}"/>
+                                    <p:calendar id="nascimentoAnimal" value="#{animaisBean.animaisTO.nascimento}" pattern="dd/MM/yyyy" mask="true" maxdate="#{animaisBean.dataNascimentoNoFuturo}">
+                                    </p:calendar>
+
+                                    <p:outputLabel for="sexoAnimal" value="#{msg.animaisSexo}"/>
+                                    <p:selectOneRadio id="sexoAnimal" value="#{animaisBean.animaisTO.sexo}" required="true" layout="responsive" columns="2" style="margin:30px 0px;">
+                                        <f:selectItem itemLabel="#{msg.animaisMacho}" itemValue="M"/>
+                                        <f:selectItem itemLabel="#{msg.animaisFemea}" itemValue="F"/>
+                                    </p:selectOneRadio>
+
+                                    <p:outputLabel for="dadosPet" value="#{msg.animaisDadosComplementares}" />
+                                    <p:selectManyMenu id="dadosPet" showCheckbox="true" value="#{animaisBean.selectedDadosComplementares}">
+                                        <f:selectItem itemLabel="#{msg.animaisCastrado}"  itemValue="C" />
+                                        <f:selectItem itemLabel="#{msg.animaisObito}" itemValue="O" />
+                                        <f:selectItem itemLabel="#{msg.animaisAVenda}" itemValue="V" />
+                                        <!--<f:selectItem itemLabel="#{msg.animaisControleDeRacao}" itemValue="R" />-->
+                                    </p:selectManyMenu>
+
+                                    <p:outputLabel for="especieAnimal" value="#{msg.animaisEspecie}"/>
+                                    <p:selectOneMenu id="especieAnimal" value="#{animaisBean.idEspecies}" required="true">
+                                        <p:ajax listener="#{animaisBean.listarRacas()}" update="racaAnimal" />
+                                        <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{animaisBean.especiesTOs}" var="especie" itemLabel="#{especie.tipo}" itemValue="#{especie.id}" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel for="racaAnimal" value="#{msg.animaisRaca}"/>
+                                    <p:selectOneMenu id="racaAnimal" value="#{animaisBean.idRacas}" required="true">
+                                        <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{animaisBean.racasTOs}" var="raca" itemLabel="#{raca.nome}" itemValue="#{raca.id}" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel for="chipAnimal" value="#{msg.animaisChip}"/>
+                                    <p:inputText id="chipAnimal" value="#{animaisBean.animaisTO.chip}">
+                                    </p:inputText>
+
+                                    <p:outputLabel for="observacaoAnimal" value="#{msg.observacao}"/>
+                                    <p:inputTextarea id="observacaoAnimal" value="#{animaisBean.animaisTO.observacao}">
+                                    </p:inputTextarea>
+
+                                    <p:outputLabel for="ultimaVisitaAnimal" value="#{msg.animaisUltimaVisita}"/>
+                                    <p:inputMask id="ultimaVisitaAnimal" value="#{animaisBean.animaisTO.ultimaVisita}" mask="99/99/9999" disabled="true">
+                                    </p:inputMask>
+
+                                    <p:outputLabel for="pesoAnimal" value="#{msg.animaisPeso}"/>
+                                    <poue:inputNumber id="pesoAnimal" value="#{animaisBean.animaisTO.peso}" converter="ConverterSemCaracteres" symbol=" Kg" symbolPosition="s" decimalPlaces="2" decimalSeparator="," thousandSeparator="."/>
+
+                                    <p:outputLabel/>
+                                    <p:outputLabel/>
+
+                                    <p:commandButton value="#{msg.animaisAdicionarNovo}" action="#{animaisBean.adicionarMaisAnimal()}" update="dadosAnimais animais :frmClientesNovo:fcsNomeAnimal" icon="fa fa-paw" styleClass="BlueTextButton"/>
                                 </p:panelGrid>
-                            </div>                            
+                            </div>    
                         </div>
+                        <div class="EmptyBox10" style="display: #{animaisBean.mostraBlocoDeAnimais}"></div>
+                        <p:dataTable id="animais" var="animais" value="#{animaisBean.animaisTOs}" rowKey="#{animais.id}" style="display: #{animaisBean.mostraBlocoDeAnimais}" styleClass="noHeader">
+                            <p:column style="border-style: none;">
+                                <i class="fa fa-paw Fs15 Blue"></i>
+                            </p:column>
+
+                            <p:column style="border-style: none">
+                                <h:outputText value="#{animais.nome}" />
+                            </p:column>
+
+                            <p:column style="border-style: none">
+                                <h:outputText value="#{animais.sexo eq M ? msg.animaisMacho : msg.animaisFemea}" />
+                            </p:column>
+
+                            <p:column style="border-style: none">
+                                <h:outputText value="#{animais.idRaca.nome}" />
+                            </p:column>
+
+                            <p:column style="border-style: none">
+                                <p:commandButton oncomplete="PF('confirmacao').show()" process="enderecos" icon="fa fa-remove" styleClass="BlueTextButton" title="#{msg.excluirRegistro}">
+                                    <f:setPropertyActionListener value="#{animais}"
+                                                                 target="#{animaisBean.animaisSelected}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
                     </div>
                 </p:tab>
-                <p:tab title="#{msg.dependentes}">
+<!--                <p:tab title="#{msg.dependentes}">
                     <div class="Container100 ui-fluid">
                         <div class="ContainerIndent">
                             <div class="Card">
@@ -214,13 +257,144 @@
                             </div>                            
                         </div>
                     </div>
+                </p:tab>-->
+                <p:tab title="#{msg.confirmacao}">
+                    <div class="Container100 ui-fluid">
+                        <div class="ContainerIndent">
+                            <div class="Card">
+                                <!--<p>Confirme os dados abaixo e em seguida clique em <i class="fa fa-save Fs15 Green"></i> <span class="Green">SALVAR.</span> Para alterar alguma informaÃ§Ã£o clique em <i class="fa fa-arrow-left Fs15 Blue"></i> <span class="Blue">ANTERIOR.</span> <br/><br/>VocÃª ainda pode imprimir clicando no botÃ£o <i class="fa fa-print Fs15 Brown"></i> IMPRIMIR.</p>-->
+                                <h2 class="BigTopic">#{msg.pessoasDadosPessoais}:</h2>
+                                <p></p>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <p:outputLabel value="#{msg.pessoasNomeCompleto}"/>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.nome}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.pessoasCPF}"/>
+                                    <p:inputMask value="#{clientesBean.clientesTO.pessoasTO.cpf}" mask="999.999.999-99" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.email}"/>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.email}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.pessoasIdentidade}"/>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.registroGeral}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.pessoasAniversario}"/>
+                                    <p:inputMask value="#{clientesBean.clientesTO.pessoasTO.aniversario}" mask="99/99" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.pessoasSexo}"/>
+                                    <p:selectOneRadio value="#{clientesBean.clientesTO.pessoasTO.sexo}" layout="responsive" columns="2" style="margin:30px 0px;" disabled="true">
+                                        <f:selectItem itemLabel="#{msg.pessoasMasculino}" itemValue="M" />
+                                        <f:selectItem itemLabel="#{msg.pessoasFeminino}" itemValue="F"/>
+                                    </p:selectOneRadio>
+
+                                    <span >#{msg.pessoasTelefoneResidencial} </span><i class="fa fa-phone Fs15"></i>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.telefoneResidencial}" readonly="true"/>
+
+                                    <span>#{msg.pessoasTelefoneComercial} </span><i class="fa fa-phone-square Fs15"></i>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.telefoneComercial}" readonly="true"/>
+
+                                    <span>#{msg.pessoasCelularPessoal} </span><i class="fa fa-mobile-phone Fs15"></i>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.telefoneCelularPessoal}" readonly="true"/>
+
+                                    <span>#{msg.pessoasCelularOutro} </span><i class="fa fa-mobile-phone Fs15"></i>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.telefoneCelularOutro}" readonly="true"/>
+
+                                    <span>#{msg.pessoasCelularPessoalWhatsApp} </span><i class="fa fa-whatsapp Fs15 Green"></i>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.telefoneWhatsAppPessoal}" readonly="true"/>
+
+                                    <span>#{msg.pessoasCelularWhatsAppOutro} </span><i class="fa fa-whatsapp Fs15"></i>
+                                    <p:inputText value="#{clientesBean.clientesTO.pessoasTO.telefoneWhatsAppOutro}" readonly="true"/>
+                                </p:panelGrid>
+                                <h2 class="BigTopic">#{msg.pessoasEndereco}:</h2>
+                                <p></p>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <p:outputLabel value="#{msg.enderecosCep}"/>
+                                    <p:inputMask value="#{enderecosBean.enderecosTO.cep}" mask="99.999-999" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.enderecosLogradouro}"/>
+                                    <p:inputText value="#{enderecosBean.enderecosTO.logracompl}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.enderecosComplemento}"/>
+                                    <p:inputText value="#{enderecosBean.enderecosComplementosTO.complemento}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.enderecosNumero}"/>
+                                    <p:inputText value="#{enderecosBean.enderecosComplementosTO.numero}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.enderecosBairro}"/>
+                                    <p:inputText value="#{enderecosBean.enderecosTO.idBairro.nome}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.enderecosEstado}"/>
+                                    <p:selectOneMenu value="#{enderecosBean.idEstado}">
+                                        <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{enderecosBean.estadosTOs}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado.id}" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{msg.enderecosCidade}"/>
+                                    <p:selectOneMenu value="#{enderecosBean.idCidade}" >
+                                        <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{enderecosBean.cidadesTOs}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade.id}" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{msg.observacao}"/>
+                                    <p:inputTextarea value="#{enderecosBean.enderecosComplementosTO.observacao}" readonly="true"/>
+                                </p:panelGrid>
+                                <h2 class="BigTopic">#{msg.animais}:</h2>
+                                <p></p>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <p:outputLabel value="#{msg.animaisNome}"/>
+                                    <p:inputText value="#{animaisBean.animaisTO.nome}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.animaisNascimento}"/>
+                                    <p:calendar value="#{animaisBean.animaisTO.nascimento}" readonly="true" pattern="dd/MM/yyyy" mask="true"/>
+
+                                    <p:outputLabel value="#{msg.animaisSexo}"/>
+                                    <p:selectOneRadio value="#{animaisBean.animaisTO.sexo}" layout="responsive" columns="2" style="margin:30px 0px;" disabled="true">
+                                        <f:selectItem itemLabel="#{msg.pessoasMasculino}" itemValue="M"/>
+                                        <f:selectItem itemLabel="#{msg.pessoasFeminino}" itemValue="F"/>
+                                    </p:selectOneRadio>
+
+                                    <p:outputLabel value="#{msg.animaisDadosComplementares}" />
+                                    <p:selectManyMenu showCheckbox="true" value="#{animaisBean.selectedDadosComplementares}">
+                                        <f:selectItem itemLabel="#{msg.animaisCastrado}"  itemValue="C" value="#{animaisBean.animaisTO.castrado}" />
+                                        <f:selectItem itemLabel="#{msg.animaisObito}" itemValue="O" value="#{animaisBean.animaisTO.obito}" />
+                                        <f:selectItem itemLabel="#{msg.animaisAVenda}" itemValue="V" value="#{animaisBean.animaisTO.AVenda}" />
+                                        <!--<f:selectItem itemLabel="#{msg.animaisControleDeRacao}" itemValue="R" value="#{animaisBean.animaisTO.controleDeRacao}" />-->
+                                    </p:selectManyMenu>
+
+                                    <p:outputLabel value="#{msg.animaisEspecie}"/>
+                                    <p:selectOneMenu value="#{animaisBean.idEspecies}" required="true">
+                                        <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{animaisBean.especiesTOs}" var="especie" itemLabel="#{especie.tipo}" itemValue="#{especie.id}" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{msg.animaisRaca}"/>
+                                    <p:selectOneMenu value="#{animaisBean.idRacas}" required="true">
+                                        <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{animaisBean.racasTOs}" var="raca" itemLabel="#{raca.nome}" itemValue="#{raca.id}" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="#{msg.animaisChip}"/>
+                                    <p:inputText value="#{animaisBean.animaisTO.chip}" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.observacao}"/>
+                                    <p:inputTextarea value="#{animaisBean.animaisTO.observacao}"/>
+
+                                    <p:outputLabel value="#{msg.animaisUltimaVisita}"/>
+                                    <p:inputMask value="#{animaisBean.animaisTO.ultimaVisita}" mask="99/99/9999" readonly="true"/>
+
+                                    <p:outputLabel value="#{msg.animaisPeso}"/>
+                                    <poue:inputNumber value="#{animaisBean.animaisTO.peso}" symbol=" Kg" symbolPosition="s" readonly="true"/>
+                                </p:panelGrid>
+                                <div class="EmptyBox30"></div>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <p:commandButton value="#{msg.menuOpcoesSalvar}" action="#{clientesBean.salvar()}" icon="fa fa-save Fs15 White" styleClass="GreenButton"/>
+                                    <p:commandButton value="#{msg.menuOpcoesImprimir}" disabled="true" icon="fa fa-print Fs15 White" styleClass="BrownButton"/>
+                                </p:panelGrid>
+                            </div>                            
+                        </div>
+                    </div>
                 </p:tab>
             </p:wizard>
-            <!--            <div class="Separator"></div> Implementação que não utiliza Wizard.
-                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
-                            <p:commandButton value="#{msg.menuOpcoesRetornar}" action="#{clientesBean.listar()}" immediate="true" icon="fa fa-arrow-left Fs15 White" styleClass="GreenButton RaisedButton"/>
-                            <p:commandButton value="#{msg.menuOpcoesSalvar}" action="#{clientesBean.salvar()}" update="@form" icon="fa fa-save Fs15 White" styleClass="RaisedButton"/>
-                        </p:panelGrid>-->
         </h:form>
     </ui:define>
 

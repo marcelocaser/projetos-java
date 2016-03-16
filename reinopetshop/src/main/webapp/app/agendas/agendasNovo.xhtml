@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:reinopet="http://xmlns.jcp.org/jsf/composite/reinopet"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:poue="http://primefaces.org/ui/extensions">
+
+    <ui:define name="content">
+
+        <div class="EmptyBox10"></div>
+        <h:form id="frmAgendaNova" prependId="false">
+            <p:schedule id="agenda" value="#{agendasBean.eventModel}" widgetVar="agenda" timeZone="America/Sao_Paulo" locale="pt" scrollTime="08:00:00" axisFormat="HH:mm" timeFormat="HH:mm">
+                <p:ajax event="dateSelect" listener="#{agendasBean.onDateSelect}" update="agendaDetalhes opcoes" oncomplete="PF('agendaDialog').show();" />
+                <p:ajax event="eventSelect" listener="#{agendasBean.onEventSelect}" update="agendaDetalhes opcoes" oncomplete="PF('agendaDialog').show();" />
+                <p:ajax event="eventMove" listener="#{agendasBean.onEventMove}" update="growl agenda" />
+                <p:ajax event="eventResize" listener="#{agendasBean.onEventResize}" update="growl" />
+
+            </p:schedule>
+
+            <p:dialog id="agendaDialog" widgetVar="agendaDialog" header="#{msg.agendasDetalhes}" responsive="true" showEffect="clip" hideEffect="clip" modal="true" resizable="false" >
+                <div class="Container100 ui-fluid">
+                    <div class="ContainerIndent">
+                        <p:panelGrid id="agendaDetalhes" columns="2" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel for="data" value="#{msg.agendasData}" />
+                            <p:calendar id="data" value="#{agendasBean.scheduleEvent.endDate}" timeZone="GMT-3" pattern="dd/MM/yyyy" disabled="true"/>
+
+                            <p:outputLabel for="proprietarioNome" value="#{msg.agendasProprietario}" />
+                            <p:autoComplete id="proprietarioNome" value="#{clientesBean.clientesTO.pessoasTO.nome}" completeMethod="#{clientesBean.listarClientesPeloNome}" required="true">
+                                <p:ajax listener="#{animaisBean.listarAnimaisPorCliente}" event="itemSelect" update="clienteAnimal"/>
+                            </p:autoComplete>
+
+                            <p:outputLabel for="clienteAnimal" value="#{msg.animal}" />
+                            <p:selectOneMenu id="clienteAnimal" value="#{animaisBean.idAnimal}" required="true">
+                                <p:ajax listener="#{animaisBean.consultar()}" />
+                                <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{clientesBean.clientesTO.animaisTOList}" var="animais" itemLabel="#{animais.nome}" itemValue="#{animais.id}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="servicos" value="#{msg.servico}" />
+                            <p:selectOneMenu id="servicos" value="#{servicosBean.idServico}" required="true" >
+                                <p:ajax listener="#{servicosBean.listarServicosCategorias}" update="servicosCategorias valorServico" />
+                                <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{servicosBean.servicosTOs}" var="servicos" itemLabel="#{servicos.nome}" itemValue="#{servicos.id}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="servicosCategorias" value="#{msg.servicosCategoria}"/>
+                            <p:selectOneMenu id="servicosCategorias" value="#{servicosBean.idServicoCategoria}" required="false">
+                                <p:ajax listener="#{servicosBean.consultarServicosCategorias}" update="valorServico" />
+                                <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{servicosBean.servicosTO.idCategoriaServico}" var="servicosCategoria" itemLabel="#{servicosCategoria.nome}" itemValue="#{servicosCategoria.id}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="valorServico" value="#{msg.servicosValor}"/>
+                            <poue:inputNumber id="valorServico" value="#{servicosBean.precoVenda}" converter="ConverterSemCaracteres" symbol="R$ " symbolPosition="p" decimalPlaces="2" decimalSeparator="," thousandSeparator="." readonly="true" required="true" />
+
+                            <p:outputLabel for="valorACobrar" value="#{msg.servicosValorACobrar}" />
+                            <poue:inputNumber id="valorACobrar" value="#{servicosBean.valorACobrar}" converter="ConverterSemCaracteres" symbol="R$ " symbolPosition="p" decimalPlaces="2" decimalSeparator="," thousandSeparator="." />
+
+                            <p:outputLabel for="agendasHorario" value="#{msg.agendasHorario}" />
+                            <p:calendar id="agendasHorario" value="#{agendasBean.scheduleEvent.startDate}" timeZone="GMT-3" timeOnly="true" pattern="HH:mm" mask="true" showOn="button"/>
+
+                            <p:outputLabel for="observacao" value="#{msg.observacao}" />
+                            <p:inputTextarea id="observacao" value="#{agendasBean.agendasTO.observacao}" />
+
+                            <h:outputLabel for="repetirEvento" value="#{msg.agendasRepetirEvento}" rendered="#{!agendasBean.editarEventoAtual}"/>
+                            <poue:inputNumber id="repetirEvento" value="#{agendasBean.repetirEvento}" symbol=" meses" symbolPosition="s" decimalPlaces="0" title="#{msg.agendasRepetirEventoToolTip}" rendered="#{!agendasBean.editarEventoAtual}"/>
+                        </p:panelGrid>
+                    </div>
+                </div>
+                <div class="EmptyBox10"></div>
+                <p:panelGrid id="opcoes" columns="3" styleClass="ui-panelgrid-blank">
+                    <p:commandButton value="#{msg.menuOpcoesSalvar}" actionListener="#{agendasBean.salvar}" icon="fa fa-save Fs15 White" styleClass="BlueButton" oncomplete="handleAgendaDialogSubmit(xhr, status, args)" update="agendaDialog frmAgendaNova"/>
+                    <p:commandButton value="#{msg.menuOpcoesCancelar}" icon="fa fa-close Fs15 White" styleClass="GreenButton" oncomplete="PF('agendaDialog').hide()" immediate="true"/>
+                    <p:commandButton value="#{msg.menuOpcoesExcluir}" actionListener="#{agendasBean.excluir}" icon="fa fa-trash-o Fs15 White" styleClass="RedButton" oncomplete="PF('agendaDialog').hide()" immediate="true" update="agendaDialog frmAgendaNova" rendered="#{agendasBean.mostraBotaoExcluir}" />
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

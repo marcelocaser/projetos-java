@@ -62,10 +62,10 @@
     
     <!-- ************* PARAMETROS ************* -->
     <!-- Time in seconds that facelets should be checked for changes since last request. A value of -1 disables refresh checking. -->
-    <context-param>
+    <!--    <context-param>
         <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
-        <param-value>0</param-value>
-    </context-param>
+        <param-value>1</param-value>
+    </context-param>-->
     
     <!--    <context-param> 
         <param-name>com.sun.faces.writeStateAtFormEnd</param-name> 
@@ -92,10 +92,16 @@
         <param-value>.xhtml</param-value>
     </context-param>
     
+    <!--Client Side Validation. CVS is disabled by default and a global parameter is required to turn it on-->
     <context-param>
-        <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
+        <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
         <param-value>true</param-value>
     </context-param>
+    
+    <!--    <context-param>
+        <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
+        <param-value>true</param-value>
+    </context-param>-->
     
     <context-param>
         <param-name>primefaces.THEME</param-name>
@@ -107,6 +113,16 @@
         <param-value>/WEB-INF/primefaces-adamantium.taglib.xml</param-value>
     </context-param>-->
     
+    <context-param>
+        <param-name>primefaces.TRANSFORM_METADATA</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>javax.faces.FACELETS_BUFFER_SIZE</param-name>         
+        <param-value>65535</param-value>
+    </context-param>
+    
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error.reinopet</location>
@@ -114,7 +130,7 @@
     
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-        <location>/error.reinopet</location>
+        <location>/view-expired.reinopet</location>
     </error-page>
     
     <error-page>
@@ -123,7 +139,7 @@
     </error-page>
     
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>20</session-timeout>
     </session-config>
     
     <!--    <security-constraint> 

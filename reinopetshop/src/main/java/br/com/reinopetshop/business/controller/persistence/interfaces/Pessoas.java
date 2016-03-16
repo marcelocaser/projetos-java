@@ -1,6 +1,7 @@
 package br.com.reinopetshop.business.controller.persistence.interfaces;
 
 import br.com.core.entity.PessoasTO;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,5 +19,7 @@ public interface Pessoas {
     public PessoasTO consultar(PessoasTO pessoasTO);
 
     public List<PessoasTO> listar(PessoasTO pessoasTO);
+    
+    public Date getDataAtual();
     
 }

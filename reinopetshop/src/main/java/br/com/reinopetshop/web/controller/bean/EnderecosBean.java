@@ -2,9 +2,9 @@ package br.com.reinopetshop.web.controller.bean;
 
 import br.com.core.bean.RetornoCEP;
 import br.com.core.controller.business.CidadesBO;
+import br.com.core.controller.business.EnderecosComplementosBO;
 import br.com.core.controller.business.EnderecosBO;
 import br.com.core.entity.CidadesTO;
-import br.com.core.entity.ComplementosTO;
 import br.com.core.entity.EnderecosTO;
 import br.com.core.entity.EstadosTO;
 import br.com.core.enumerator.EnumTipoMensagem;
@@ -13,6 +13,7 @@ import br.com.core.util.RestUtil;
 import br.com.reinopetshop.business.controller.ReinoPetController;
 import br.com.core.controller.business.EstadosBO;
 import br.com.core.entity.BairrosTO;
+import br.com.core.entity.EnderecosComplementosTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope
-public class EnderecoBean extends ReinoPetController {
+public class EnderecosBean extends ReinoPetController {
 
     @Autowired
     private EnderecosBO enderecosNegocio;
@@ -35,13 +36,16 @@ public class EnderecoBean extends ReinoPetController {
     private EstadosBO estadosNegocio;
     @Autowired
     private CidadesBO cidadesNegocio;
+    @Autowired
+    private EnderecosComplementosBO complementosNegocio;
+    @Autowired
+    private PessoasBean pessoasBean;
     private EnderecosTO enderecosTO;
     private EnderecosTO enderecosSelected;
-    private ComplementosTO complementosTO;
+    private EnderecosComplementosTO enderecosComplementosTO;
     private List<EstadosTO> estadosTOs;
     private List<CidadesTO> cidadesTOs;
     private List<EnderecosTO> enderecosTOs;
-    private List<ComplementosTO> complementosTOs;
     private String idEstado;
     private String idCidade;
     private String mostraBlocoDeEnderecos;
@@ -57,12 +61,16 @@ public class EnderecoBean extends ReinoPetController {
                     return "";
                 }
             }
-            getComplementosTOs().add(complementosTO);
-            enderecosTO.setComplementosTOList(getComplementosTOs());
+            enderecosTO.getEnderecosComplementosTOList().add(enderecosComplementosTO);
             enderecosTOs.add(enderecosTO);
             setMessage("enderecosAdicionado", EnumTipoMensagem.INFO);
             mostraBlocoDeEnderecos = "block";
-            this.novo();
+            enderecosTO = new EnderecosTO();
+            enderecosTO.setIdBairro(new BairrosTO());
+            enderecosTO.setIdCidade(new CidadesTO());
+            enderecosComplementosTO = new EnderecosComplementosTO();
+            idCidade = null;
+            idEstado = null;
             return "";
         } catch (Exception e) {
             return tratarExcecao(e);
@@ -90,6 +98,11 @@ public class EnderecoBean extends ReinoPetController {
                             idEstado = enderecosTO.getIdCidade().getIdEstado().getId().toString();
                             this.listarCidades();
                             idCidade = enderecosTO.getIdCidade().getId().toString();
+                        } else {
+                            idEstado = null;
+                            idCidade = null;
+                            this.novo();
+                            setMessage("enderecosErroConsultarCep", EnumTipoMensagem.ERRO);
                         }
                     } else {
                         idEstado = null;
@@ -101,7 +114,7 @@ public class EnderecoBean extends ReinoPetController {
             } else {
                 setMessage("enderecosCepInvalido", EnumTipoMensagem.ERRO);
             }
-            return "";
+            return null;
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -155,7 +168,6 @@ public class EnderecoBean extends ReinoPetController {
             setMessage("enderecosRemovido", EnumTipoMensagem.INFO);
             if (enderecosTOs.isEmpty()) {
                 mostraBlocoDeEnderecos = null;
-                complementosTOs = null;
             }
             return "";
         } catch (Exception e) {
@@ -170,17 +182,32 @@ public class EnderecoBean extends ReinoPetController {
 
     public String novo() {
         enderecosTO = new EnderecosTO();
-        complementosTO = new ComplementosTO();
         enderecosTO.setIdBairro(new BairrosTO());
         enderecosTO.setIdCidade(new CidadesTO());
+        enderecosTO.setEnderecosComplementosTOList(new ArrayList<>());
+        enderecosTO.setPessoasTOList(new ArrayList<>());
+        enderecosComplementosTO = new EnderecosComplementosTO();
+        mostraBlocoDeEnderecos = null;
+        enderecosSelected = null;
+        enderecosTOs = null;
         idCidade = null;
         idEstado = null;
-        return "";
+        return null;
     }
 
     public String salvar() {
         try {
-            return this.consultar();
+            for (EnderecosTO end : enderecosTOs) {
+                enderecosComplementosTO.setIdEndereco(end);
+                enderecosComplementosTO.setCep(end.getCep());
+                for (EnderecosComplementosTO complementosTO : end.getEnderecosComplementosTOList()) {
+                     enderecosComplementosTO.setComplemento(complementosTO.getComplemento());
+                     enderecosComplementosTO.setNumero(complementosTO.getNumero());
+                     enderecosComplementosTO.setObservacao(complementosTO.getObservacao());
+                     complementosNegocio.incluir(enderecosComplementosTO);
+                }
+            }
+            return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -193,6 +220,30 @@ public class EnderecoBean extends ReinoPetController {
 
     public void setEnderecosNegocio(EnderecosBO enderecosNegocio) {
         this.enderecosNegocio = enderecosNegocio;
+    }
+
+    public EstadosBO getEstadosNegocio() {
+        return estadosNegocio;
+    }
+
+    public void setEstadosNegocio(EstadosBO estadosNegocio) {
+        this.estadosNegocio = estadosNegocio;
+    }
+
+    public CidadesBO getCidadesNegocio() {
+        return cidadesNegocio;
+    }
+
+    public void setCidadesNegocio(CidadesBO cidadesNegocio) {
+        this.cidadesNegocio = cidadesNegocio;
+    }
+
+    public EnderecosComplementosBO getComplementosNegocio() {
+        return complementosNegocio;
+    }
+
+    public void setComplementosNegocio(EnderecosComplementosBO complementosNegocio) {
+        this.complementosNegocio = complementosNegocio;
     }
 
     public EnderecosTO getEnderecosTO() {
@@ -211,12 +262,12 @@ public class EnderecoBean extends ReinoPetController {
         this.enderecosSelected = enderecosSelected;
     }
 
-    public ComplementosTO getComplementosTO() {
-        return complementosTO;
+    public EnderecosComplementosTO getEnderecosComplementosTO() {
+        return enderecosComplementosTO;
     }
 
-    public void setComplementosTO(ComplementosTO complementosTO) {
-        this.complementosTO = complementosTO;
+    public void setEnderecosComplementosTO(EnderecosComplementosTO enderecosComplementosTO) {
+        this.enderecosComplementosTO = enderecosComplementosTO;
     }
 
     public List<EstadosTO> getEstadosTOs() {
@@ -247,17 +298,6 @@ public class EnderecoBean extends ReinoPetController {
 
     public void setEnderecosTOs(List<EnderecosTO> enderecosTOs) {
         this.enderecosTOs = enderecosTOs;
-    }
-
-    public List<ComplementosTO> getComplementosTOs() {
-        if (complementosTOs == null) {
-            complementosTOs = new ArrayList<>();
-        }
-        return complementosTOs;
-    }
-
-    public void setComplementosTOs(List<ComplementosTO> complementosTOs) {
-        this.complementosTOs = complementosTOs;
     }
 
     public String getIdEstado() {

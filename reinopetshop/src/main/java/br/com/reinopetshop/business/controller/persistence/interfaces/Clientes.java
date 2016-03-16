@@ -8,7 +8,7 @@ import java.util.List;
  * @author marce
  */
 public interface Clientes {
-    
+
     public void alterar(ClientesTO clientesTO);
 
     public void excluir(ClientesTO clientesTO);
@@ -19,4 +19,10 @@ public interface Clientes {
 
     public List<ClientesTO> listar(ClientesTO clientesTO);
     
+    public List<ClientesTO> listarClientes();
+
+    public List<ClientesTO> listarClientesPeloNome(String nome);
+    
+    public List<ClientesTO> listarUltimosClientes(Integer maximoDeClientes);
+
 }

@@ -4,9 +4,24 @@
     display: none;
 }
 
+.uppercase {
+    text-transform: uppercase;    
+}
+
+.lowercase {
+    text-transform: lowercase;
+}
+
 /* Width */
 .telefoneInput{ width:40% !important;}
 .idInput{ width:20% !important;}
 .cpfInput{ width:40% !important;}
 .identidadeInput{ width:40% !important;}
 .dataNascimentoInput{ width:30% !important;}
+
+.ui-datatable .ui-datatable-sticky.ui-sticky.Top146 {
+    top: 146px !important;
+}
+.ui-datatable .ui-datatable-sticky.ui-sticky.Top80 {
+    top: 80px !important;
+}
