@@ -188,12 +188,16 @@ public class DateUtil {
      * @param constanteCalendar Constante da classe Calendar que representa o
      * dia, mês ou ano.
      * @param diaMesAno Quantidade em dias, mês ou ano.
+     * @param trataDomingo Informa se deseja tratar o domingo como dia útil ou não.
      * @return Uma data.
      */
-    public static Date adicionaDiaMesAno(Date date, final int constanteCalendar, int diaMesAno) {
+    public static Date adicionaDiaMesAno(Date date, final int constanteCalendar, int diaMesAno, boolean trataDomingo) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(constanteCalendar, diaMesAno);
+        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && trataDomingo) {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        }
         return calendar.getTime();
 
     }
@@ -311,5 +315,19 @@ public class DateUtil {
         } catch (ParseException ex) {
             throw new NegocioException("Não foi possível converter para Data ou Hora de acordo com os parâmetros informados.");
         }
+    }
+
+    public static Date getUltimoDiaMes(Date data) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(data);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return calendar.getTime();
+    }
+
+    public static Date getPrimeiroDiaMes(Date data) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(data);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return calendar.getTime();
     }
 }

@@ -13,7 +13,7 @@ public class ConverterSemCaracteres implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
         if (string != null && !string.trim().isEmpty()) {
-            return string.replaceAll("[ )(./-meses]", "");
+            return string.replaceAll("[ )(./-]", "");
         }
         return null;
     }
