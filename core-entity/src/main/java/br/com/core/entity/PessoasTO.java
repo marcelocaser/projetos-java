@@ -90,7 +90,7 @@ public class PessoasTO implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
     @ManyToMany(mappedBy = "pessoasTOList", fetch = FetchType.LAZY)
-    private List<EnderecosTO> enderecosTOList;
+    private List<EnderecosComplementosTO> enderecosComplementosTOList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pessoasTO", fetch = FetchType.LAZY)
     private DependentesTO dependentesTO;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pessoasTO", fetch = FetchType.LAZY)
@@ -238,12 +238,12 @@ public class PessoasTO implements Serializable {
     }
 
     @XmlTransient
-    public List<EnderecosTO> getEnderecosTOList() {
-        return enderecosTOList;
+    public List<EnderecosComplementosTO> getEnderecosComplementosTOList() {
+        return enderecosComplementosTOList;
     }
 
-    public void setEnderecosTOList(List<EnderecosTO> enderecosTOList) {
-        this.enderecosTOList = enderecosTOList;
+    public void setEnderecosComplementosTOList(List<EnderecosComplementosTO> enderecosComplementosTOList) {
+        this.enderecosComplementosTOList = enderecosComplementosTOList;
     }
 
     public DependentesTO getDependentesTO() {

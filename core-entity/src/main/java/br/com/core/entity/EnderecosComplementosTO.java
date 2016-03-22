@@ -2,6 +2,7 @@ package br.com.core.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,6 +22,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -63,6 +67,11 @@ public class EnderecosComplementosTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
+    @JoinTable(name = "aux_pessoas_enderecos_complementos", joinColumns = {
+        @JoinColumn(name = "idEnderecoComplemento", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<PessoasTO> pessoasTOList;
     @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private EnderecosTO idEndereco;
@@ -157,6 +166,15 @@ public class EnderecosComplementosTO implements Serializable {
 
     public void setExclusao(Date exclusao) {
         this.exclusao = exclusao;
+    }
+
+    @XmlTransient
+    public List<PessoasTO> getPessoasTOList() {
+        return pessoasTOList;
+    }
+
+    public void setPessoasTOList(List<PessoasTO> pessoasTOList) {
+        this.pessoasTOList = pessoasTOList;
     }
 
     public EnderecosTO getIdEndereco() {

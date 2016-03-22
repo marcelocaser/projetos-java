@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -72,11 +70,6 @@ public class EnderecosTO implements Serializable {
     @NotNull
     @Column(name = "uf_cod", nullable = false)
     private Integer ufCod;
-    @JoinTable(name = "aux_pessoas_enderecos", joinColumns = {
-        @JoinColumn(name = "idEndereco", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "idPessoa", referencedColumnName = "id", nullable = false)})
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<PessoasTO> pessoasTOList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEndereco", fetch = FetchType.LAZY)
     private List<EnderecosComplementosTO> enderecosComplementosTOList;
     @JoinColumn(name = "idBairro", referencedColumnName = "id", nullable = false)
@@ -160,21 +153,12 @@ public class EnderecosTO implements Serializable {
         this.uf = uf;
     }
 
-    public int getUfCod() {
+    public Integer getUfCod() {
         return ufCod;
     }
 
-    public void setUfCod(int ufCod) {
+    public void setUfCod(Integer ufCod) {
         this.ufCod = ufCod;
-    }
-
-    @XmlTransient
-    public List<PessoasTO> getPessoasTOList() {
-        return pessoasTOList;
-    }
-
-    public void setPessoasTOList(List<PessoasTO> pessoasTOList) {
-        this.pessoasTOList = pessoasTOList;
     }
 
     @XmlTransient
