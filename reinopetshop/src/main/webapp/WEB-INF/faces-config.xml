@@ -4,7 +4,7 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     
-    <component>
+<!--    <component>
         <component-type>org.primefaces.component.AdamantiumMenu</component-type>
         <component-class>org.primefaces.adamantium.component.menu.AdamantiumMenu</component-class>
     </component>
@@ -15,7 +15,7 @@
             <renderer-type>org.primefaces.component.AdamantiumMenuRenderer</renderer-type>
             <renderer-class>org.primefaces.adamantium.component.menu.AdamantiumMenuRenderer</renderer-class>
         </renderer>
-    </render-kit>
+    </render-kit>-->
     
     <application>
         <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
