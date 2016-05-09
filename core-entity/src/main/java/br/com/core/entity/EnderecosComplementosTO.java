@@ -41,8 +41,10 @@ public class EnderecosComplementosTO implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
-    @Size(max = 8)
-    @Column(length = 8)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(nullable = false, length = 10)
     private String cep;
     @Basic(optional = false)
     @NotNull
@@ -83,8 +85,9 @@ public class EnderecosComplementosTO implements Serializable {
         this.id = id;
     }
 
-    public EnderecosComplementosTO(Integer id, String complemento) {
+    public EnderecosComplementosTO(Integer id, String cep, String complemento) {
         this.id = id;
+        this.cep = cep;
         this.complemento = complemento;
     }
 
