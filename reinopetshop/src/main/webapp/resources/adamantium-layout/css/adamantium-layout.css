@@ -667,62 +667,6 @@ li {
 }
 /* MEDIA QUERIES **************************************************************************************************************** */
 /* Large desktop */
-@media (min-width: 961px) {
-  .layout-menu-cover-top.fix-topmenu {
-    margin-top: 80px;
-    height: auto;
-    opacity: 1;
-    overflow: visible;
-  }
-  #menu-button {
-    display: none;
-  }
-  #layout-portlets-cover {
-    padding-top: 145px !important;
-  }
-}
-/* Mobile and Tablet */
-@media (max-width: 960px) {
-  #menu-button {
-    display: initial;
-  }
-  .layout-menu-cover-top.fix-topmenu {
-    width: 300px;
-    height: 100%;
-    margin-left: -300px;
-    margin-top: 0px;
-  }
-  .layout-menu-cover-top.fix-topmenu.active-menu {
-    margin-left: 0px;
-    height: 100%;
-    margin-top: 0px;
-    overflow: hidden;
-  }
-  #layout-portlets-cover {
-    padding-top: 90px !important;
-  }
-}
-/* according to landscape phones height and tablets height */
-@media (min-height: 320px) and (max-height: 560px) {
-  #menu-button {
-    display: initial;
-  }
-  .layout-menu-cover-top.fix-topmenu {
-    width: 300px;
-    height: 100%;
-    margin-left: -300px;
-    margin-top: 0px;
-  }
-  .layout-menu-cover-top.fix-topmenu.active-menu {
-    margin-left: 0px;
-    height: 100%;
-    margin-top: 0px;
-    overflow: hidden;
-  }
-  #layout-portlets-cover {
-    padding-top: 90px !important;
-  }
-}
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 640px) and (max-width: 960px) {
   html,
@@ -1098,7 +1042,7 @@ li {
   }
 }
 /* Portrait phones and down */
-@media (min-width: 320px) and (max-width: 480px) {
+@media (max-width: 480px) {
   html,
   body {
     height: auto;
@@ -1527,7 +1471,7 @@ li {
   }
 }
 /* Portrait phones and down */
-@media (min-width: 320px) and (max-width: 480px) {
+@media (max-width: 480px) {
   .dark #top-menu {
     background-color: #455a64;
   }
@@ -1545,6 +1489,30 @@ li {
     border-bottom: dotted 1px #546E7A;
   }
 }
+
+/* Large desktop */
+@media (min-width: 961px){
+    .layout-menu-cover-top.fix-topmenu{margin-top:80px; height:auto; opacity:1; overflow:visible;}
+    #menu-button{display: none;}
+    #layout-portlets-cover{padding-top: 145px !important;}
+}
+
+/* Mobile and Tablet */
+@media (max-width: 960px){
+    #menu-button{display: initial;}
+    .layout-menu-cover-top.fix-topmenu{width:300px; height:100%; margin-left:-300px; margin-top:0px;}
+    .layout-menu-cover-top.fix-topmenu.active-menu{margin-left:0px; height:100%; margin-top:0px; overflow:hidden;}
+    #layout-portlets-cover{padding-top: 90px !important;}
+}
+
+/* according to landscape phones height and tablets height */
+@media (min-height:320px) and (max-height:560px){
+    #menu-button{display: initial;}
+    .layout-menu-cover-top.fix-topmenu{width:300px; height:100%; margin-left:-300px; margin-top:0px;}
+    .layout-menu-cover-top.fix-topmenu.active-menu{margin-left:0px; height:100%; margin-top:0px; overflow:hidden;}
+    #layout-portlets-cover{padding-top: 90px !important;}
+}
+
 /* topbar */
 .topbar-shadow {
   -webkit-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
@@ -1620,4 +1588,4 @@ li {
 /* topbar menu */
 /* main menu */
 /* for mobile devices */
-/*# sourceMappingURL=adamantium-layout.css.map */
+

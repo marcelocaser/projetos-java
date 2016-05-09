@@ -49,7 +49,7 @@ public class AnimaisBean extends ReinoPetController {
     private String idAnimal;
     private List<String> selectedDadosComplementares;
     private String dataNascimentoNoFuturo;
-    private String mostraBlocoDeAnimais;
+    private Boolean mostraBlocoDeAnimais;
 
     public static final String CADASTRADO = "C";
     public static final String OBITO = "O";
@@ -64,17 +64,14 @@ public class AnimaisBean extends ReinoPetController {
                     setMessage("animaisJaCadastrado", EnumTipoMensagem.ATENCAO);
                     return "";
                 }
-                racasTO = racasNegocio.consultar(new RacasTO(new Integer(idRacas)));
-                animaisTO.setIdRaca(racasTO);
-                animaisTOs.add(animaisTO);
-                setMessage("animaisAdicionado", EnumTipoMensagem.INFO);
-                mostraBlocoDeAnimais = "block";
-                animaisTO = new AnimaisTO();
-                selectedDadosComplementares = new ArrayList<>();
-                idEspecies = null;
-                idRacas = null;
-                idAnimal = null;
             }
+            racasTO = racasNegocio.consultar(new RacasTO(new Integer(idRacas)));
+            this.validaDadosComplementares(animaisTO);
+            animaisTO.setIdRaca(racasTO);
+            animaisTOs.add(animaisTO);
+            setMessage("animaisAdicionado", EnumTipoMensagem.INFO);
+            mostraBlocoDeAnimais = true;
+            this.novo();
             return "";
         } catch (Exception e) {
             return tratarExcecao(e);
@@ -155,8 +152,8 @@ public class AnimaisBean extends ReinoPetController {
     public String novo() {
         animaisTO = new AnimaisTO();
         animaisSelected = new AnimaisTO();
-        animaisTOs = new ArrayList<>();
-        selectedDadosComplementares = new ArrayList<>();
+//        animaisTOs = new ArrayList<>();
+//        selectedDadosComplementares = new ArrayList<>();
         idEspecies = null;
         idRacas = null;
         idAnimal = null;
@@ -166,7 +163,6 @@ public class AnimaisBean extends ReinoPetController {
     public String salvar() {
         try {
             for (AnimaisTO animais : animaisTOs) {
-                this.validaDadosComplementares();
                 animais.setIdCliente(clientesBean.getClientesTO());
                 if (racasTO == null) {
                     racasTO = racasNegocio.consultar(new RacasTO(new Integer(idRacas)));
@@ -174,13 +170,15 @@ public class AnimaisBean extends ReinoPetController {
                 animais.setIdRaca(racasTO);
                 animaisNegocio.incluir(animais);
             }
+            selectedDadosComplementares = null;
+            animaisTOs = null;
             return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
     }
 
-    public void validaDadosComplementares() {
+    public void validaDadosComplementares(AnimaisTO animaisTO) {
         //Verifica as opções selecionadas dos dados complementares.
         for (String dadosComplementares : selectedDadosComplementares) {
             switch (dadosComplementares) {
@@ -199,6 +197,7 @@ public class AnimaisBean extends ReinoPetController {
                 default:
                     break;
             }
+            selectedDadosComplementares = null;
         }
     }
 
@@ -251,6 +250,9 @@ public class AnimaisBean extends ReinoPetController {
     }
 
     public List<AnimaisTO> getAnimaisTOs() {
+        if (animaisTOs == null) {
+            animaisTOs = new ArrayList<>();
+        }
         return animaisTOs;
     }
 
@@ -315,6 +317,9 @@ public class AnimaisBean extends ReinoPetController {
     }
 
     public List<String> getSelectedDadosComplementares() {
+        if (selectedDadosComplementares == null) {
+            selectedDadosComplementares = new ArrayList<>();
+        }
         return selectedDadosComplementares;
     }
 
@@ -330,14 +335,11 @@ public class AnimaisBean extends ReinoPetController {
         this.dataNascimentoNoFuturo = dataNascimentoNoFuturo;
     }
 
-    public String getMostraBlocoDeAnimais() {
-        if (mostraBlocoDeAnimais == null) {
-            mostraBlocoDeAnimais = "none";
-        }
+    public Boolean getMostraBlocoDeAnimais() {
         return mostraBlocoDeAnimais;
     }
 
-    public void setMostraBlocoDeAnimais(String mostraBlocoDeAnimais) {
+    public void setMostraBlocoDeAnimais(Boolean mostraBlocoDeAnimais) {
         this.mostraBlocoDeAnimais = mostraBlocoDeAnimais;
     }
 

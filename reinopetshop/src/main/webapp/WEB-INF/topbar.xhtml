@@ -6,6 +6,7 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:jsf="http://xmlns.jcp.org/jsf">
 
+
     <!-- TOPBAR START -->
     <div id="layout-topbar">
         <a id="menu-button" class="Animated1">
@@ -18,6 +19,7 @@
         <a id="topmenu-button" class="Animated1">
             <i class="icon-list2"></i>
         </a>
+
         <form jsf:prependId="false">
             <ul id="top-menu">
                 <li>
@@ -39,11 +41,10 @@
                     <a class="menulink Animated05"><i class="icon-calendar"></i> <span>Agenda</span></a>
                     <ul style="margin-left:-135px;">
                         <ui:repeat var="agendas" varStatus="status" value="#{agendasBean.agendaDoDia}">
-                            <!--<ui:fragment rendered="#{status.even}">-->
-                                <li><a href="#"><i class="icon-alarmclock Fs18 Red Fright"></i> <span class="FontAdamantiumBold">#{agendas.idAnimal.nome}</span><br/><span class="Fs12 ls-mask-time">#{agendas.hora}</span><br/><span class="Fs12">#{agendas.idCliente.pessoasTO.nome}</span></a></li>
-                            <!--</ui:fragment>-->
+                            <li><a href="#"><i class="icon-alarmclock Fs18 Red Fright"></i> <span class="FontAdamantiumBold">#{agendas.idAnimal.nome}</span><br/><span class="Fs12 ls-mask-time">#{agendas.hora}</span><br/><span class="Fs12">#{agendas.idCliente.pessoasTO.nome}</span></a></li>
                         </ui:repeat>
-                        <!--                        <li><a href="#"><i class="icon-alarmclock Fs18 Red Fright"></i> <span class="FontAdamantiumBold">Dinner With Boss</span><br/><span class="Fs12">14:45 - 18.08.2015</span></a></li>
+                        <!--                        <li><a href="#"><i class="icon-alarmclock Fs18 Red Fright"></i> <span class="FontAdamantiumBold">Meeting With John</span><br/><span class="Fs12">13:30 - 18.08.2015</span></a></li>
+                                                <li><a href="#"><i class="icon-alarmclock Fs18 Red Fright"></i> <span class="FontAdamantiumBold">Dinner With Boss</span><br/><span class="Fs12">14:45 - 18.08.2015</span></a></li>
                                                 <li><a href="#"><i class="icon-document-stroke Fs18 Fright"></i> <span class="FontAdamantiumBold">Send Reports</span><br/><span class="Fs12">15:30 - 18.08.2015</span></a></li>
                                                 <li><a href="#"><i class="icon-folder-stroke Fs18 Blue Fright"></i> <span class="FontAdamantiumBold">Arrange Reports</span><br/><span class="Fs12">18:30 - 18.08.2015</span></a></li>-->
                     </ul>
@@ -60,10 +61,12 @@
                 <li>
                     <a class="menulink Animated05"><i class="icon-settings"></i> <span>Configurações</span></a>
                     <ul style="margin-left:-145px;">
-                        <!--<li><a href="#"><i class="icon-brightness Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Brightness</span></a></li>-->
                         <li><a href="#"><i class="icon-users Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Minha conta</span></a></li>
-                        <!--<li><a href="#"><i class="icon-attachment Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Attachments</span></a></li>-->
                         <li><a jsf:action="#{loginBean.logout()}"><i class="icon-lock-stroke Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Sair</span></a></li>
+<!--                        <li><a href="#"><i class="icon-brightness Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Brightness</span></a></li>
+                        <li><a href="#"><i class="icon-users Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Accounts</span></a></li>
+                        <li><a href="#"><i class="icon-attachment Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Attachments</span></a></li>
+                        <li><a href="#"><i class="icon-lock-stroke Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Log Out System</span></a></li>-->
                     </ul>
                 </li>
             </ul>

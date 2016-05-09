@@ -12,6 +12,11 @@
     text-transform: lowercase;
 }
 
+.loginbackPata {
+    background: url("#{resource['reinopetshop-layout:images/facebookcover1.jpg']}") no-repeat;
+    height: 100%;
+}
+
 /* Width */
 .telefoneInput{ width:40% !important;}
 .idInput{ width:20% !important;}

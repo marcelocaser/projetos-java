@@ -11,7 +11,7 @@
 
     <ui:define name="content">
 
-        <reinopet:modalConfirmDialog mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecos" managedBean="#{enderecosBean.removerMaisEndereco()}"/>
+        <reinopet:modalConfirmDialog mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecosAdicionarNovo" managedBean="#{enderecosBean.removerMaisEndereco()}"/>
 
         <div class="EmptyBox10"></div>
         <h:form id="frmClientesNovo" prependId="false">
@@ -85,17 +85,17 @@
                         <div class="ContainerIndent">
                             <div class="Card">
                                 <!--<p:fragment autoUpdate="true">-->
-                                <p:focus for="cep"/>
+                                <p:focus id="fcsCep" for="cep"/>
                                 <p:panelGrid id="consultaCep" columns="3" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel for="cep" value="#{msg.enderecosCep}"/>
-                                    <p:inputMask id="cep" value="#{enderecosBean.enderecosTO.cep}" converter="ConverterSemCaracteres" mask="99.999-999">
+                                    <p:inputMask id="cep" value="#{enderecosBean.enderecosComplementosTO.cep}" converter="ConverterSemCaracteres" mask="99.999-999">
                                     </p:inputMask>
                                     <p:commandButton value="#{msg.enderecosConsultaCEP}" action="#{enderecosBean.consultarCEP()}" update="dadosEndereco" process="consultaCep" icon="fa fa-envelope Fs15 White" styleClass="BlueButton RaisedButton"/>
                                 </p:panelGrid>
                                 <!--</p:fragment>-->
                                 <p:panelGrid id="dadosEndereco" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel for="logradouro" value="#{msg.enderecosLogradouro}"/>
-                                    <p:inputText id="logradouro" value="#{enderecosBean.enderecosTO.logracompl}" required="true" readonly="true">
+                                    <p:inputText id="logradouro" value="#{enderecosBean.enderecosComplementosTO.idEndereco.logracompl}" required="true" readonly="true">
                                     </p:inputText>
 
                                     <p:outputLabel for="complemento" value="#{msg.enderecosComplemento}"/>
@@ -107,12 +107,12 @@
                                     </p:inputText>
 
                                     <p:outputLabel for="bairro" value="#{msg.enderecosBairro}"/>
-                                    <p:inputText id="bairro" value="#{enderecosBean.enderecosTO.idBairro.nome}" required="true" readonly="true">
+                                    <p:inputText id="bairro" value="#{enderecosBean.enderecosComplementosTO.idEndereco.idBairro.nome}" required="true" readonly="true">
                                     </p:inputText>
 
                                     <p:outputLabel for="estado" value="#{msg.enderecosEstado}"/>
                                     <p:selectOneMenu id="estado" value="#{enderecosBean.idEstado}" required="true" disabled="true">
-                                        <p:ajax listener="#{enderecosBean.listarCidades}" update="cidade" />
+                                        <p:ajax listener="#{enderecosBean.listarCidades()}" update="cidade" />
                                         <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
                                         <f:selectItems value="#{enderecosBean.estadosTOs}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado.id}" />
                                     </p:selectOneMenu>
@@ -127,12 +127,11 @@
                                     <p:inputTextarea id="observacao" value="#{enderecosBean.enderecosComplementosTO.observacao}">
                                     </p:inputTextarea>
 
-                                    <p:commandButton value="#{msg.enderecosAdicionarNovo}" action="#{enderecosBean.adicionarMaisEndereco()}" update="consultaCep dadosEndereco enderecos :frmClientesNovo:fcsNomeCompleto" icon="fa fa-home" styleClass="BlueTextButton"/>
+                                    <p:commandButton value="#{msg.enderecosAdicionarNovo}" action="#{enderecosBean.adicionarMaisEndereco()}" update="consultaCep dadosEndereco enderecosAdicionarNovo :frmClientesNovo:fcsCep" icon="fa fa-home" styleClass="BlueTextButton"/>
                                 </p:panelGrid>
                             </div>
                         </div>
-                        <div class="EmptyBox10" style="display: #{enderecosBean.mostraBlocoDeEnderecos}"></div>
-                        <p:dataTable id="enderecos" var="enderecos" value="#{enderecosBean.enderecosTOs}" rowKey="#{enderecos.cep}" style="display: #{enderecosBean.mostraBlocoDeEnderecos}" styleClass="noHeader">
+                        <p:dataTable id="enderecosAdicionarNovo" var="enderecos" value="#{enderecosBean.enderecosComplementosTOs}" rowKey="#{enderecos.cep}" rendered="#{enderecosBean.mostraBlocoDeEnderecos}" styleClass="noHeader">
                             <p:column style="border-style: none;">
                                 <i class="fa fa-envelope Fs15 Blue"></i>
                             </p:column>
@@ -142,11 +141,11 @@
                             </p:column>
 
                             <p:column style="border-style: none">
-                                <h:outputText value="#{enderecos.logracompl}" />
+                                <h:outputText value="#{enderecos.idEndereco.logracompl}" />
                             </p:column>
 
                             <p:column style="border-style: none">
-                                <h:outputText value="#{enderecos.idBairro.nome}" />
+                                <h:outputText value="#{enderecos.idEndereco.idBairro.nome}" />
                             </p:column>
 
                             <p:column style="border-style: none">
@@ -183,7 +182,6 @@
                                         <f:selectItem itemLabel="#{msg.animaisCastrado}"  itemValue="C" />
                                         <f:selectItem itemLabel="#{msg.animaisObito}" itemValue="O" />
                                         <f:selectItem itemLabel="#{msg.animaisAVenda}" itemValue="V" />
-                                        <!--<f:selectItem itemLabel="#{msg.animaisControleDeRacao}" itemValue="R" />-->
                                     </p:selectManyMenu>
 
                                     <p:outputLabel for="especieAnimal" value="#{msg.animaisEspecie}"/>
@@ -221,8 +219,7 @@
                                 </p:panelGrid>
                             </div>    
                         </div>
-                        <div class="EmptyBox10" style="display: #{animaisBean.mostraBlocoDeAnimais}"></div>
-                        <p:dataTable id="animais" var="animais" value="#{animaisBean.animaisTOs}" rowKey="#{animais.id}" style="display: #{animaisBean.mostraBlocoDeAnimais}" styleClass="noHeader">
+                        <p:dataTable id="animais" var="animais" value="#{animaisBean.animaisTOs}" rowKey="#{animais.id}" rendered="#{animaisBean.mostraBlocoDeAnimais}" styleClass="noHeader">
                             <p:column style="border-style: none;">
                                 <i class="fa fa-paw Fs15 Blue"></i>
                             </p:column>
@@ -262,9 +259,9 @@
                     <div class="Container100 ui-fluid">
                         <div class="ContainerIndent">
                             <div class="Card">
-                                <!--<p>Confirme os dados abaixo e em seguida clique em <i class="fa fa-save Fs15 Green"></i> <span class="Green">SALVAR.</span> Para alterar alguma informaÃ§Ã£o clique em <i class="fa fa-arrow-left Fs15 Blue"></i> <span class="Blue">ANTERIOR.</span> <br/><br/>VocÃª ainda pode imprimir clicando no botÃ£o <i class="fa fa-print Fs15 Brown"></i> IMPRIMIR.</p>-->
+<!--                                <p>Confirme os dados abaixo e em seguida clique em <i class="fa fa-save Fs15 Green"></i> <span class="Green">SALVAR.</span> Para alterar alguma informaÃ§Ã£o clique em <i class="fa fa-arrow-left Fs15 Blue"></i> <span class="Blue">ANTERIOR.</span> <br/><br/>VocÃª ainda pode imprimir clicando no botÃ£o <i class="fa fa-print Fs15 Brown"></i> IMPRIMIR.</p>
                                 <h2 class="BigTopic">#{msg.pessoasDadosPessoais}:</h2>
-                                <p></p>
+                                <p></p>-->
                                 <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel value="#{msg.pessoasNomeCompleto}"/>
                                     <p:inputText value="#{clientesBean.clientesTO.pessoasTO.nome}" readonly="true"/>
@@ -309,10 +306,10 @@
                                 <p></p>
                                 <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel value="#{msg.enderecosCep}"/>
-                                    <p:inputMask value="#{enderecosBean.enderecosTO.cep}" mask="99.999-999" readonly="true"/>
+                                    <p:inputMask value="#{enderecosBean.enderecosComplementosTO.idEndereco.cep}" mask="99.999-999" readonly="true"/>
 
                                     <p:outputLabel value="#{msg.enderecosLogradouro}"/>
-                                    <p:inputText value="#{enderecosBean.enderecosTO.logracompl}" readonly="true"/>
+                                    <p:inputText value="#{enderecosBean.enderecosComplementosTO.idEndereco.logracompl}" readonly="true"/>
 
                                     <p:outputLabel value="#{msg.enderecosComplemento}"/>
                                     <p:inputText value="#{enderecosBean.enderecosComplementosTO.complemento}" readonly="true"/>
@@ -321,7 +318,7 @@
                                     <p:inputText value="#{enderecosBean.enderecosComplementosTO.numero}" readonly="true"/>
 
                                     <p:outputLabel value="#{msg.enderecosBairro}"/>
-                                    <p:inputText value="#{enderecosBean.enderecosTO.idBairro.nome}" readonly="true"/>
+                                    <p:inputText value="#{enderecosBean.enderecosComplementosTO.idEndereco.idBairro.nome}" readonly="true"/>
 
                                     <p:outputLabel value="#{msg.enderecosEstado}"/>
                                     <p:selectOneMenu value="#{enderecosBean.idEstado}">
@@ -355,11 +352,11 @@
 
                                     <p:outputLabel value="#{msg.animaisDadosComplementares}" />
                                     <p:selectManyMenu showCheckbox="true" value="#{animaisBean.selectedDadosComplementares}">
-                                        <f:selectItem itemLabel="#{msg.animaisCastrado}"  itemValue="C" value="#{animaisBean.animaisTO.castrado}" />
-                                        <f:selectItem itemLabel="#{msg.animaisObito}" itemValue="O" value="#{animaisBean.animaisTO.obito}" />
-                                        <f:selectItem itemLabel="#{msg.animaisAVenda}" itemValue="V" value="#{animaisBean.animaisTO.AVenda}" />
-                                        <!--<f:selectItem itemLabel="#{msg.animaisControleDeRacao}" itemValue="R" value="#{animaisBean.animaisTO.controleDeRacao}" />-->
+                                        <f:selectItem itemLabel="#{msg.animaisCastrado}"  itemValue="C" />
+                                        <f:selectItem itemLabel="#{msg.animaisObito}" itemValue="O" />
+                                        <f:selectItem itemLabel="#{msg.animaisAVenda}" itemValue="V" />
                                     </p:selectManyMenu>
+
 
                                     <p:outputLabel value="#{msg.animaisEspecie}"/>
                                     <p:selectOneMenu value="#{animaisBean.idEspecies}" required="true">

@@ -23,6 +23,7 @@ public class LoginBean extends ReinoPetController {
     UsuariosTO usuariosTO;
     String senha;
     String email;
+    Boolean continuarConectado;
 
     /* Métodos para tratamento do negócio. */
     public String login() {
@@ -78,6 +79,14 @@ public class LoginBean extends ReinoPetController {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean getContinuarConectado() {
+        return continuarConectado;
+    }
+
+    public void setContinuarConectado(Boolean continuarConectado) {
+        this.continuarConectado = continuarConectado;
     }
 
 }

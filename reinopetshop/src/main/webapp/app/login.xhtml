@@ -36,18 +36,33 @@
 
             <div class="Wid90 MarAuto">
                 <div class="Wid30 DispBlock MarAuto WidAutoOnMobile">
-                    <div class="Card TexAlCenter" style="margin-bottom:-650px; background: url('#{resource['reinopetshop-layout/images/dot.png']}') repeat;">
+                    <div class="Card TexAlCenter" style="margin-bottom:-650px;">
+                        <h:graphicImage name="images/logoBlack.svg" library="reinopetshop-layout" style="max-width:180px;"/>
+                        <div class="SeparatorFull"></div>
+                        <div class="Wid100 OvHidden BigTopic"><i class="icon-security DispBlock"></i></div>
+                        <div class="EmptyBox20"></div>
                         <div class="Card SoftGrayBack">
-                            <h:graphicImage name="images/logo-black.svg" library="reinopetshop-layout" style="max-width:180px;"/>
-                            <div class="EmptyBox20"></div>
                             <h:form prependId="false">
-                                <p:focus for="E-mail" />
-                                <p:inputText id="E-mail" placeholder="E-mail" value="#{loginBean.email}" required="true" autocomplete="off" styleClass="Wid90 TexAlCenter"/>
+                                <p:focus for="Email" />
+                                <p:inputText id="Email" placeholder="#{msg.email}" value="#{loginBean.email}" required="true" autocomplete="off" styleClass="Wid90 TexAlCenter"/>
                                 <div class="EmptyBox10"></div>
-                                <p:inputText id="Senha" type="password" placeholder="Senha" value="#{loginBean.senha}" required="true" styleClass="Wid90 TexAlCenter"/>
+                                <p:inputText id="Senha" type="password" placeholder="#{msg.senha}" value="#{loginBean.senha}" required="true" styleClass="Wid90 TexAlCenter"/>
                                 <div class="EmptyBox30"></div>
-                                <p:commandButton value="Entrar no sistema " icon="fa fa-sign-in" action="#{loginBean.login()}" styleClass="Wid100 BlueButton"/>
+                                <p:selectBooleanCheckbox value="#{loginBean.continuarConectado}" itemLabel="#{msg.continuarConectado}"/>
+                                <div class="EmptyBox30"></div>
+                                <p:commandButton value="#{msg.entrarNoSitema}" icon="fa fa-sign-in" action="#{loginBean.login()}" styleClass="Wid100 BlueButton"/>
+                                <div class="EmptyBox10 ShowOnMobile"></div>
+                                <p:commandButton value="#{msg.esqueceuASenha}" icon="fa fa-lock" styleClass="Wid100 RedButton"/>
                             </h:form>
+                        </div>
+                        <div class="EmptyBox20"></div>
+                        <div class="Separator"></div>
+                        <div class="Wid100 OvHidden BigTopic"></div>
+                        <div class="EmptyBox20"></div>
+                        <div class="Card SoftGrayBack">
+                            <div class="Wid100"><p:inputText placeholder="#{msg.email}" styleClass="Wid90 TexAlCenter"/></div>
+                            <div class="EmptyBox10"></div>
+                            <p:commandButton value="#{msg.solicitarAcesso}" styleClass="Wid100 OrangeButton"/>
                         </div>
                     </div>
                 </div>
@@ -62,6 +77,8 @@
         <h:outputStylesheet name="css/ripple-effect.css" library="adamantium-layout" />
         <h:outputStylesheet name="css/font-awesome.css" library="adamantium-layout" />
         <h:outputStylesheet name="css/adamantium-layout.css" library="adamantium-layout" />
+        
+        <h:outputStylesheet name="css/reinopetshop.css" library="reinopetshop-layout" />
     </h:body>
 
 </html>

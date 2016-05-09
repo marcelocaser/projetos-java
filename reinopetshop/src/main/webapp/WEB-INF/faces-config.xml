@@ -4,6 +4,19 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     
+    <component>
+        <component-type>org.primefaces.component.AdamantiumMenu</component-type>
+        <component-class>org.primefaces.adamantium.component.menu.AdamantiumMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AdamantiumMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.adamantium.component.menu.AdamantiumMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    
     <application>
         <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
         
@@ -37,7 +50,7 @@
         <converter-class>br.com.core.converter.ConverterUpperCase</converter-class>
     </converter>
     
-        <converter>
+    <converter>
         <converter-id>ConverterSemCaracteres</converter-id>
         <converter-class>br.com.core.converter.ConverterSemCaracteres</converter-class>
     </converter>

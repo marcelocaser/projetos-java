@@ -29,6 +29,8 @@ public class ClientesBean extends ReinoPetController {
     @Autowired
     private PessoasBean pessoasBean;
     @Autowired
+    private AgendasBean agendasBean;
+    @Autowired
     private ClientesBO clientesNegocio;
     private ClientesTO clientesTO;
     private List<ClientesTO> clientesTOs;
@@ -39,6 +41,11 @@ public class ClientesBean extends ReinoPetController {
     /* Métodos para tratamento do negócio. */
     public String consultar() {
         try {
+            //ClientesTO cli = new ClientesTO(clientesTO.getId());
+            //this.novo();
+            clientesTO = clientesNegocio.consultar(new ClientesTO(clientesTO.getId()));
+            enderecosBean.setEnderecosComplementosTOs(clientesTO.getPessoasTO().getEnderecosComplementosTOList());
+            animaisBean.setAnimaisTOs(clientesTO.getAnimaisTOList());
             return "/app/clientes/clientesConsultar";
         } catch (Exception e) {
             return tratarExcecao(e);
@@ -56,6 +63,11 @@ public class ClientesBean extends ReinoPetController {
     public String excluir() {
         try {
             clientesNegocio.excluir(clientesTO);
+//            animaisBean.excluir();
+//            pessoasBean.excluir();
+//            enderecosBean.excluir();
+//            agendasBean.excluir();
+            this.listarUltimosClientes();
             return this.listar();
         } catch (Exception e) {
             return tratarExcecao(e);
@@ -89,10 +101,10 @@ public class ClientesBean extends ReinoPetController {
     public List<String> listarClientesPeloNome(String nome) {
         try {
             this.novo();
-            List<ClientesTO> clientesTOs = clientesNegocio.listarClientesPeloNome(nome);
+            List<ClientesTO> clientes = clientesNegocio.listarClientesPeloNome(nome);
             List<String> nomes = new ArrayList<>();
-            for (ClientesTO clientes : clientesTOs) {
-                nomes.add(clientes.getPessoasTO().getNome());
+            for (ClientesTO cliente : clientes) {
+                nomes.add(cliente.getPessoasTO().getNome());
             }
             return nomes;
         } catch (Exception e) {
@@ -109,7 +121,9 @@ public class ClientesBean extends ReinoPetController {
         clientesTO.setPessoasTO(new PessoasTO());
 
         enderecosBean.novo();
+        enderecosBean.setEnderecosComplementosTOs(new ArrayList<>());
         animaisBean.novo();
+        animaisBean.setAnimaisTOs(new ArrayList<>());
 
         return "/app/clientes/clientesNovo";
     }
@@ -145,7 +159,8 @@ public class ClientesBean extends ReinoPetController {
                 }
             }
             setMessage("clientesCadastradoComSucesso", EnumTipoMensagem.INFO);
-            return this.listar();
+            this.init();
+            return this.consultar();
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -176,6 +191,14 @@ public class ClientesBean extends ReinoPetController {
         this.pessoasBean = pessoasBean;
     }
 
+    public AgendasBean getAgendasBean() {
+        return agendasBean;
+    }
+
+    public void setAgendasBean(AgendasBean agendasBean) {
+        this.agendasBean = agendasBean;
+    }
+    
     public ClientesBO getClientesNegocio() {
         return clientesNegocio;
     }

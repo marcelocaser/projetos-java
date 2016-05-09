@@ -52,8 +52,6 @@ public class ClientesPO extends Persistence<ClientesTO> implements Clientes {
 
     @Override
     public List<ClientesTO> listar(ClientesTO clientesTO) {
-        //limpa cache antes de trazer os clientes.
-        this.evict();
         return list(clientesTO);
     }
 

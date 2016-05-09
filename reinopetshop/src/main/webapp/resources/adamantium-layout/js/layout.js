@@ -1,78 +1,77 @@
-// FNC for detecting for click outside of any elements ==============
-$.fn.clickOff = function(callback, selfDestroy) {
-      var clicked = false;
-      var parent = this;
-      var destroy = selfDestroy || true;
-     
-      parent.click(function() {
-         clicked = true;
-      });
-     
-      $(document).click(function(event) {
-         if (!clicked) {
+// FNC for detecting for click outside of any elements ============== 
+$.fn.clickOff = function (callback, selfDestroy) {
+    var clicked = false;
+    var parent = this;
+    var destroy = selfDestroy || true;
+
+    parent.click(function () {
+        clicked = true;
+    });
+
+    $(document).click(function (event) {
+        if (!clicked) {
             callback(parent, event);
-         }
-         if (destroy) {
-         };
-         clicked = false;
-      });
-   };
-   
-/**
+        }
+        if (destroy) {
+        }
+        ;
+        clicked = false;
+    });
+};
+
+/** 
  * PrimeFaces Adamantium Layout
  */
 var Adamantium = {
- 
-    init: function() {
+    init: function () {
         this.menuWrapper = $('#layout-menu-cover');
         this.menu = this.menuWrapper.find('ul.layout-menu');
         this.menulinks = this.menu.find('a.menulink');
         this.menuButton = $('#menu-button');
         this.topMenu = $('#top-menu');
         this.topMenuButton = $('#topmenu-button');
-        this.expandedMenuitems = this.expandedMenuitems||[];
+        this.expandedMenuitems = this.expandedMenuitems || [];
 
         this.menuButton.addClass('fix-topmenu');
         this.menuWrapper.addClass('fix-topmenu');
         this.menuWrapper.removeClass('Animated05');
         this.leftMenuMode = false;
-       
+
         this.bindEvents();
     },
-   
-    bindEvents: function() {
+    bindEvents: function () {
         var $this = this;
-       
-        this.menuButton.on('click',function() {
+
+        this.menuButton.on('click', function () {
             $this.menuButtonClick = true;
-           
-            if($this.menuWrapper.hasClass('active-menu')){
+
+            if ($this.menuWrapper.hasClass('active-menu')) {
                 $this.menuButton.removeClass('active-menu');
                 $this.menuWrapper.removeClass('active-menu');
             }
-            else{
+            else {
                 $this.menuButton.addClass('active-menu');
                 $this.menuWrapper.addClass('active-menu');
             }
         });
-       
-        this.menulinks.on('click',function(e) {
+
+        this.menulinks.on('click', function (e) {
             var menuitemLink = $(this),
-            menuitem = menuitemLink.parent();
-           
-            if(menuitem.hasClass('active-menu-parent')) {
+                    menuitem = menuitemLink.parent();
+
+            if (menuitem.hasClass('active-menu-parent')) {
                 menuitem.removeClass('active-menu-parent');
                 menuitemLink.removeClass('active-menu').next('ul').removeClass('active-menu');
                 $this.removeMenuitem(menuitem.attr('id'));
             }
             else {
                 var activeSibling = menuitem.siblings('.active-menu-parent');
-                if(activeSibling.length) {
+                if (activeSibling.length) {
                     activeSibling.removeClass('active-menu-parent');
                     $this.removeMenuitem(activeSibling.attr('id'));
 
                     activeSibling.find('ul.active-menu,a.active-menu').removeClass('active-menu');
-                    activeSibling.find('li.active-menu-parent').each(function() {
+                    activeSibling.find('li.active-menu-parent').each(function () {
                         var menuitem = $(this);
                         menuitem.removeClass('active-menu-parent');
                         $this.removeMenuitem(menuitem.attr('id'));
@@ -84,7 +83,7 @@ var Adamantium = {
                 $this.addMenuitem(menuitem.attr('id'));
             }
 
-            if(menuitemLink.next().is('ul')) {
+            if (menuitemLink.next().is('ul')) {
                 e.preventDefault();
             }
             else {
@@ -93,32 +92,52 @@ var Adamantium = {
             }
 
             $this.saveMenuState();
-           
-            if($this.perfectScrollbar) {
+
+            if ($this.perfectScrollbar) {
                 $this.menuWrapper.perfectScrollbar("update");
             }
         })
-        .clickOff(function(e) {
-            if($this.menuButtonClick) {
-                $this.menuButtonClick = false;
-            } else {
-                var activeMenuParent = $this.menu.find('.active-menu-parent'),
-                    activeMenu = activeMenuParent.find('.active-menu');
-                   
-                activeMenuParent.removeClass('active-menu-parent');
-                activeMenu.removeClass('active-menu');
-               
-                if($this.leftMenuMode) {
-                    $this.menuButton.removeClass('active-menu'); // added for closing on Mobile
-                    $this.menuWrapper.removeClass('active-menu'); // added for closing on Mobile
-                }
-            }
-        });
-       
-        this.topMenuButton.on('click',function() {
+                .on('mouseenter', function () {
+                    if ($this.menuWrapper.hasClass('layout-menu-cover-left')) {
+                        return;
+                    }
+
+                    var menuitemLink = $(this),
+                            menuitem = menuitemLink.parent(),
+                            isTopMenu = document.documentElement.clientWidth > 960 && document.documentElement.clientHeight > 560;
+
+                    if ($this.menubarActive && isTopMenu && menuitem.closest('ul').hasClass('layout-menu') && !menuitem.hasClass('active-menu-parent')) {
+                        var prevMenuLink = menuitem.parent().find('a.active-menu');
+
+                        prevMenuLink.removeClass('active-menu').next('ul.active-menu').removeClass('active-menu');
+                        prevMenuLink.closest('li').removeClass('active-menu-parent');
+                        $this.removeMenuitem(prevMenuLink.closest('li').attr('id'));
+                        menuitem.addClass('active-menu-parent');
+                        menuitemLink.addClass('active-menu').next('ul[role="menu"]').addClass('active-menu');
+                    }
+
+                })
+                .clickOff(function (e) {
+                    if ($this.menuButtonClick) {
+                        $this.menuButtonClick = false;
+                    } else {
+                        var activeMenuParent = $this.menu.find('.active-menu-parent'),
+                                activeMenu = activeMenuParent.find('.active-menu');
+
+                        activeMenuParent.removeClass('active-menu-parent');
+                        activeMenu.removeClass('active-menu');
+
+                        if ($this.leftMenuMode) {
+                            $this.menuButton.removeClass('active-menu'); // added for closing on Mobile
+                            $this.menuWrapper.removeClass('active-menu'); // added for closing on Mobile
+                        }
+                    }
+                });
+
+        this.topMenuButton.on('click', function () {
             $this.topMenuButtonClick = true;
-           
-            if($this.topMenu.hasClass('active-menu')){
+
+            if ($this.topMenu.hasClass('active-menu')) {
                 $this.topMenuButton.removeClass('active-menu');
                 $this.topMenu.removeClass('active-menu');
             }
@@ -127,14 +146,14 @@ var Adamantium = {
                 $this.topMenu.addClass('active-menu');
             }
         });
-       
+
         //topbar
-        this.topMenu.find('a').click(function(e) {
+        this.topMenu.find('a').click(function (e) {
             var link = $(this),
-            submenu = link.next('ul');
-           
-            if(submenu.length) {
-                if(submenu.hasClass('active-menu')) {
+                    submenu = link.next('ul');
+
+            if (submenu.length) {
+                if (submenu.hasClass('active-menu')) {
                     submenu.removeClass('active-menu');
                     link.removeClass('active-menu');
                     $this.topMenuActive = false;
@@ -146,29 +165,29 @@ var Adamantium = {
                 }
             }
             else {
-                if($(e.target).is(':not(:input)')) {
+                if ($(e.target).is(':not(:input)')) {
                     $this.topMenu.find('.active-menu').removeClass('active-menu');
                     $this.topMenuActive = false;
                 }
             }
         })
-        .on('mouseenter', function() {
-            var link = $(this);
-   
-            if(link.parent().parent().is($this.topMenu)&&$this.topMenuActive&&document.documentElement.clientWidth > 960) {
-                var submenu = link.next('ul');
-               
-                $this.topMenu.find('.active-menu').removeClass('active-menu');
-                link.addClass('active-menu');
-               
-                if(submenu.length) {
-                    submenu.addClass('active-menu');
-                }
-            }
-        });
-       
-        this.topMenu.find('li').clickOff(function() {
-            if($this.topMenuButtonClick) {
+                .on('mouseenter', function () {
+                    var link = $(this);
+
+                    if (link.parent().parent().is($this.topMenu) && $this.topMenuActive && document.documentElement.clientWidth > 960) {
+                        var submenu = link.next('ul');
+
+                        $this.topMenu.find('.active-menu').removeClass('active-menu');
+                        link.addClass('active-menu');
+
+                        if (submenu.length) {
+                            submenu.addClass('active-menu');
+                        }
+                    }
+                });
+
+        this.topMenu.find('li').clickOff(function () {
+            if ($this.topMenuButtonClick) {
                 $this.topMenuButtonClick = false;
             }
             else {
@@ -176,35 +195,35 @@ var Adamantium = {
                 $this.topMenu.removeClass('active-menu');
                 $this.topMenu.find('.active-menu').removeClass('active-menu');
                 $this.topMenuActive = false;
-            }   
+            }
         });
-       
-        if(!this.isMobile()) {
-            if(this.menuWrapper.hasClass('layout-menu-cover-left')) {
+
+        if (!this.isMobile()) {
+            if (this.menuWrapper.hasClass('layout-menu-cover-left')) {
                 this.perfectScrollbar = this.menuWrapper.perfectScrollbar({suppressScrollX: true});
             }
             else {
                 var win = $(window);
-                if(win.width() <= 960 || win.height() <= 560) {
+                if (win.width() <= 960 || win.height() <= 560) {
                     this.perfectScrollbar = this.menuWrapper.perfectScrollbar({suppressScrollX: true});
-                   
+
                     $this.menuButton.removeClass('active-menu'); // added for closing on Mobile
                     $this.menuWrapper.removeClass('active-menu'); // added for closing on Mobile
                     $this.leftMenuMode = true; // added for clickOff on Mobile
                 }
-               
-                win.on('resize', function() {
-                    if(win.width() <= 960 || win.height() <= 560) {
-                        if(!$this.perfectScrollbar) {
+
+                win.on('resize', function () {
+                    if (win.width() <= 960 || win.height() <= 560) {
+                        if (!$this.perfectScrollbar) {
                             $this.perfectScrollbar = $this.menuWrapper.perfectScrollbar({suppressScrollX: true});
                         }
-                       
+
                         $this.menuButton.removeClass('active-menu'); // added for closing on Mobile
                         $this.menuWrapper.removeClass('active-menu'); // added for closing on Mobile
                         $this.leftMenuMode = true; //added for clickOff on Mobile
                     }
                     else {
-                        if($this.perfectScrollbar)  {
+                        if ($this.perfectScrollbar) {
                             $this.perfectScrollbar.perfectScrollbar('destroy');
                             $this.perfectScrollbar = null;
                         }
@@ -212,21 +231,21 @@ var Adamantium = {
                 });
             }
         }
-        else {   
+        else {
             this.menuWrapper.removeClass('Animated05');
-           
-            if(this.menuWrapper.hasClass('layout-menu-cover-left')) {
+
+            if (this.menuWrapper.hasClass('layout-menu-cover-left')) {
                 this.menuWrapper.css('overflow-y', 'auto');
             }
             else {
                 var win = $(window);
-                if(win.width() <= 960 || win.height() <= 560) {
+                if (win.width() <= 960 || win.height() <= 560) {
                     this.menuWrapper.css('overflow-y', 'auto');
                     $this.leftMenuMode = true; //added for clickOff on Mobile
                 }
-           
-                win.on('resize', function() {
-                    if(win.width() <= 960 || win.height() <= 560) {
+
+                win.on('resize', function () {
+                    if (win.width() <= 960 || win.height() <= 560) {
                         $this.menuWrapper.css('overflow-y', 'auto');
                         $this.leftMenuMode = true; //added for clickOff on Mobile
                     }
@@ -234,52 +253,56 @@ var Adamantium = {
                         $this.menuWrapper.css('overflow-y', 'visible');
                     }
                 });
-            } 
+            }
         }
     },
-   
-    removeMenuitem: function(id) {       
+    removeMenuitem: function (id) {
         /* Remove stateful */
     },
-   
-    addMenuitem: function(id) {
+    addMenuitem: function (id) {
         /* Remove stateful */
     },
-   
-    saveMenuState: function() {
+    saveMenuState: function () {
         /* Remove stateful */
     },
-   
-    clearMenuState: function() {
+    clearMenuState: function () {
         /* Remove stateful */
     },
-   
-    restoreMenuState: function() {
+    restoreMenuState: function () {
         /* Remove stateful */
     },
-   
-    isMobile: function() {
+    isMobile: function () {
         return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent));
     },
-   
-    changeMenuLayout: function(orientation) {
+    changeMenuLayout: function (orientation) {
         var $this = this;
-        if(orientation === 'top') {
+        if (orientation === 'top') {
             this.menuWrapper.addClass('layout-menu-cover-top').removeClass('layout-menu-cover-left');
         }
-        else if(orientation === 'left') {
+        else if (orientation === 'left') {
             this.menuWrapper.removeClass('Animated05 layout-menu-cover-top').addClass('layout-menu-cover-left');
-            if(!$this.isMobile()) {
-                setTimeout(function() {
+            if (!$this.isMobile()) {
+                setTimeout(function () {
                     $this.menuWrapper.addClass('Animated05');
                 }, 100);
-               
+
                 this.perfectScrollbar = this.menuWrapper.perfectScrollbar({suppressScrollX: true});
             }
         }
     }
 };
 
-$(function() {
-   Adamantium.init();
+$(function () {
+    Adamantium.init();
+});
+
+/* Issue #924 is fixed for 5.3+ and 6.0. (compatibility with 5.3) */
+PrimeFaces.widget.Dialog = PrimeFaces.widget.Dialog.extend({
+    enableModality: function () {
+        this._super();
+        $(document.body).children(this.jqId + '_modal').addClass('ui-dialog-mask');
+    },
+    syncWindowResize: function () {
+
+    }
 });

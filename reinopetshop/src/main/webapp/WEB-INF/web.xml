@@ -13,16 +13,16 @@
     </filter-mapping>-->
     
     <!-- Spring (Jpa Support) - OpenEntityManagerInViewFilter -->
-    <filter>
-        <filter-name>oemiv</filter-name>
+<!--    <filter>
+        <filter-name>openEntityManager</filter-name>
         <filter-class>
             org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
         </filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>oemiv</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+        <filter-name>openEntityManager</filter-name>
+        <url-pattern>*.reinopet</url-pattern>
+    </filter-mapping>-->
      
     <!-- ************* LISTENER ************* -->
     <!--    <listener>
@@ -108,10 +108,10 @@
         <param-value>adamantium</param-value>
     </context-param>
     
-    <!--    <context-param>
+    <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/primefaces-adamantium.taglib.xml</param-value>
-    </context-param>-->
+    </context-param>
     
     <context-param>
         <param-name>primefaces.TRANSFORM_METADATA</param-name>

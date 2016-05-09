@@ -133,6 +133,14 @@ public class AgendasBean extends ReinoPetController {
             return tratarExcecao(e);
         }
     }
+    
+    public String excluir() {
+        try {
+            return "";
+        } catch (Exception ex) {
+            return tratarExcecao(ex);
+        }
+    }
 
     public String excluir(ActionEvent actionEvent) {
         try {
