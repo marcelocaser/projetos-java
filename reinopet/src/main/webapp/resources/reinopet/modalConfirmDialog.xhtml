@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <h:body>
+        <composite:interface>
+            <composite:attribute name="mensagem" required="true" />
+            <composite:attribute name="update" required="true" />
+            <composite:attribute name="managedBean"
+                                 method-signature="java.lang.String action()" required="false" />
+        </composite:interface>
+
+        <composite:implementation>
+            <div class="Container100">
+                <div class="ContainerIndent">
+                    <p:confirmDialog message="#{cc.attrs.mensagem}" closeOnEscape="true"
+                                     closable="false" header="#{msg.confirmar}"
+                                     widgetVar="confirmacao">
+
+                        <p:commandButton id="confirmSim" value="#{msg.sim}" styleClass="ui-confirmdialog-yes GreenButton"
+                                         action="#{cc.attrs.managedBean}" icon="ui-icon-check fa fa-check Fs14 White"
+                                         onclick="PF('confirmacao').hide()" update="#{cc.attrs.update}"/>
+                        <p:commandButton id="confirmNao" value="#{msg.nao}" styleClass="ui-confirmdialog-no RedButton"
+                                         oncomplete="PF('confirmacao').hide()" icon="ui-icon-close fa fa-close Fs14 White" />
+                    </p:confirmDialog>
+                </div>
+            </div>
+        </composite:implementation>
+    </h:body>
+</html>

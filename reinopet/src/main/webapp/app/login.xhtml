@@ -14,28 +14,41 @@
         </f:facet>
         <link rel="shortcut icon"
               href="${request.contextPath}/resources/reinopetshop-layout/favicon.ico" />
-        <title>#{msg.reinoPet}</title>
+        <title>ReinoPet</title>
         <ui:insert name="head" />
     </h:head>
 
     <h:body>
 
-        <div class="Container100 BordBottom GrayBack loginback">
+        <p:growl id="growl" showDetail="true" showSummary="true" sticky="false" autoUpdate="true" />
+
+        <p:dialog modal="true" widgetVar="statusDialog" draggable="false"
+                  closable="false" resizable="false" showHeader="false">
+            <center>
+                <p:graphicImage name="images/preloader.gif" library="adamantium-layout"/>
+            </center>
+        </p:dialog>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <div class="Container100 BordBottom BlueBack loginback">
             <div class="EmptyBox50"></div>
 
             <div class="Wid90 MarAuto">
                 <div class="Wid30 DispBlock MarAuto WidAutoOnMobile">
-                    <div class="Card TexAlCenter" style="margin-bottom:-100px;">
+                    <div class="Card TexAlCenter" style="margin-bottom:-650px; background: url('#{resource['reinopetshop-layout/images/dot.png']}') repeat;">
                         <div class="Card SoftGrayBack">
+                            <h:graphicImage name="images/logo-black.svg" library="reinopetshop-layout" style="max-width:180px;"/>
                             <div class="EmptyBox20"></div>
-                            <i class="icon-patch DispBlock Fs100 Red"></i>
-                            <div class="EmptyBox40"></div>
-                            <div class="Wid80 Fs30 FontAdamantiumBold Red MarAuto">#{msg.falhaNoSistema}</div>
-                            <div class="EmptyBox10"></div>
-                            <div class="Wid80 Fs18 FontAdamantiumRegular Fnone MarAuto">#{msg.falhaNoSistemaDescricao}</div>
+                            <h:form prependId="false">
+                                <p:focus for="E-mail" />
+                                <p:inputText id="E-mail" placeholder="E-mail" value="#{loginBean.email}" required="true" autocomplete="off" styleClass="Wid90 TexAlCenter"/>
+                                <div class="EmptyBox10"></div>
+                                <p:inputText id="Senha" type="password" placeholder="Senha" value="#{loginBean.senha}" required="true" styleClass="Wid90 TexAlCenter"/>
+                                <div class="EmptyBox30"></div>
+                                <p:commandButton value="Entrar no sistema " icon="fa fa-sign-in" action="#{loginBean.login()}" styleClass="Wid100 BlueButton"/>
+                            </h:form>
                         </div>
-                        <div class="Separator"></div>
-                        <p:button value="#{msg.voltarAoPainel}" icon="fa fa-sign-in" href="app/dashboard.reinopet" styleClass="RedButton"/>
                     </div>
                 </div>
             </div>
