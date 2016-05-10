@@ -1,0 +1,4 @@
+br\com\portalweb\web\controller\bean\WebMenuBean.class
+br\com\portalweb\business\controller\WebServicesController.class
+br\com\portalweb\web\controller\IMEI.class
+br\com\portalweb\web\controller\bean\IMEIBean.class
