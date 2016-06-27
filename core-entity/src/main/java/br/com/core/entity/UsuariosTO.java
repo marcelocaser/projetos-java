@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -46,21 +48,21 @@ public class UsuariosTO implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 60)
-    @Column(nullable = false, length = 60)
-    private String nome;
+    @Size(min = 1, max = 100)
+    @Column(nullable = false, length = 100)
+    private String nomeRazaoFantasia;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
     private Character tipoCadastro;
-    @Size(max = 11)
-    @Column(length = 11)
-    private String cpf;
     @Size(max = 14)
     @Column(length = 14)
+    private String cpf;
+    @Size(max = 18)
+    @Column(length = 18)
     private String cnpj;
-    @Size(max = 9)
-    @Column(length = 9)
+    @Size(max = 14)
+    @Column(length = 14)
     private String telefone;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
@@ -86,6 +88,11 @@ public class UsuariosTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
+    @JoinColumn(name = "idPessoa", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private PessoasTO idPessoa;
+    @OneToMany(mappedBy = "idMenuUsuario", fetch = FetchType.LAZY)
+    private List<MenusUsuariosTO> menusUsuariosTOList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarios", fetch = FetchType.LAZY)
     private List<ConsultasTO> consultasTOList;
 
@@ -96,9 +103,9 @@ public class UsuariosTO implements Serializable {
         this.id = id;
     }
 
-    public UsuariosTO(Integer id, String nome, Character tipoCadastro, String email, String senha, String chave, Character status) {
+    public UsuariosTO(Integer id, String nomeRazaoFantasia, Character tipoCadastro, String email, String senha, String chave, Character status) {
         this.id = id;
-        this.nome = nome;
+        this.nomeRazaoFantasia = nomeRazaoFantasia;
         this.tipoCadastro = tipoCadastro;
         this.email = email;
         this.senha = senha;
@@ -114,12 +121,12 @@ public class UsuariosTO implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeRazaoFantasia() {
+        return nomeRazaoFantasia;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeRazaoFantasia(String nomeRazaoFantasia) {
+        this.nomeRazaoFantasia = nomeRazaoFantasia;
     }
 
     public Character getTipoCadastro() {
@@ -200,6 +207,23 @@ public class UsuariosTO implements Serializable {
 
     public void setExclusao(Date exclusao) {
         this.exclusao = exclusao;
+    }
+
+    public PessoasTO getIdPessoa() {
+        return idPessoa;
+    }
+
+    public void setIdPessoa(PessoasTO idPessoa) {
+        this.idPessoa = idPessoa;
+    }
+
+    @XmlTransient
+    public List<MenusUsuariosTO> getMenusUsuariosTOList() {
+        return menusUsuariosTOList;
+    }
+
+    public void setMenusUsuariosTOList(List<MenusUsuariosTO> menusUsuariosTOList) {
+        this.menusUsuariosTOList = menusUsuariosTOList;
     }
 
     @XmlTransient

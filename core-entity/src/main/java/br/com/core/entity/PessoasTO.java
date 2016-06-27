@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -93,6 +94,8 @@ public class PessoasTO implements Serializable {
     private List<EnderecosComplementosTO> enderecosComplementosTOList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pessoasTO", fetch = FetchType.LAZY)
     private DependentesTO dependentesTO;
+    @OneToMany(mappedBy = "idPessoa", fetch = FetchType.LAZY)
+    private List<UsuariosTO> usuariosTOList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pessoasTO", fetch = FetchType.LAZY)
     private ClientesTO clientesTO;
 
@@ -252,6 +255,15 @@ public class PessoasTO implements Serializable {
 
     public void setDependentesTO(DependentesTO dependentesTO) {
         this.dependentesTO = dependentesTO;
+    }
+
+    @XmlTransient
+    public List<UsuariosTO> getUsuariosTOList() {
+        return usuariosTOList;
+    }
+
+    public void setUsuariosTOList(List<UsuariosTO> usuariosTOList) {
+        this.usuariosTOList = usuariosTOList;
     }
 
     public ClientesTO getClientesTO() {
