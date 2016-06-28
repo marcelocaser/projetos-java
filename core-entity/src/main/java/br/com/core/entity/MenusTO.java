@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,7 +25,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author marce
  */
 @Entity
-@Table(name = "menus", catalog = "bdg", schema = "")
+@Table(name = "menus", catalog = "bdg", schema = "", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"icone"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MenusTO.findAll", query = "SELECT m FROM MenusTO m")})
