@@ -6,13 +6,14 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "menus_usuarios", catalog = "bdg", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"idMenuPai", "idMenuUsuario", "ativo", "ordem"})})
+    @UniqueConstraint(columnNames = {"idMenu", "idMenuPai", "idMenuUsuario", "ativo"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MenusUsuariosTO.findAll", query = "SELECT m FROM MenusUsuariosTO m")})
@@ -33,10 +34,10 @@ public class MenusUsuariosTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(nullable = false)
-    private Integer idMenu;
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
@@ -45,9 +46,9 @@ public class MenusUsuariosTO implements Serializable {
     @NotNull
     @Column(nullable = false)
     private int ordem;
-    @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    private MenusTO menusTO;
+    @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private MenusTO idMenu;
     @OneToMany(mappedBy = "idMenuPai", fetch = FetchType.LAZY)
     private List<MenusUsuariosTO> menusUsuariosTOList;
     @JoinColumn(name = "idMenuPai", referencedColumnName = "idMenu")
@@ -60,22 +61,22 @@ public class MenusUsuariosTO implements Serializable {
     public MenusUsuariosTO() {
     }
 
-    public MenusUsuariosTO(Integer idMenu) {
-        this.idMenu = idMenu;
+    public MenusUsuariosTO(Integer id) {
+        this.id = id;
     }
 
-    public MenusUsuariosTO(Integer idMenu, Character ativo, int ordem) {
-        this.idMenu = idMenu;
+    public MenusUsuariosTO(Integer id, Character ativo, int ordem) {
+        this.id = id;
         this.ativo = ativo;
         this.ordem = ordem;
     }
 
-    public Integer getIdMenu() {
-        return idMenu;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdMenu(Integer idMenu) {
-        this.idMenu = idMenu;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Character getAtivo() {
@@ -94,12 +95,12 @@ public class MenusUsuariosTO implements Serializable {
         this.ordem = ordem;
     }
 
-    public MenusTO getMenusTO() {
-        return menusTO;
+    public MenusTO getIdMenu() {
+        return idMenu;
     }
 
-    public void setMenusTO(MenusTO menusTO) {
-        this.menusTO = menusTO;
+    public void setIdMenu(MenusTO idMenu) {
+        this.idMenu = idMenu;
     }
 
     @XmlTransient
@@ -130,7 +131,7 @@ public class MenusUsuariosTO implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idMenu != null ? idMenu.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -141,7 +142,7 @@ public class MenusUsuariosTO implements Serializable {
             return false;
         }
         MenusUsuariosTO other = (MenusUsuariosTO) object;
-        if ((this.idMenu == null && other.idMenu != null) || (this.idMenu != null && !this.idMenu.equals(other.idMenu))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -149,7 +150,7 @@ public class MenusUsuariosTO implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.core.entity.MenusUsuariosTO[ idMenu=" + idMenu + " ]";
+        return "br.com.core.entity.MenusUsuariosTO[ id=" + id + " ]";
     }
 
 }

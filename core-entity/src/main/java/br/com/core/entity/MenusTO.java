@@ -1,6 +1,7 @@
 package br.com.core.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,11 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -49,8 +51,8 @@ public class MenusTO implements Serializable {
     @Column(length = 45)
     private String link;
     private Character tipo;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "menusTO", fetch = FetchType.LAZY)
-    private MenusUsuariosTO menusUsuariosTO;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMenu", fetch = FetchType.LAZY)
+    private List<MenusUsuariosTO> menusUsuariosTOList;
 
     public MenusTO() {
     }
@@ -112,12 +114,13 @@ public class MenusTO implements Serializable {
         this.tipo = tipo;
     }
 
-    public MenusUsuariosTO getMenusUsuariosTO() {
-        return menusUsuariosTO;
+    @XmlTransient
+    public List<MenusUsuariosTO> getMenusUsuariosTOList() {
+        return menusUsuariosTOList;
     }
 
-    public void setMenusUsuariosTO(MenusUsuariosTO menusUsuariosTO) {
-        this.menusUsuariosTO = menusUsuariosTO;
+    public void setMenusUsuariosTOList(List<MenusUsuariosTO> menusUsuariosTOList) {
+        this.menusUsuariosTOList = menusUsuariosTOList;
     }
 
     @Override
