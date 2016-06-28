@@ -61,8 +61,8 @@ public class UsuariosTO implements Serializable {
     @Size(max = 18)
     @Column(length = 18)
     private String cnpj;
-    @Size(max = 14)
-    @Column(length = 14)
+    @Size(max = 16)
+    @Column(length = 16)
     private String telefone;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)

@@ -58,23 +58,23 @@ public class PessoasTO implements Serializable {
     @Size(min = 4, max = 5)
     @Column(length = 5)
     private String aniversario;
-    @Size(min = 10, max = 14)
-    @Column(length = 14)
+    @Size(min = 10, max = 16)
+    @Column(length = 16)
     private String telefoneResidencial;
-    @Size(min = 10, max = 14)
-    @Column(length = 14)
+    @Size(min = 10, max = 16)
+    @Column(length = 16)
     private String telefoneComercial;
-    @Size(min = 10, max = 14)
-    @Column(length = 14)
+    @Size(min = 10, max = 16)
+    @Column(length = 16)
     private String telefoneCelularPessoal;
-    @Size(min = 10, max = 14)
-    @Column(length = 14)
+    @Size(min = 10, max = 16)
+    @Column(length = 16)
     private String telefoneCelularOutro;
-    @Size(min = 10, max = 14)
-    @Column(length = 14)
+    @Size(min = 10, max = 16)
+    @Column(length = 16)
     private String telefoneWhatsAppPessoal;
-    @Size(min = 10, max = 14)
-    @Column(length = 14)
+    @Size(min = 10, max = 16)
+    @Column(length = 16)
     private String telefoneWhatsAppOutro;
     @Size(max = 15)
     @Column(length = 15)
