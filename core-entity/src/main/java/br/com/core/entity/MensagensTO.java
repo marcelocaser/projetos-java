@@ -37,6 +37,11 @@ public class MensagensTO implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 60)
+    @Column(nullable = false, length = 60)
+    private String chave;
+    @Basic(optional = false)
+    @NotNull
     @Lob
     @Size(min = 1, max = 2147483647)
     @Column(nullable = false, length = 2147483647)
@@ -52,8 +57,9 @@ public class MensagensTO implements Serializable {
         this.id = id;
     }
 
-    public MensagensTO(Integer id, String mensagem) {
+    public MensagensTO(Integer id, String chave, String mensagem) {
         this.id = id;
+        this.chave = chave;
         this.mensagem = mensagem;
     }
 
@@ -63,6 +69,14 @@ public class MensagensTO implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getChave() {
+        return chave;
+    }
+
+    public void setChave(String chave) {
+        this.chave = chave;
     }
 
     public String getMensagem() {
