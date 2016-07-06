@@ -58,14 +58,14 @@ public class ClientesTO implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
-    private List<AgendasTO> agendasTOList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
     private List<DependentesTO> dependentesTOList;
-    @OneToMany(mappedBy = "idCliente", fetch = FetchType.LAZY)
-    private List<AnimaisTO> animaisTOList;
     @JoinColumn(name = "id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private PessoasTO pessoasTO;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
+    private List<AgendasTO> agendasTOList;
+    @OneToMany(mappedBy = "idCliente", fetch = FetchType.LAZY)
+    private List<AnimaisTO> animaisTOList;
 
     public ClientesTO() {
     }
@@ -136,6 +136,23 @@ public class ClientesTO implements Serializable {
     }
 
     @XmlTransient
+    public List<DependentesTO> getDependentesTOList() {
+        return dependentesTOList;
+    }
+
+    public void setDependentesTOList(List<DependentesTO> dependentesTOList) {
+        this.dependentesTOList = dependentesTOList;
+    }
+
+    public PessoasTO getPessoasTO() {
+        return pessoasTO;
+    }
+
+    public void setPessoasTO(PessoasTO pessoasTO) {
+        this.pessoasTO = pessoasTO;
+    }
+
+    @XmlTransient
     public List<AgendasTO> getAgendasTOList() {
         return agendasTOList;
     }
@@ -145,29 +162,12 @@ public class ClientesTO implements Serializable {
     }
 
     @XmlTransient
-    public List<DependentesTO> getDependentesTOList() {
-        return dependentesTOList;
-    }
-
-    public void setDependentesTOList(List<DependentesTO> dependentesTOList) {
-        this.dependentesTOList = dependentesTOList;
-    }
-
-    @XmlTransient
     public List<AnimaisTO> getAnimaisTOList() {
         return animaisTOList;
     }
 
     public void setAnimaisTOList(List<AnimaisTO> animaisTOList) {
         this.animaisTOList = animaisTOList;
-    }
-
-    public PessoasTO getPessoasTO() {
-        return pessoasTO;
-    }
-
-    public void setPessoasTO(PessoasTO pessoasTO) {
-        this.pessoasTO = pessoasTO;
     }
 
     @Override

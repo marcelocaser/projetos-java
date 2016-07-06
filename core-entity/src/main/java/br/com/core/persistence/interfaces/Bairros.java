@@ -1,7 +1,6 @@
 package br.com.core.persistence.interfaces;
 
 import br.com.core.entity.BairrosTO;
-import br.com.core.entity.EnderecosTO;
 import java.util.List;
 
 /**

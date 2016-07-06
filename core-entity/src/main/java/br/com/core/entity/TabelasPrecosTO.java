@@ -52,10 +52,10 @@ public class TabelasPrecosTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @OneToMany(mappedBy = "idTabelaPreco", fetch = FetchType.LAZY)
-    private List<ServicosTO> servicosTOList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTabelaPreco", fetch = FetchType.LAZY)
     private List<ServicosCategoriasTO> servicosCategoriasTOList;
+    @OneToMany(mappedBy = "idTabelaPreco", fetch = FetchType.LAZY)
+    private List<ServicosTO> servicosTOList;
 
     public TabelasPrecosTO() {
     }
@@ -118,21 +118,21 @@ public class TabelasPrecosTO implements Serializable {
     }
 
     @XmlTransient
-    public List<ServicosTO> getServicosTOList() {
-        return servicosTOList;
-    }
-
-    public void setServicosTOList(List<ServicosTO> servicosTOList) {
-        this.servicosTOList = servicosTOList;
-    }
-
-    @XmlTransient
     public List<ServicosCategoriasTO> getServicosCategoriasTOList() {
         return servicosCategoriasTOList;
     }
 
     public void setServicosCategoriasTOList(List<ServicosCategoriasTO> servicosCategoriasTOList) {
         this.servicosCategoriasTOList = servicosCategoriasTOList;
+    }
+
+    @XmlTransient
+    public List<ServicosTO> getServicosTOList() {
+        return servicosTOList;
+    }
+
+    public void setServicosTOList(List<ServicosTO> servicosTOList) {
+        this.servicosTOList = servicosTOList;
     }
 
     @Override

@@ -19,13 +19,32 @@ public class UsuariosBO {
 
     @Autowired
     Usuarios persistencia;
-    
-    public void alterar(UsuariosTO usuariosTO) {
+
+    public void alterar(UsuariosTO usuariosTO, Boolean isNovaChave) throws NegocioException  {
+        antesDeAlterar(usuariosTO);
+        if (isNovaChave) {
+            usuariosTO = gerarChaveAcesso(usuariosTO);
+        }
+        usuariosTO = gerarSenhaBase64(usuariosTO);
         this.persistencia.alterar(usuariosTO);
     }
 
+    private void antesDeAlterar(UsuariosTO usuariosTO) {
+        usuariosTO.setAlteracao(new Date());
+    }
+
+    private void antesDeExcluir(UsuariosTO usuariosTO) {
+        usuariosTO.setExclusao(new Date());
+        usuariosTO.setStatus(Usuarios.EXCLUIDO);
+    }
+
+    public UsuariosTO consultar(UsuariosTO usuariosTO) {
+        return this.persistencia.consultar(usuariosTO);
+    }
+
     public void excluir(UsuariosTO usuariosTO) {
-        this.persistencia.excluir(usuariosTO);
+        antesDeExcluir(usuariosTO);
+        this.persistencia.alterar(usuariosTO);
     }
 
     public UsuariosTO gerarChaveAcesso(UsuariosTO usuariosTO) {
@@ -48,16 +67,17 @@ public class UsuariosBO {
     }
 
     public void incluir(UsuariosTO usuariosTO) throws NegocioException {
-        usuariosTO.setCpf(usuariosTO.getCpf() != null ? usuariosTO.getCpf().replaceAll("[.-]", "") : null);
-        usuariosTO.setCnpj(usuariosTO.getCnpj() != null ? usuariosTO.getCnpj().replaceAll("./-", "") : null);
-        usuariosTO.setTelefone(usuariosTO.getTelefone().replaceAll("[()-]", ""));
+        usuariosTO.setStatus(Usuarios.ATIVO);
         usuariosTO = gerarChaveAcesso(usuariosTO);
         usuariosTO = gerarSenhaBase64(usuariosTO);
+        UsuariosTO usuario = new UsuariosTO();
+            usuario.setCpf(usuariosTO.getCpf());
+            usuario.setCnpj(usuariosTO.getCnpj());
+            usuario = this.consultar(usuario);
+            if (usuario != null && usuario.getId() != null) {
+                throw new NegocioException("usuariosJaCadastrado");
+            }
         this.persistencia.incluir(usuariosTO);
-    }
-
-    public UsuariosTO consultar(UsuariosTO usuariosTO) {
-        return this.persistencia.consultar(usuariosTO);
     }
 
     public boolean isChaveDeAcessoValida(String chave) {
@@ -74,6 +94,10 @@ public class UsuariosBO {
 
     public List<UsuariosTO> listar(UsuariosTO usuariosTO) {
         return this.persistencia.listar(usuariosTO);
+    }
+    
+    public List<UsuariosTO> listarUsuarios() {
+        return this.persistencia.listarUsuarios();
     }
 
 }

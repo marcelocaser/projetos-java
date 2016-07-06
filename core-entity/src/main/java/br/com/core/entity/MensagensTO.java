@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,7 +24,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author marce
  */
 @Entity
-@Table(name = "mensagens", catalog = "bdg", schema = "")
+@Table(name = "mensagens", catalog = "bdg", schema = "", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"chave"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MensagensTO.findAll", query = "SELECT m FROM MensagensTO m")})
@@ -46,8 +48,11 @@ public class MensagensTO implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(nullable = false, length = 2147483647)
     private String mensagem;
-    @JoinColumn(name = "idIdioma", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idCategoria", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private MensagensCategoriasTO idCategoria;
+    @JoinColumn(name = "idIdioma", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private IdiomasTO idIdioma;
 
     public MensagensTO() {
@@ -85,6 +90,14 @@ public class MensagensTO implements Serializable {
 
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
+    }
+
+    public MensagensCategoriasTO getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(MensagensCategoriasTO idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     public IdiomasTO getIdIdioma() {

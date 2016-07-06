@@ -3,6 +3,7 @@ package br.com.core.entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,7 +46,7 @@ public class IdiomasTO implements Serializable {
     @Size(min = 1, max = 5)
     @Column(nullable = false, length = 5)
     private String local;
-    @OneToMany(mappedBy = "idIdioma", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idIdioma", fetch = FetchType.LAZY)
     private List<MensagensTO> mensagensTOList;
 
     public IdiomasTO() {
