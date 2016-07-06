@@ -18,17 +18,12 @@
         <dependency>
             <groupId>org.primefaces.themes</groupId>
             <artifactId>adamantium-theme</artifactId>
-            <version>2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces.extensions</groupId>
-            <artifactId>primefaces-extensions</artifactId>
-            <version>4.0.0</version>
+            <version>2.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>5.3</version>
+            <version>6.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -43,11 +38,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>core-entity-portalweb</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>core-entity-smps</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
