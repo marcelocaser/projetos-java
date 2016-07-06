@@ -133,7 +133,7 @@ public class AgendasBean extends ReinoPetController {
             return tratarExcecao(e);
         }
     }
-    
+
     public String excluir() {
         try {
             return "";
@@ -154,53 +154,6 @@ public class AgendasBean extends ReinoPetController {
     }
 
     public String incluir() {
-        try {
-            return this.consultar();
-        } catch (Exception e) {
-            return tratarExcecao(e);
-        }
-    }
-
-    @PostConstruct
-    public void init() {
-        this.buscarAgendamentosDoMes();
-        this.listarCompromissosDoDia();
-    }
-
-    public String listar() {
-        try {
-            agendasTOs = agendasNegocio.listar();
-            return "";
-        } catch (Exception e) {
-            return tratarExcecao(e);
-        }
-    }
-
-    public void listarUltimosCompromissos() {
-    }
-    
-    public void listarCompromissosDoDia() {
-        Date dataAtual = pessoasBean.getPessoasNegocio().getDataAtual();
-        agendaDoDia = agendasNegocio.listarPorPeriodo(dataAtual, dataAtual);
-    }
-
-    public String novo() {
-        agendasTO = new AgendasTO();
-        clientesBean.novo();
-        animaisBean.novo();
-        servicosBean.novo();
-        repetirEvento = null;
-        mostraBotaoExcluir = false;
-        editarEventoAtual = false;
-        return "/app/agendas/agendasNovo";
-    }
-
-    public void salvar(ActionEvent actionEvent) {
-        this.salvar();
-        this.listarCompromissosDoDia();
-    }
-
-    public String salvar() {
         try {
             agendasTO.setData(scheduleEvent.getEndDate());
             agendasTO.setHora(scheduleEvent.getStartDate());
@@ -235,9 +188,48 @@ public class AgendasBean extends ReinoPetController {
             }
             setMessage("agendasCadastraComSucesso", EnumTipoMensagem.INFO);
             return "";
-        } catch (Exception ex) {
-            return tratarExcecao(ex);
+        } catch (Exception e) {
+            return tratarExcecao(e);
         }
+    }
+
+    @PostConstruct
+    public void init() {
+        this.buscarAgendamentosDoMes();
+        this.listarCompromissosDoDia();
+    }
+
+    public String listar() {
+        try {
+            agendasTOs = agendasNegocio.listar();
+            return "";
+        } catch (Exception e) {
+            return tratarExcecao(e);
+        }
+    }
+
+    public void listarUltimosCompromissos() {
+    }
+
+    public void listarCompromissosDoDia() {
+        Date dataAtual = pessoasBean.getPessoasNegocio().getDataAtual();
+        agendaDoDia = agendasNegocio.listarPorPeriodo(dataAtual, dataAtual);
+    }
+
+    public String novo() {
+        agendasTO = new AgendasTO();
+        clientesBean.novo();
+        animaisBean.novo();
+        servicosBean.novo();
+        repetirEvento = null;
+        mostraBotaoExcluir = false;
+        editarEventoAtual = false;
+        return "/app/agendas/agendasNovo";
+    }
+
+    public void incluir(ActionEvent actionEvent) {
+        this.incluir();
+        this.listarCompromissosDoDia();
     }
 
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */
@@ -294,7 +286,7 @@ public class AgendasBean extends ReinoPetController {
     public void setAgendaDoDia(List<AgendasTO> agendaDoDia) {
         this.agendaDoDia = agendaDoDia;
     }
-    
+
     public String getRepetirEvento() {
         return repetirEvento;
     }

@@ -20,6 +20,8 @@ public class LoginBean extends ReinoPetController {
 
     @Autowired
     UsuariosBO usuariosNegocio;
+    @Autowired
+    MenusBean menusBean;
     UsuariosTO usuariosTO;
     String senha;
     String email;
@@ -33,10 +35,11 @@ public class LoginBean extends ReinoPetController {
             usuariosTO.setSenha(CriptografiaUtil.encryptBase64(senha));
             usuariosTO = usuariosNegocio.consultar(usuariosTO);
             if (usuariosTO == null) {
-                setMessage("Usuário ou senha inválido", EnumTipoMensagem.INFO);
+                setMessage("usuariosUsuarioOuSenhaInvalido", EnumTipoMensagem.INFO);
                 return URL_INIT;
             }
             setParamSession(EnumSecurity.USUARIO_LOGADO, usuariosTO);
+            menusBean.geraMenu();
             return URL_DASHBOARD.concat(REDIRECT);
         } catch (Exception ex) {
             return tratarExcecao(ex);
@@ -47,7 +50,7 @@ public class LoginBean extends ReinoPetController {
         try {
             removerAcesso();
         } catch (Exception ex) {
-            setMessage("Erro ao efetuar logout! ", EnumTipoMensagem.ERRO);
+            setMessage("usuariosErroLogout", EnumTipoMensagem.ERRO);
         }
         return URL_LOGIN.concat(REDIRECT);
     }

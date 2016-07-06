@@ -131,7 +131,11 @@ public class EnderecosBean extends ReinoPetController {
 
     public String incluir() {
         try {
-            return this.consultar();
+            for (EnderecosComplementosTO complementosTO : enderecosComplementosTOs) {
+                complementosNegocio.incluir(complementosTO);
+            }
+            enderecosComplementosTOs = null;
+            return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -183,18 +187,6 @@ public class EnderecosBean extends ReinoPetController {
         idCidade = null;
         idEstado = null;
         return "";
-    }
-
-    public String salvar() {
-        try {
-            for (EnderecosComplementosTO complementosTO : enderecosComplementosTOs) {
-                complementosNegocio.incluir(complementosTO);
-            }
-            enderecosComplementosTOs = null;
-            return "";
-        } catch (Exception e) {
-            return tratarExcecao(e);
-        }
     }
 
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */

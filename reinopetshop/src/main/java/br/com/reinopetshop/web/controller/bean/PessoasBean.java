@@ -46,7 +46,8 @@ public class PessoasBean extends ReinoPetController {
 
     public String incluir() {
         try {
-            return this.consultar();
+            this.pessoasNegocio.incluir(pessoasTO);
+            return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -63,15 +64,6 @@ public class PessoasBean extends ReinoPetController {
     public String novo() {
         pessoasTO = new PessoasTO();
         return "";
-    }
-
-    public String salvar() {
-        try {
-            this.pessoasNegocio.incluir(pessoasTO);
-            return null;
-        } catch (Exception e) {
-            return tratarExcecao(e);
-        }
     }
 
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */

@@ -8,7 +8,8 @@
 
     <div class="layout-menu-cover-top Animated05" id="layout-menu-cover">
         <h:form id="menuform">
-            <pm:menu>
+            <pm:menu model="#{menusBean.menuModel}" />
+<!--            <pm:menu>
                 <p:menuitem id="rm_dashboard" value=" #{msg.menuPainel}" icon="icon-home" outcome="/app/dashboard"/>
                 <p:submenu id="rm_reinopet" label=" #{msg.menuPetShop}" icon="fa fa-paw">
                     <p:submenu id="rm_cadastrar" label=" #{msg.menuPetShopCadastar}" icon="fa fa-group">
@@ -35,7 +36,7 @@
                     <p:menuitem id="rm_teamviewer_suporte" value=" #{msg.menuAjudaTeamViewerSuporte}" icon="fa fa-eye"/>
                     <p:menuitem id="rm_sobre" value=" #{msg.menuAjudaSobre}" icon="fa fa-info"/>
                 </p:submenu>
-            </pm:menu>
+            </pm:menu>-->
         </h:form>
 
     </div>

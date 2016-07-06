@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:poue="http://primefaces.org/ui/extensions"
+                xmlns:reinopet="http://xmlns.jcp.org/jsf/composite/reinopet"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="Container100 ui-fluid">
+            <div class="ContainerIndent">
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <div class="EmptyBox10"></div>
+                        <h:outputText class="CardTopic TexAlLeft" value=" #{msg.usuariosConsultar}" />
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <h:form>
+                            <p:menuButton value="#{msg.menuOpcoes}">
+                                <p:menuitem value="#{msg.menuOpcoesEditar}" icon="fa fa-edit Fs15" action="#{usuariosBean.editar()}"/>
+                                <p:menuitem value="#{msg.menuOpcoesRetornar}" icon="fa fa-arrow-left Fs15" action="#{usuariosBean.listar()}"/>
+                            </p:menuButton>
+                        </h:form>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <div class="Card">
+                    <h:form id="frmUsuariosConsultar" prependId="false">
+                        <p:panelGrid id="dadosUsuarios" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel for="id" value="#{msg.id}:" class="ShowOnDesktop" />
+                            <p:inputText id="id" value="#{usuariosBean.usuariosTO.id}" readonly="true" class="ShowOnDesktop idInput"/>
+
+                            <p:outputLabel/>
+                            <p:outputLabel/>
+
+                            <p:outputLabel/>
+                            <p:selectOneRadio id="tipoCadastro" value="#{usuariosBean.usuariosTO.tipoCadastro}" disabled="true" layout="responsive" columns="2" style="margin:30px 0px;">
+                                <f:selectItem itemLabel="#{msg.usuariosPessoaFisica}" itemValue="F"/>
+                                <f:selectItem itemLabel="#{msg.usuariosPessoaJuridica}" itemValue="J"/>
+                            </p:selectOneRadio>
+
+                            <p:outputLabel/>
+                            <p:outputLabel/>
+
+                            <p:outputLabel for="nomeCompleto" value="#{usuariosBean.isCPF ? msg.usuariosNome : msg.usuariosRazaoSocialOuFantasia}"/>
+                            <p:inputText id="nomeCompleto" value="#{usuariosBean.usuariosTO.nomeRazaoFantasia}" readonly="true" />
+
+                            <p:outputLabel for="cpf" value="#{msg.CPF}" rendered="#{usuariosBean.isCPF}"/>
+                            <p:inputMask id="cpf" value="#{usuariosBean.usuariosTO.cpf}" converter="ConverterSemCaracteres" mask="999.999.999-99" readonly="true" rendered="#{usuariosBean.isCPF}"/> 
+
+                            <p:outputLabel for="cnpj" value="#{msg.CNPJ}" rendered="#{!usuariosBean.isCPF}"/>
+                            <p:inputMask id="cnpj" value="#{usuariosBean.usuariosTO.cnpj}" converter="ConverterSemCaracteres" mask="99.999.999/9999-99" readonly="true" rendered="#{!usuariosBean.isCPF}"/>
+
+                            <p:outputLabel for="email" value="#{msg.email}"/>
+                            <p:inputText id="email" value="#{usuariosBean.usuariosTO.email}" styleClass="lowercase" />
+
+                            <span>#{msg.usuariosTelefone} </span><i class="fa fa-phone-square Fs15"></i>
+                            <p:inputMask id="telefone" value="#{usuariosBean.usuariosTO.telefone}" converter="ConverterSemCaracteres" mask="(99) 9 9999-9999" readonly="true"/>
+
+                            <p:outputLabel for="chave" value="#{msg.usuariosToken}"/>
+                            <p:inputText id="chave" value="#{usuariosBean.usuariosTO.chave}" readonly="true" />
+                        </p:panelGrid>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

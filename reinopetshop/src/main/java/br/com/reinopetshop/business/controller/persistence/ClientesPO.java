@@ -64,6 +64,7 @@ public class ClientesPO extends Persistence<ClientesTO> implements Clientes {
      */
     @Override
     public List<ClientesTO> listarClientes() {
+        this.evict();
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<ClientesTO> cq = cb.createQuery(ClientesTO.class);
         Root<ClientesTO> clientes = cq.from(ClientesTO.class);

@@ -18,15 +18,16 @@
     </render-kit>-->
     
     <application>
-        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+        <!--<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>-->
+        <el-resolver>br.com.core.resource.MessageSourcePropertyResolver</el-resolver>
         
         <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
         
-        <resource-bundle>
+        <!--        <resource-bundle>
             <base-name>br.com.reinopetshop.messages</base-name>
             <var>msg</var>
-        </resource-bundle>
-
+        </resource-bundle>-->
+        
         <!-- ** INTERNACIONALIZACAO ** -->
         <locale-config>
             <default-locale>pt</default-locale>
@@ -53,5 +54,10 @@
     <converter>
         <converter-id>ConverterSemCaracteres</converter-id>
         <converter-class>br.com.core.converter.ConverterSemCaracteres</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-id>ConverterCpfCnpj</converter-id>
+        <converter-class>br.com.core.converter.ConverterCpfCnpj</converter-class>
     </converter>
 </faces-config>

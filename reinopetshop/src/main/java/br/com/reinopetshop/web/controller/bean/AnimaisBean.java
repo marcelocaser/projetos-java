@@ -109,7 +109,17 @@ public class AnimaisBean extends ReinoPetController {
 
     public String incluir() {
         try {
-            return this.consultar();
+            for (AnimaisTO animais : animaisTOs) {
+                animais.setIdCliente(clientesBean.getClientesTO());
+                if (racasTO == null) {
+                    racasTO = racasNegocio.consultar(new RacasTO(new Integer(idRacas)));
+                }
+                animais.setIdRaca(racasTO);
+                animaisNegocio.incluir(animais);
+            }
+            selectedDadosComplementares = null;
+            animaisTOs = null;
+            return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -158,24 +168,6 @@ public class AnimaisBean extends ReinoPetController {
         idRacas = null;
         idAnimal = null;
         return "";
-    }
-
-    public String salvar() {
-        try {
-            for (AnimaisTO animais : animaisTOs) {
-                animais.setIdCliente(clientesBean.getClientesTO());
-                if (racasTO == null) {
-                    racasTO = racasNegocio.consultar(new RacasTO(new Integer(idRacas)));
-                }
-                animais.setIdRaca(racasTO);
-                animaisNegocio.incluir(animais);
-            }
-            selectedDadosComplementares = null;
-            animaisTOs = null;
-            return "";
-        } catch (Exception e) {
-            return tratarExcecao(e);
-        }
     }
 
     public void validaDadosComplementares(AnimaisTO animaisTO) {

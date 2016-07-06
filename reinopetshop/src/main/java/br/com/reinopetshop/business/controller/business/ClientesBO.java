@@ -21,10 +21,6 @@ public class ClientesBO {
     @Autowired
     Pessoas pessoasPersistencia;
 
-    private static final Character ATIVO = 'A';
-    private static final Character INATIVO = 'I';
-    private static final Character EXCLUIDO = 'E';
-
     public void alterar(ClientesTO clientesTO) {
         this.persistencia.alterar(clientesTO);
     }
@@ -35,24 +31,23 @@ public class ClientesBO {
 
     private void antesDeExcluir(ClientesTO clientesTO) {
         clientesTO.setExclusao(new Date());
+        clientesTO.setStatus(Clientes.EXCLUIDO);
+    }
+
+    public ClientesTO consultar(ClientesTO clientesTO) {
+        return this.persistencia.consultar(clientesTO);
     }
 
     public void excluir(ClientesTO clientesTO) {
         antesDeExcluir(clientesTO);
-        clientesTO.setStatus(EXCLUIDO);
         this.persistencia.alterar(clientesTO);
-
     }
 
     public void incluir(ClientesTO clientesTO) {
         antesDeAlterar(clientesTO);
         clientesTO.setClienteDesde(new Date());
-        clientesTO.setStatus(ATIVO);
+        clientesTO.setStatus(Clientes.ATIVO);
         this.persistencia.incluir(clientesTO);
-    }
-
-    public ClientesTO consultar(ClientesTO clientesTO) {
-        return this.persistencia.consultar(clientesTO);
     }
 
     public List<ClientesTO> listar(ClientesTO clientesTO) {

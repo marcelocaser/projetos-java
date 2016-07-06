@@ -82,6 +82,20 @@
     <!-- Enable class scheduler -->
     <!--<bean id="scheduler" class="br.com.alcasis.smsway.business.services.Scheduler"></bean>-->
     
+    <!-- Enable Message Source -->
+    <bean id="propertiesMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <property name="basename" value="/WEB-INF/messages/messages"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds" value="0"/>
+        <property name="fallbackToSystemLocale" value="false"/>
+    </bean>
+
+    <!-- Deixar 'id="msg"' como padrão -->
+    <bean id="msg" class="br.com.core.controller.business.MensagensBO">
+        <constructor-arg ref="mensagensPO"/>
+        <property name="parentMessageSource" ref="propertiesMessageSource"/>
+    </bean>
+    
     <!-- Detect @Transactional -->
     <tx:annotation-driven transaction-manager="transactionManager" />
 

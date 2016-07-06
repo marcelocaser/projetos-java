@@ -101,15 +101,6 @@ public class ServicosBean extends ReinoPetController {
         return "";
     }
 
-    public String salvar() {
-        try {
-            //this.servicosNegocio.incluir(servicosTO);
-            return null;
-        } catch (Exception e) {
-            return tratarExcecao(e);
-        }
-    }
-
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */
     public ServicosBO getServicosNegocio() {
         return servicosNegocio;
