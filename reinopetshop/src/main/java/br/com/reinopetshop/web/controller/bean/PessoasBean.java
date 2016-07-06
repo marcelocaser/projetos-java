@@ -46,7 +46,11 @@ public class PessoasBean extends ReinoPetController {
 
     public String incluir() {
         try {
-            this.pessoasNegocio.incluir(pessoasTO);
+            if (pessoasTO != null && pessoasTO.getId() == null) {
+                this.pessoasNegocio.incluir(pessoasTO);
+            } else {
+                this.pessoasNegocio.alterar(pessoasTO);
+            }
             return "";
         } catch (Exception e) {
             return tratarExcecao(e);

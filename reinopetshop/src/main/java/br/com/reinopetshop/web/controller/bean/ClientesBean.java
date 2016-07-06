@@ -82,35 +82,44 @@ public class ClientesBean extends ReinoPetController {
 
     public String incluir() {
         try {
-            // Verifica se CPF não cadastrado!
-            if (clientesTO.getPessoasTO().getCpf() != null) {
-                if (!this.clientesNegocio.isPessoaJaCadastrada(clientesTO)) {
-                    pessoasBean.setPessoasTO(clientesTO.getPessoasTO());
-                    pessoasBean.incluir();
-                    //Verifica se inseriu nova pessoa.
-                    if (pessoasBean.getPessoasTO() != null && pessoasBean.getPessoasTO().getId() != null) {
-                        //Salva o endereço
-                        enderecosBean.adicionarMaisEndereco();
-                        enderecosBean.incluir();
-                        this.clientesNegocio.incluir(clientesTO);
-                        if (clientesTO.getId() != null) {
-                            //Salva animais
-                            animaisBean.adicionarMaisAnimal();
-                            animaisBean.incluir();
+            //Cliente cadastrado. Atulizar os dados.
+            if (clientesTO.getId() != null) {
+                pessoasBean.setPessoasTO(clientesTO.getPessoasTO());
+                pessoasBean.incluir();
+                enderecosBean.incluir();
+                animaisBean.incluir();
+                setMessage("clientesAlteradoComSucesso", EnumTipoMensagem.INFO);
+            } else {
+                // Verifica se CPF não cadastrado!
+                if (clientesTO.getPessoasTO().getCpf() != null) {
+                    if (!this.clientesNegocio.isPessoaJaCadastrada(clientesTO)) {
+                        pessoasBean.setPessoasTO(clientesTO.getPessoasTO());
+                        pessoasBean.incluir();
+                        //Verifica se inseriu nova pessoa.
+                        if (pessoasBean.getPessoasTO() != null && pessoasBean.getPessoasTO().getId() != null) {
+                            //Salva o endereço
+                            enderecosBean.adicionarMaisEndereco();
+                            enderecosBean.incluir();
+                            this.clientesNegocio.incluir(clientesTO);
+                            if (clientesTO.getId() != null) {
+                                //Salva animais
+                                animaisBean.adicionarMaisAnimal();
+                                animaisBean.incluir();
+                            } else {
+                                setMessage("clientesNaoInserido", EnumTipoMensagem.ATENCAO);
+                                return "";
+                            }
                         } else {
-                            setMessage("clientesNaoInserido", EnumTipoMensagem.ATENCAO);
+                            setMessage("clientesPessoaNaoInserida", EnumTipoMensagem.ATENCAO);
                             return "";
                         }
                     } else {
-                        setMessage("clientesPessoaNaoInserida", EnumTipoMensagem.ATENCAO);
+                        setMessage("clientesJaCadastradoComEsseCPF", EnumTipoMensagem.ATENCAO);
                         return "";
                     }
-                } else {
-                    setMessage("clientesJaCadastradoComEsseCPF", EnumTipoMensagem.ATENCAO);
-                    return "";
                 }
+                setMessage("clientesCadastradoComSucesso", EnumTipoMensagem.INFO);
             }
-            setMessage("clientesCadastradoComSucesso", EnumTipoMensagem.INFO);
             this.init();
             return this.consultar();
         } catch (Exception e) {

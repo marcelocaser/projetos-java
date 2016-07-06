@@ -46,7 +46,6 @@ public class EnderecosBean extends ReinoPetController {
     private List<CidadesTO> cidadesTOs;
     private String idEstado;
     private String idCidade;
-    private Boolean mostraBlocoDeEnderecos;
 
     private static final String URL_WS_CEP = "http://localhost:8084/cep/ws/consultar.json?cep=[cep]&chave=[chave]";
 
@@ -59,10 +58,9 @@ public class EnderecosBean extends ReinoPetController {
                     return "";
                 }
             }
-            enderecosComplementosTO.getPessoasTOList().add(pessoasBean.getPessoasTO());
+            //enderecosComplementosTO.getPessoasTOList().add(pessoasBean.getPessoasTO());
             enderecosComplementosTOs.add(enderecosComplementosTO);
             setMessage("enderecosAdicionado", EnumTipoMensagem.INFO);
-            mostraBlocoDeEnderecos = true;
             this.novo();
             return "";
         } catch (Exception e) {
@@ -132,7 +130,11 @@ public class EnderecosBean extends ReinoPetController {
     public String incluir() {
         try {
             for (EnderecosComplementosTO complementosTO : enderecosComplementosTOs) {
-                complementosNegocio.incluir(complementosTO);
+                if (complementosTO.getId() == null) {
+                    complementosNegocio.incluir(complementosTO);
+                } else {
+                    complementosNegocio.alterar(complementosTO);
+                }
             }
             enderecosComplementosTOs = null;
             return "";
@@ -161,11 +163,8 @@ public class EnderecosBean extends ReinoPetController {
 
     public String removerMaisEndereco() {
         try {
-            //enderecosComplementosTOs.removeIf(p -> p.getCep().contains(enderecosSelected.getCep()));
+            enderecosComplementosTOs.removeIf(p -> p.getCep().contains(enderecosComplementosTO.getCep()));
             setMessage("enderecosRemovido", EnumTipoMensagem.INFO);
-            if (enderecosComplementosTOs.isEmpty()) {
-                mostraBlocoDeEnderecos = null;
-            }
             return "";
         } catch (Exception e) {
             return tratarExcecao(e);
@@ -183,7 +182,6 @@ public class EnderecosBean extends ReinoPetController {
         enderecosComplementosTO.setIdEndereco(new EnderecosTO());
         enderecosComplementosTO.getIdEndereco().setIdBairro(new BairrosTO());
         enderecosComplementosTO.getIdEndereco().setIdCidade(new CidadesTO());
-        mostraBlocoDeEnderecos = null;
         idCidade = null;
         idEstado = null;
         return "";
@@ -274,14 +272,6 @@ public class EnderecosBean extends ReinoPetController {
 
     public void setIdCidade(String idCidade) {
         this.idCidade = idCidade;
-    }
-
-    public Boolean getMostraBlocoDeEnderecos() {
-        return mostraBlocoDeEnderecos;
-    }
-
-    public void setMostraBlocoDeEnderecos(Boolean mostraBlocoDeEnderecos) {
-        this.mostraBlocoDeEnderecos = mostraBlocoDeEnderecos;
     }
 
 }

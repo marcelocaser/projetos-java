@@ -9,7 +9,7 @@
 
     <ui:define name="content">
 
-        <reinopet:modalConfirmDialog mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecos" managedBean="#{enderecosBean.removerMaisEndereco()}"/>
+        <reinopet:modalConfirmDialog mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecosAdicionarNovo" managedBean="#{enderecosBean.removerMaisEndereco()}"/>
 
         <div class="EmptyBox10"></div>
         <h:form id="frmClientesNovo" prependId="false">
@@ -93,7 +93,7 @@
                                 <!--</p:fragment>-->
                                 <p:panelGrid id="dadosEndereco" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel for="logradouro" value="#{msg.enderecosLogradouro}"/>
-                                    <p:inputText id="logradouro" value="#{enderecosBean.enderecosComplementosTO.idEndereco.logracompl}" required="true">
+                                    <p:inputText id="logradouro" value="#{enderecosBean.enderecosComplementosTO.idEndereco.logracompl}" required="true" readonly="true">
                                     </p:inputText>
 
                                     <p:outputLabel for="complemento" value="#{msg.enderecosComplemento}"/>
@@ -105,7 +105,7 @@
                                     </p:inputText>
 
                                     <p:outputLabel for="bairro" value="#{msg.enderecosBairro}"/>
-                                    <p:inputText id="bairro" value="#{enderecosBean.enderecosComplementosTO.idEndereco.idBairro.nome}" required="true">
+                                    <p:inputText id="bairro" value="#{enderecosBean.enderecosComplementosTO.idEndereco.idBairro.nome}" required="true" readonly="true">
                                     </p:inputText>
 
                                     <p:outputLabel for="estado" value="#{msg.enderecosEstado}"/>
@@ -125,11 +125,11 @@
                                     <p:inputTextarea id="observacao" value="#{enderecosBean.enderecosComplementosTO.observacao}">
                                     </p:inputTextarea>
 
-                                    <p:commandButton value="#{msg.enderecosAdicionarNovo}" process="consultaCep dadosEndereco" action="#{enderecosBean.adicionarMaisEndereco()}" update="consultaCep dadosEndereco enderecos :frmClientesNovo:fcsCep" icon="fa fa-home" styleClass="BlueTextButton"/>
+                                    <p:commandButton value="#{msg.enderecosAdicionarNovo}" action="#{enderecosBean.adicionarMaisEndereco()}" update="consultaCep dadosEndereco enderecosAdicionarNovo :frmClientesNovo:fcsCep" icon="fa fa-home" styleClass="BlueTextButton"/>
                                 </p:panelGrid>
                             </div>
                         </div>
-                        <p:dataTable id="enderecos" var="enderecos" value="#{enderecosBean.enderecosComplementosTOs}" rowKey="#{enderecos.cep}" rendered="#{not empty enderecosBean.enderecosComplementosTOs}" styleClass="noHeader">
+                        <p:dataTable id="enderecosAdicionarNovo" var="enderecos" value="#{enderecosBean.enderecosComplementosTOs}" rowKey="#{enderecos.cep}" rendered="#{enderecosBean.enderecosComplementosTOs.size() > 0}" styleClass="noHeader">
                             <p:column style="border-style: none;">
                                 <i class="fa fa-envelope Fs15 Blue"></i>
                             </p:column>
@@ -149,7 +149,7 @@
                             <p:column style="border-style: none">
                                 <p:commandButton oncomplete="PF('confirmacao').show()" process="enderecos" icon="fa fa-remove" styleClass="BlueTextButton" title="#{msg.excluirRegistro}">
                                     <f:setPropertyActionListener value="#{enderecos}"
-                                                                 target="#{enderecosBean.enderecosComplementosTO}" />
+                                                                 target="#{enderecosBean.enderecosSelected}" />
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
@@ -235,7 +235,7 @@
                             </p:column>
 
                             <p:column style="border-style: none">
-                                <p:commandButton oncomplete="PF('confirmacao').show()" process="animais" icon="fa fa-remove" styleClass="BlueTextButton" title="#{msg.excluirRegistro}">
+                                <p:commandButton oncomplete="PF('confirmacao').show()" process="enderecos" icon="fa fa-remove" styleClass="BlueTextButton" title="#{msg.excluirRegistro}">
                                     <f:setPropertyActionListener value="#{animais}"
                                                                  target="#{animaisBean.animaisSelected}" />
                                 </p:commandButton>
@@ -257,9 +257,9 @@
                     <div class="Container100 ui-fluid">
                         <div class="ContainerIndent">
                             <div class="Card">
-                                <!--                                <p>Confirme os dados abaixo e em seguida clique em <i class="fa fa-save Fs15 Green"></i> <span class="Green">SALVAR.</span> Para alterar alguma informaÃ§Ã£o clique em <i class="fa fa-arrow-left Fs15 Blue"></i> <span class="Blue">ANTERIOR.</span> <br/><br/>VocÃª ainda pode imprimir clicando no botÃ£o <i class="fa fa-print Fs15 Brown"></i> IMPRIMIR.</p>
-                                                                <h2 class="BigTopic">#{msg.pessoasDadosPessoais}:</h2>
-                                                                <p></p>-->
+<!--                                <p>Confirme os dados abaixo e em seguida clique em <i class="fa fa-save Fs15 Green"></i> <span class="Green">SALVAR.</span> Para alterar alguma informaÃ§Ã£o clique em <i class="fa fa-arrow-left Fs15 Blue"></i> <span class="Blue">ANTERIOR.</span> <br/><br/>VocÃª ainda pode imprimir clicando no botÃ£o <i class="fa fa-print Fs15 Brown"></i> IMPRIMIR.</p>
+                                <h2 class="BigTopic">#{msg.pessoasDadosPessoais}:</h2>
+                                <p></p>-->
                                 <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel value="#{msg.pessoasNomeCompleto}"/>
                                     <p:inputText value="#{clientesBean.clientesTO.pessoasTO.nome}" readonly="true"/>
@@ -382,7 +382,7 @@
                                 </p:panelGrid>
                                 <div class="EmptyBox30"></div>
                                 <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
-                                    <p:commandButton value="#{msg.menuOpcoesSalvar}" action="#{clientesBean.salvar()}" icon="fa fa-save Fs15 White" styleClass="GreenButton"/>
+                                    <p:commandButton value="#{msg.menuOpcoesSalvar}" action="#{clientesBean.incluir()}" icon="fa fa-save Fs15 White" styleClass="GreenButton"/>
                                     <p:commandButton value="#{msg.menuOpcoesImprimir}" disabled="true" icon="fa fa-print Fs15 White" styleClass="BrownButton"/>
                                 </p:panelGrid>
                             </div>                            
