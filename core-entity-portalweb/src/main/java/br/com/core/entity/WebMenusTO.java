@@ -1,7 +1,6 @@
 package br.com.core.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -22,30 +23,30 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author marce
  */
 @Entity
-@Table(name = "WEB_MENU", catalog = "", schema = "VISITACAO")
+@Table(name = "WEB_MENUS", catalog = "", schema = "PORTALWEB")
 @XmlRootElement
-public class WebMenuTO implements Serializable {
-
+@NamedQueries({
+    @NamedQuery(name = "WebMenusTO.findAll", query = "SELECT w FROM WebMenusTO w")})
+public class WebMenusTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(nullable = false, precision = 0, scale = -127)
-    private BigDecimal id;
+    @Column(nullable = false)
+    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
-    @Column(nullable = false, length = 20)
+    @Size(min = 1, max = 50)
+    @Column(nullable = false, length = 50)
     private String nome;
+    @Size(max = 50)
+    @Column(length = 50)
+    private String acao;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(nullable = false, length = 20)
     private String icone;
-    @Size(max = 50)
-    @Column(length = 50)
-    private String acao;
     @Size(max = 20)
     @Column(length = 20)
     private String link;
@@ -54,31 +55,31 @@ public class WebMenuTO implements Serializable {
     @Size(min = 1, max = 5)
     @Column(nullable = false, length = 5)
     private String ativo;
-    @OneToMany(mappedBy = "idmenupai", fetch = FetchType.LAZY)
-    private List<WebMenuTO> webMenuTOList;
-    @JoinColumn(name = "IDMENUPAI", referencedColumnName = "ID")
+    @OneToMany(mappedBy = "idpai", fetch = FetchType.LAZY)
+    private List<WebMenusTO> webMenusTOList;
+    @JoinColumn(name = "IDPAI", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private WebMenuTO idmenupai;
+    private WebMenusTO idpai;
 
-    public WebMenuTO() {
+    public WebMenusTO() {
     }
 
-    public WebMenuTO(BigDecimal id) {
+    public WebMenusTO(Integer id) {
         this.id = id;
     }
 
-    public WebMenuTO(BigDecimal id, String nome, String icone, String ativo) {
+    public WebMenusTO(Integer id, String nome, String icone, String ativo) {
         this.id = id;
         this.nome = nome;
         this.icone = icone;
         this.ativo = ativo;
     }
 
-    public BigDecimal getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -90,20 +91,20 @@ public class WebMenuTO implements Serializable {
         this.nome = nome;
     }
 
-    public String getIcone() {
-        return icone;
-    }
-
-    public void setIcone(String icone) {
-        this.icone = icone;
-    }
-
     public String getAcao() {
         return acao;
     }
 
     public void setAcao(String acao) {
         this.acao = acao;
+    }
+
+    public String getIcone() {
+        return icone;
+    }
+
+    public void setIcone(String icone) {
+        this.icone = icone;
     }
 
     public String getLink() {
@@ -123,20 +124,20 @@ public class WebMenuTO implements Serializable {
     }
 
     @XmlTransient
-    public List<WebMenuTO> getWebMenuTOList() {
-        return webMenuTOList;
+    public List<WebMenusTO> getWebMenusTOList() {
+        return webMenusTOList;
     }
 
-    public void setWebMenuTOList(List<WebMenuTO> webMenuTOList) {
-        this.webMenuTOList = webMenuTOList;
+    public void setWebMenusTOList(List<WebMenusTO> webMenusTOList) {
+        this.webMenusTOList = webMenusTOList;
     }
 
-    public WebMenuTO getIdmenupai() {
-        return idmenupai;
+    public WebMenusTO getIdpai() {
+        return idpai;
     }
 
-    public void setIdmenupai(WebMenuTO idmenupai) {
-        this.idmenupai = idmenupai;
+    public void setIdpai(WebMenusTO idpai) {
+        this.idpai = idpai;
     }
 
     @Override
@@ -149,10 +150,10 @@ public class WebMenuTO implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof WebMenuTO)) {
+        if (!(object instanceof WebMenusTO)) {
             return false;
         }
-        WebMenuTO other = (WebMenuTO) object;
+        WebMenusTO other = (WebMenusTO) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -161,7 +162,7 @@ public class WebMenuTO implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.core.entity.WebMenuTO[ id=" + id + " ]";
+        return "br.com.core.entity.WebMenusTO[ id=" + id + " ]";
     }
 
 }
