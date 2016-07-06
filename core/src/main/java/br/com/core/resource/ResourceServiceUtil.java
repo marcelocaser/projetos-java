@@ -38,11 +38,15 @@ public class ResourceServiceUtil {
 
         Locale locale = getLocale(context);
 
-        ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msg");;
+        ResourceBundle bundle = context.getApplication().getResourceBundle(context, "msg");
         try {
             text = bundle.getString(key);
         } catch (Exception e) {
-            text = key;
+            //Localiza resource bundle com SpringBeanFacesELResolver
+            text = context.getApplication().evaluateExpressionGet(context, "#{msg.".concat(key).concat("}"), String.class);
+            if (text == null) {
+                text = key;
+            }
         }
         if (params != null) {
             MessageFormat mf = new MessageFormat(text, locale);

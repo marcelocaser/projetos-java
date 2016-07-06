@@ -373,7 +373,7 @@ public class TextUtil {
      * @param strOriginal
      * @param strSubs
      * @param bRetTrim
-     * 
+     *
      * @return String
      *
      */
@@ -908,5 +908,27 @@ public class TextUtil {
         }
         CPF = formataMascara("###.###.###-##", CPF);
         return CPF;
+    }
+
+    public static String formatarCNPJ(Object obj) {
+        String CNPJ = "";
+        if (obj != null && obj instanceof Long) {
+            Long cpfLongType = (Long) obj;
+            CNPJ = cpfLongType.toString();
+        } else if (obj != null && obj instanceof String) {
+            CNPJ = (String) obj;
+        }
+        if (CNPJ != null && CNPJ.length() < 14) {
+            // Ex.: Este CPF 06132765000161 no banco é assim: 6132765000161
+            int comprimento = CNPJ.length();
+            int complemento = 14 - comprimento;
+            String digitosZero = "";
+            for (int i = 0; i < complemento; i++) {
+                digitosZero = digitosZero + "0";
+            }
+            CNPJ = digitosZero + CNPJ;
+        }
+        CNPJ = formataMascara("##.###.###/####-##", CNPJ);
+        return CNPJ;
     }
 }
