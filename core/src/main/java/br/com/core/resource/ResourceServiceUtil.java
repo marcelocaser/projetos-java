@@ -43,9 +43,12 @@ public class ResourceServiceUtil {
             text = bundle.getString(key);
         } catch (Exception e) {
             //Localiza resource bundle com SpringBeanFacesELResolver
-            text = context.getApplication().evaluateExpressionGet(context, "#{msg.".concat(key).concat("}"), String.class);
-            if (text == null) {
-                text = key;
+            try {
+                text = context.getApplication().evaluateExpressionGet(context, "#{msg.".concat(key).concat("}"), String.class);
+            } catch (Exception ex) {
+                if (text == null) {
+                    text = key;
+                }
             }
         }
         if (params != null) {
