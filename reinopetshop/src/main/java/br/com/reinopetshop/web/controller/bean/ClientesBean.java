@@ -51,6 +51,12 @@ public class ClientesBean extends ReinoPetController {
             return tratarExcecao(e);
         }
     }
+    
+   public String consultar(Integer idCliente) {
+       this.novo();
+       clientesTO.setId(idCliente);
+       return this.consultar();
+   }
 
     public String editar() {
         try {
@@ -87,7 +93,7 @@ public class ClientesBean extends ReinoPetController {
                 pessoasBean.setPessoasTO(clientesTO.getPessoasTO());
                 pessoasBean.incluir();
                 enderecosBean.incluir();
-                animaisBean.incluir();
+                //animaisBean.incluir();
                 setMessage("clientesAlteradoComSucesso", EnumTipoMensagem.INFO);
             } else {
                 // Verifica se CPF não cadastrado!
@@ -160,7 +166,8 @@ public class ClientesBean extends ReinoPetController {
         clientesTO.setPessoasTO(new PessoasTO());
 
         enderecosBean.novo();
-        enderecosBean.setEnderecosComplementosTOs(new ArrayList<>());
+        pessoasBean.novo();
+        enderecosBean.setEnderecosComplementosTOs(null);
         animaisBean.novo();
         animaisBean.setAnimaisTOs(new ArrayList<>());
 

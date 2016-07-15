@@ -15,6 +15,12 @@
             <div class="Container100 ui-fluid">
                 <p:focus id="fcsNomeCompleto" for="nomeCompleto"/>
                 <div class="ContainerIndent">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <div class="EmptyBox10"></div>
+                            <h:outputText class="CardTopic TexAlLeft" value=" #{msg.usuariosEditar}" />
+                        </p:toolbarGroup>
+                    </p:toolbar>
                     <div class="Card">
                         <p:panelGrid id="dadosUsuarios" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
                             <p:outputLabel for="id" value="#{msg.id}:" class="ShowOnDesktop" />

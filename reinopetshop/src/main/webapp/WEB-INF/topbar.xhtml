@@ -23,13 +23,13 @@
         <form jsf:prependId="false">
             <ul id="top-menu">
                 <li>
-                    <a class="menulink Animated05"><i class="icon-search"></i> <span>Pesquisar</span></a>
+                    <a class="menulink Animated05"><i class="icon-search"></i> <span>#{msg.pesquisar}</span></a>
                     <ul style="margin-left:-150px;">
                         <li><span class="PadWithBorder10 DispBlock"><p:inputText placeholder="Pesquise algo aqui" styleClass="Wid60"/> <p:button icon="fa fa-search" styleClass="Fright"/></span></li>
                     </ul>
                 </li>
                 <li>
-                    <a class="menulink Animated05"><i class="icon-chat"></i> <span>Mensagem</span></a>
+                    <a class="menulink Animated05"><i class="icon-chat"></i> <span>#{msg.mensagem}</span></a>
                     <ul style="margin-left:-130px;">
                         <!--                        <li><a href="#"><i class="icon-comment-alt2-stroke Fs18 Blue Fright"></i> <span class="FontAdamantiumBold">Clark Davenport</span><br/><span class="Fs12">Hi, How is going ?</span></a></li>
                                                 <li><a href="#"><i class="icon-comment-alt2-stroke Fs18 Red Fright"></i> <span class="FontAdamantiumBold">Jack Sparrow</span><br/><span class="Fs12">Test Results</span></a></li>
@@ -38,7 +38,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="menulink Animated05"><i class="icon-calendar"></i> <span>Agenda</span></a>
+                    <a class="menulink Animated05"><i class="icon-calendar"></i> <span>#{msg.agenda}</span></a>
                     <ul style="margin-left:-135px;">
                         <ui:repeat var="agendas" varStatus="status" value="#{agendasBean.agendaDoDia}">
                             <li><a href="#"><i class="icon-alarmclock Fs18 Red Fright"></i> <span class="FontAdamantiumBold">#{agendas.idAnimal.nome}</span><br/><span class="Fs12 ls-mask-time">#{agendas.hora}</span><br/><span class="Fs12">#{agendas.idCliente.pessoasTO.nome}</span></a></li>
@@ -50,7 +50,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="menulink Animated05"><i class="icon-alarm animated swing infinite"></i> <span>Alertas</span></a>
+                    <a class="menulink Animated05"><i class="icon-alarm animated swing infinite"></i> <span>#{msg.alertas}</span></a>
                     <ul style="margin-left:-155px;">
                         <!--                        <li><a href="#"><i class="icon-cd Fs20 Blue Fright"></i> <span class="FontAdamantiumBold Blue">Reports Exported</span><br/><span class="Fs12">Recorded To File System</span></a></li>
                                                 <li><a href="#"><i class="icon-cd Fs20 Red Fright"></i> <span class="FontAdamantiumBold Red">Bug Alert</span><br/><span class="Fs12">SportX Tools</span></a></li>
@@ -59,7 +59,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="menulink Animated05"><i class="icon-settings"></i> <span>Configurações</span></a>
+                    <a class="menulink Animated05"><i class="icon-settings"></i> <span>#{msg.configuracoes}</span></a>
                     <ul style="margin-left:-145px;">
                         <li><a href="#"><i class="icon-users Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Minha conta</span></a></li>
                         <li><a jsf:action="#{loginBean.logout()}"><i class="icon-lock-stroke Fs18 Fleft MarRight10"></i> <span class="FontAdamantiumBold"> Sair</span></a></li>

@@ -37,7 +37,7 @@ public class ReinoPetController extends Controller implements ReinoPetConstantes
     public UsuariosTO getUsuarioLogado() {
         return (UsuariosTO) getParamSession(EnumSecurity.USUARIO_LOGADO);
     }
-    
+
     /**
      * Retorna o sistema logado.
      *
@@ -101,7 +101,7 @@ public class ReinoPetController extends Controller implements ReinoPetConstantes
             FacesUtil.addMessageCtx(this.getContext(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ops...", this.getMessage(key, parametros)));
         }
         if (tipo.equals(EnumTipoMensagem.ATENCAO)) {
-            FacesUtil.addMessageCtx(this.getContext(), new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção",this.getMessage(key, parametros)));
+            FacesUtil.addMessageCtx(this.getContext(), new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção", this.getMessage(key, parametros)));
         }
         if (tipo.equals(EnumTipoMensagem.FATAL)) {
             FacesUtil.addMessageCtx(this.getContext(), new FacesMessage(FacesMessage.SEVERITY_FATAL, "Que feio servidor...", this.getMessage(key, parametros)));
@@ -125,7 +125,7 @@ public class ReinoPetController extends Controller implements ReinoPetConstantes
                 FacesUtil.addMessageCtx(this.getContext(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ops...", ResourceServiceUtil.getMessageResourceString(msg.getMensagem(), null)));
             }
             if (tipo.equals(EnumTipoMensagem.ATENCAO)) {
-                FacesUtil.addMessageCtx(this.getContext(), new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção",ResourceServiceUtil.getMessageResourceString(msg.getMensagem(), null)));
+                FacesUtil.addMessageCtx(this.getContext(), new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção", ResourceServiceUtil.getMessageResourceString(msg.getMensagem(), null)));
             }
             if (tipo.equals(EnumTipoMensagem.FATAL)) {
                 FacesUtil.addMessageCtx(this.getContext(), new FacesMessage(FacesMessage.SEVERITY_FATAL, "Que feio servidor...", ResourceServiceUtil.getMessageResourceString(msg.getMensagem(), null)));

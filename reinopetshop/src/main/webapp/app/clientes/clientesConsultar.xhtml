@@ -5,7 +5,6 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
-                xmlns:poue="http://primefaces.org/ui/extensions"
                 xmlns:reinopet="http://xmlns.jcp.org/jsf/composite/reinopet"
                 template="/WEB-INF/template.xhtml">
 
@@ -15,7 +14,7 @@
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <div class="EmptyBox10"></div>
-                        <h:outputText class="CardTopic TexAlLeft" value=" #{msg.clientesConsultarCliente}" />
+                        <h:outputText class="CardTopic TexAlLeft" value=" #{msg.clientesConsultar}" />
                     </p:toolbarGroup>
 
                     <p:toolbarGroup align="right">
@@ -165,7 +164,7 @@
                             </p:selectOneRadio>
 
                             <p:outputLabel for="dadosPet" value="#{msg.animaisDadosComplementares}" />
-                            <p:selectManyMenu id="dadosPet" showCheckbox="true" disabled="true">
+                            <p:selectManyMenu id="dadosPet" showCheckbox="true" disabled="true" value="#{animaisBean.selectedDadosComplementares}">
                                 <f:selectItem itemLabel="#{msg.animaisCastrado}"  itemValue="C" />
                                 <f:selectItem itemLabel="#{msg.animaisObito}" itemValue="O" />
                                 <f:selectItem itemLabel="#{msg.animaisAVenda}" itemValue="V" />
@@ -195,7 +194,7 @@
                             </p:inputMask>
 
                             <p:outputLabel for="pesoAnimal" value="#{msg.animaisPeso}"/>
-                            <poue:inputNumber id="pesoAnimal" value="#{animaisTO.peso}" symbol=" Kg" symbolPosition="s" decimalPlaces="2" decimalSeparator="," thousandSeparator="." readonly="true"/>
+                            <p:inputNumber id="pesoAnimal" value="#{animaisTO.peso}" symbol=" Kg" symbolPosition="s" decimalPlaces="2" decimalSeparator="," thousandSeparator="." readonly="true"/>
 
                             <p:outputLabel/>
                             <p:outputLabel/>

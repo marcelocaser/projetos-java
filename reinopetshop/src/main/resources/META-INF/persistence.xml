@@ -39,7 +39,7 @@
       <property name="eclipselink.logging.parameters" value="true"/>
       <property name="eclipselink.target-database" value="MySQL"/>
       <!--<property name="eclipselink.logging.level" value="FINE"/>-->
-      <!--<property name="eclipselink.persistence-context.flush-mode" value="commit"/>-->
+      <property name="eclipselink.persistence-context.flush-mode" value="commit"/>
       <!--<property name="eclipselink.cache.shared.default" value="false"/>-->
       <!--<property name="eclipselink.flush-clear.cache" value="Drop"/>-->
       <!--<property name="connection.autocommit" value="false"/>-->

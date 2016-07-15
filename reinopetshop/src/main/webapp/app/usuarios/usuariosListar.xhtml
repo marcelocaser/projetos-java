@@ -13,7 +13,7 @@
 
     <ui:define name="content">
         
-        <reinopet:modalConfirmDialog mensagem="#{msg.desejaExcluir}" update=":frmUsuariosListar:usuarios" managedBean="#{usuariosBean.excluir()}"/>
+        <reinopet:modalConfirmDialog widgetVar="confirmacaoExcluir" mensagem="#{msg.desejaExcluir}" update=":frmUsuariosListar:usuarios" managedBean="#{usuariosBean.excluir()}"/>
         
         <div class="Container100">
             <div class="ContainerIndent">
@@ -63,7 +63,7 @@
                                                                      target="#{usuariosBean.usuariosTO}" />
                                     </p:commandButton>
                                     <p:spacer width="5" />
-                                    <p:commandButton id="exclusao" icon="fa fa-remove" oncomplete="PF('confirmacao').show()" process="usuarios">
+                                    <p:commandButton id="exclusao" icon="fa fa-remove" oncomplete="PF('confirmacaoExcluir').show()" process="usuarios">
                                         <p:tooltip for="exclusao"
                                                    value="#{msg.menuOpcoesToolTipoExcluir}" />
                                         <f:setPropertyActionListener value="#{usuariosTO}"

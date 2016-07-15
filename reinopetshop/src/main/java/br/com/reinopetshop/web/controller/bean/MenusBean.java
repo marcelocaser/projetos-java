@@ -1,5 +1,6 @@
 package br.com.reinopetshop.web.controller.bean;
 
+import br.com.core.controller.business.MensagensBO;
 import br.com.core.controller.business.MenusBO;
 import br.com.core.entity.MenusTO;
 import br.com.core.entity.MenusUsuariosTO;
@@ -24,6 +25,8 @@ public class MenusBean extends ReinoPetController {
 
     @Autowired
     private MenusBO menuNegocio;
+    @Autowired
+    private MensagensBO mensagemNegocio;
     private MenuModel menuModel;
     private List<MenusUsuariosTO> menusUsuariosTOs;
     private List<MenusTO> menusTOs;
@@ -95,6 +98,8 @@ public class MenusBean extends ReinoPetController {
                             mi.setValue(getMessage(m.getIdMenu().getNome()));
                             mi.setIcon(m.getIdMenu().getIcone());
                             mi.setCommand(m.getIdMenu().getAcao());
+                            mi.setOnstart("PF('statusDialog').show()");
+                            mi.setOnsuccess("PF('statusDialog').hide()");
                             mi.setRendered(m.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
                             submenu.getElements().add(mi);
                         } else {
@@ -113,6 +118,8 @@ public class MenusBean extends ReinoPetController {
                     mi.setValue(" " + getMessage(menu.getIdMenu().getNome()));
                     mi.setIcon(menu.getIdMenu().getIcone());
                     mi.setCommand(menu.getIdMenu().getAcao());
+                    mi.setOnstart("PF('statusDialog').show()");
+                    mi.setOnsuccess("PF('statusDialog').hide()");
                     mi.setRendered(menu.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
                     menuModel.addElement(mi);
                 }
@@ -131,6 +138,8 @@ public class MenusBean extends ReinoPetController {
                 mi.setValue(getMessage(m.getIdMenu().getNome()));
                 mi.setIcon(m.getIdMenu().getIcone());
                 mi.setCommand(m.getIdMenu().getAcao());
+                mi.setOnstart("PF('statusDialog').show()");
+                mi.setOnsuccess("PF('statusDialog').hide()");
                 mi.setRendered(m.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
                 submenu.getElements().add(mi);
             } else {
@@ -138,6 +147,10 @@ public class MenusBean extends ReinoPetController {
             }
         }
         return submenu;
+    }
+    
+    public void atualizaMensagemResources() {
+        mensagemNegocio.reload();
     }
 
     /* Metodos para tratamento de eventos e de tela em geral. Evite mudar. */

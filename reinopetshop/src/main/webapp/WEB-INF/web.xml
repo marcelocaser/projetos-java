@@ -13,7 +13,7 @@
     </filter-mapping>-->
     
     <!-- Spring (Jpa Support) - OpenEntityManagerInViewFilter -->
-<!--    <filter>
+    <!--    <filter>
         <filter-name>openEntityManager</filter-name>
         <filter-class>
             org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
@@ -102,6 +102,22 @@
         <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
         <param-value>true</param-value>
     </context-param>-->
+    
+    <!-- 4.4 PartialSubmit - PrimeFaces User Guide -->
+    <context-param>
+        <param-name>primefaces.SUBMIT</param-name>
+        <param-value>partial</param-value>
+    </context-param>
+    
+    <!-- 3.12 Captcha - PrimeFaces User Guide -->
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6LfSLiUTAAAAAOxphOdnQ2bgFR7S8Qx6PoPE3oVg</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6LfSLiUTAAAAACAn6zcr-g1x2I5noQdEfvd-HnCq</param-value>
+    </context-param>
     
     <context-param>
         <param-name>primefaces.THEME</param-name>

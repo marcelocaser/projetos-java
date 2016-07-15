@@ -7,6 +7,7 @@
 
     <h:body>
         <composite:interface>
+            <composite:attribute name="widgetVar" required="true" />
             <composite:attribute name="mensagem" required="true" />
             <composite:attribute name="update" required="false" />
             <composite:attribute name="managedBean"
@@ -18,13 +19,13 @@
                 <div class="ContainerIndent">
                     <p:confirmDialog message="#{cc.attrs.mensagem}" closeOnEscape="true"
                                      closable="false" header="#{msg.confirmar}"
-                                     widgetVar="confirmacao">
+                                     widgetVar="#{cc.attrs.widgetVar}">
 
                         <p:commandButton id="confirmSim" value="#{msg.sim}" styleClass="ui-confirmdialog-yes GreenButton"
                                          action="#{cc.attrs.managedBean}" icon="fa fa-check Fs15 White"
-                                         onclick="PF('confirmacao').hide()" update="#{cc.attrs.update}"/>
+                                         onclick="PF('#{cc.attrs.widgetVar}').hide()" update="#{cc.attrs.update}"/>
                         <p:commandButton id="confirmNao" value="#{msg.nao}" styleClass="ui-confirmdialog-no RedButton"
-                                         oncomplete="PF('confirmacao').hide()" icon="fa fa-close Fs15 White" />
+                                         oncomplete="PF('#{cc.attrs.widgetVar}').hide()" icon="fa fa-close Fs15 White" />
                     </p:confirmDialog>
                 </div>
             </div>

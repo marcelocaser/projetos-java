@@ -6,8 +6,7 @@
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
                 xmlns:reinopet="http://xmlns.jcp.org/jsf/composite/reinopet"
                 template="/WEB-INF/template.xhtml"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-                xmlns:poue="http://primefaces.org/ui/extensions">
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
 
@@ -55,10 +54,10 @@
                             </p:selectOneMenu>
 
                             <p:outputLabel for="valorServico" value="#{msg.servicosValor}"/>
-                            <poue:inputNumber id="valorServico" value="#{servicosBean.precoVenda}" converter="ConverterSemCaracteres" symbol="R$ " symbolPosition="p" decimalPlaces="2" decimalSeparator="," thousandSeparator="." readonly="true" required="true" />
+                            <p:inputNumber id="valorServico" value="#{servicosBean.precoVenda}" converter="ConverterSemCaracteres" symbol="R$ " symbolPosition="p" decimalPlaces="2" decimalSeparator="," thousandSeparator="." readonly="true" required="true" />
 
                             <p:outputLabel for="valorACobrar" value="#{msg.servicosValorACobrar}" />
-                            <poue:inputNumber id="valorACobrar" value="#{servicosBean.valorACobrar}" converter="ConverterSemCaracteres" symbol="R$ " symbolPosition="p" decimalPlaces="2" decimalSeparator="," thousandSeparator="." />
+                            <p:inputNumber id="valorACobrar" value="#{servicosBean.valorACobrar}" converter="ConverterSemCaracteres" symbol="R$ " symbolPosition="p" decimalPlaces="2" decimalSeparator="," thousandSeparator="." />
 
                             <p:outputLabel for="agendasHorario" value="#{msg.agendasHorario}" />
                             <p:calendar id="agendasHorario" value="#{agendasBean.scheduleEvent.startDate}" timeZone="GMT-3" timeOnly="true" pattern="HH:mm" mask="true" showOn="button"/>
@@ -67,7 +66,7 @@
                             <p:inputTextarea id="observacao" value="#{agendasBean.agendasTO.observacao}" />
 
                             <h:outputLabel for="repetirEvento" value="#{msg.agendasRepetirEvento}" rendered="#{!agendasBean.editarEventoAtual}"/>
-                            <poue:inputNumber id="repetirEvento" value="#{agendasBean.repetirEvento}" symbol=" meses" symbolPosition="s" decimalPlaces="0" title="#{msg.agendasRepetirEventoToolTip}" rendered="#{!agendasBean.editarEventoAtual}"/>
+                            <p:inputNumber id="repetirEvento" value="#{agendasBean.repetirEvento}" symbol=" meses" symbolPosition="s" decimalPlaces="0" title="#{msg.agendasRepetirEventoToolTip}" rendered="#{!agendasBean.editarEventoAtual}"/>
                         </p:panelGrid>
                     </div>
                 </div>

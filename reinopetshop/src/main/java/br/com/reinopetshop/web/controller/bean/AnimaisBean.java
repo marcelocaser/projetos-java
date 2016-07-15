@@ -11,6 +11,7 @@ import br.com.reinopetshop.business.controller.business.AnimaisBO;
 import br.com.reinopetshop.business.controller.business.EspeciesBO;
 import br.com.reinopetshop.business.controller.business.PessoasBO;
 import br.com.reinopetshop.business.controller.business.RacasBO;
+import br.com.reinopetshop.business.controller.persistence.interfaces.Animais;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,6 @@ public class AnimaisBean extends ReinoPetController {
     @Autowired
     private PessoasBO pessoasNegocio;
     private AnimaisTO animaisTO;
-    private AnimaisTO animaisSelected;
     private RacasTO racasTO;
     private List<AnimaisTO> animaisTOs;
     @Autowired
@@ -49,12 +49,6 @@ public class AnimaisBean extends ReinoPetController {
     private String idAnimal;
     private List<String> selectedDadosComplementares;
     private String dataNascimentoNoFuturo;
-    private Boolean mostraBlocoDeAnimais;
-
-    public static final String CADASTRADO = "C";
-    public static final String OBITO = "O";
-    public static final String A_VENDA = "V";
-    public static final String CONTROLE_DE_RACAO = "R";
 
     /* Métodos para tratamento do negócio. */
     public String adicionarMaisAnimal() {
@@ -70,7 +64,6 @@ public class AnimaisBean extends ReinoPetController {
             animaisTO.setIdRaca(racasTO);
             animaisTOs.add(animaisTO);
             setMessage("animaisAdicionado", EnumTipoMensagem.INFO);
-            mostraBlocoDeAnimais = true;
             this.novo();
             return "";
         } catch (Exception e) {
@@ -81,7 +74,7 @@ public class AnimaisBean extends ReinoPetController {
     public String consultar() {
         try {
             if (idAnimal != null) {
-                animaisSelected = animaisNegocio.consultar(new AnimaisTO(new Integer(idAnimal)));
+                //animaisSelected = animaisNegocio.consultar(new AnimaisTO(new Integer(idAnimal)));
             } else {
                 animaisTO = animaisNegocio.consultar(animaisTO);
             }
@@ -113,8 +106,8 @@ public class AnimaisBean extends ReinoPetController {
                 animais.setIdCliente(clientesBean.getClientesTO());
                 if (racasTO == null) {
                     racasTO = racasNegocio.consultar(new RacasTO(new Integer(idRacas)));
+                    animais.setIdRaca(racasTO);
                 }
-                animais.setIdRaca(racasTO);
                 animaisNegocio.incluir(animais);
             }
             selectedDadosComplementares = null;
@@ -161,9 +154,7 @@ public class AnimaisBean extends ReinoPetController {
 
     public String novo() {
         animaisTO = new AnimaisTO();
-        animaisSelected = new AnimaisTO();
-//        animaisTOs = new ArrayList<>();
-//        selectedDadosComplementares = new ArrayList<>();
+        selectedDadosComplementares = null;
         idEspecies = null;
         idRacas = null;
         idAnimal = null;
@@ -174,16 +165,16 @@ public class AnimaisBean extends ReinoPetController {
         //Verifica as opções selecionadas dos dados complementares.
         for (String dadosComplementares : selectedDadosComplementares) {
             switch (dadosComplementares) {
-                case CADASTRADO:
+                case Animais.CADASTRADO:
                     animaisTO.setCastrado('S');
                     break;
-                case OBITO:
+                case Animais.OBITO:
                     animaisTO.setObito('S');
                     break;
-                case A_VENDA:
+                case Animais.A_VENDA:
                     animaisTO.setAVenda('S');
                     break;
-                case CONTROLE_DE_RACAO:
+                case Animais.CONTROLE_DE_RACAO:
                     animaisTO.setControleDeRacao('S');
                     break;
                 default:
@@ -197,6 +188,17 @@ public class AnimaisBean extends ReinoPetController {
         Date dataAtual = pessoasNegocio.getDataAtual();
         if (dataAtual != null) {
             dataNascimentoNoFuturo = DateUtil.dataFormatter(dataAtual);
+        }
+    }
+    
+    public String removerMaisAnimais() {
+        try {
+            animaisTOs.removeIf(p -> p.getNome().contains(animaisTO.getNome()));
+            setMessage("animaisRemovido", EnumTipoMensagem.INFO);
+            this.novo();
+            return "";
+        } catch (Exception e) {
+            return tratarExcecao(e);
         }
     }
 
@@ -250,14 +252,6 @@ public class AnimaisBean extends ReinoPetController {
 
     public void setAnimaisTOs(List<AnimaisTO> animaisTOs) {
         this.animaisTOs = animaisTOs;
-    }
-
-    public AnimaisTO getAnimaisSelected() {
-        return animaisSelected;
-    }
-
-    public void setAnimaisSelected(AnimaisTO animaisSelected) {
-        this.animaisSelected = animaisSelected;
     }
 
     public RacasTO getRacasTO() {
@@ -326,13 +320,5 @@ public class AnimaisBean extends ReinoPetController {
     public void setDataNascimentoNoFuturo(String dataNascimentoNoFuturo) {
         this.dataNascimentoNoFuturo = dataNascimentoNoFuturo;
     }
-
-    public Boolean getMostraBlocoDeAnimais() {
-        return mostraBlocoDeAnimais;
-    }
-
-    public void setMostraBlocoDeAnimais(Boolean mostraBlocoDeAnimais) {
-        this.mostraBlocoDeAnimais = mostraBlocoDeAnimais;
-    }
-
+    
 }

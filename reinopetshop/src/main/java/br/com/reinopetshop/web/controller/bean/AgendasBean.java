@@ -71,7 +71,7 @@ public class AgendasBean extends ReinoPetController {
         defaultScheduleEvent.setDescription(agendasTO.getObservacao());
         defaultScheduleEvent.setStartDate(dataEhora);
         defaultScheduleEvent.setEndDate(dataEhora);
-        defaultScheduleEvent.setTitle(animaisBean.getAnimaisSelected().getNome());
+        //defaultScheduleEvent.setTitle(animaisBean.getAnimaisSelected().getNome());
         defaultScheduleEvent.setData(agendasTO);
         scheduleEvent = defaultScheduleEvent;
         eventModel.addEvent(scheduleEvent);
@@ -86,7 +86,7 @@ public class AgendasBean extends ReinoPetController {
         defaultScheduleEvent.setDescription(agendasTO.getObservacao());
         defaultScheduleEvent.setStartDate(dataEhora);
         defaultScheduleEvent.setEndDate(dataEhora);
-        defaultScheduleEvent.setTitle(animaisBean.getAnimaisSelected().getNome());
+        //defaultScheduleEvent.setTitle(animaisBean.getAnimaisSelected().getNome());
         defaultScheduleEvent.setData(agendasTO);
         scheduleEvent = defaultScheduleEvent;
         eventModel.updateEvent(scheduleEvent);
@@ -177,7 +177,7 @@ public class AgendasBean extends ReinoPetController {
                     agendasTO.setData(DateUtil.adicionaDiaMesAno(dataProxima, Calendar.MONTH, i, true));
                     agendasTO.setHora(DateUtil.getHora("07:00:00", DateUtil.HORA));
                     agendasTO.setIdCliente(clientesBean.getClientesTO());
-                    agendasTO.setIdAnimal(animaisBean.getAnimaisSelected());
+                    //agendasTO.setIdAnimal(animaisBean.getAnimaisSelected());
                     agendasTO.setIdServico(servicosBean.getServicosTO());
                     agendasNegocio.incluir(agendasTO);
                     if (agendasTO.getId() != null) {

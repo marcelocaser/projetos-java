@@ -58,7 +58,13 @@ public class EnderecosBean extends ReinoPetController {
                     return "";
                 }
             }
-            //enderecosComplementosTO.getPessoasTOList().add(pessoasBean.getPessoasTO());
+            //Adiciona pessoa aos endereço.
+            if (pessoasBean.getPessoasTO() != null && pessoasBean.getPessoasTO().getId() != null) {
+                enderecosComplementosTO.getPessoasTOList().add(pessoasBean.getPessoasTO());
+                for (int i = 0; i < enderecosComplementosTOs.size(); i++) {
+                    enderecosComplementosTOs.get(i).getPessoasTOList().add(pessoasBean.getPessoasTO());
+                }
+            }
             enderecosComplementosTOs.add(enderecosComplementosTO);
             setMessage("enderecosAdicionado", EnumTipoMensagem.INFO);
             this.novo();
@@ -165,6 +171,7 @@ public class EnderecosBean extends ReinoPetController {
         try {
             enderecosComplementosTOs.removeIf(p -> p.getCep().contains(enderecosComplementosTO.getCep()));
             setMessage("enderecosRemovido", EnumTipoMensagem.INFO);
+            this.novo();
             return "";
         } catch (Exception e) {
             return tratarExcecao(e);
