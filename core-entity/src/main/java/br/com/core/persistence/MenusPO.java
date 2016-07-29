@@ -53,7 +53,7 @@ public class MenusPO extends Persistence<MenusTO> implements Menus {
 
     @Override
     public List<MenusUsuariosTO> listarMenuAtivo(MenusUsuariosTO menusUsuariosTO) {
-        if (menusUsuariosTO == null && menusUsuariosTO.getIdMenuUsuario() == null) {
+        if (menusUsuariosTO == null || menusUsuariosTO.getIdMenuUsuario() == null) {
             return null;
         }
         this.evict();

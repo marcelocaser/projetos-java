@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -49,6 +50,7 @@ public class MenusUsuariosTO implements Serializable {
     @JoinColumn(name = "idMenu", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private MenusTO idMenu;
+    @OrderBy("ordem ASC")
     @OneToMany(mappedBy = "idMenuPai", fetch = FetchType.LAZY)
     private List<MenusUsuariosTO> menusUsuariosTOList;
     @JoinColumn(name = "idMenuPai", referencedColumnName = "idMenu")

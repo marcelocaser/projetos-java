@@ -5,6 +5,9 @@ import br.com.core.persistence.interfaces.Enderecos;
 import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +42,7 @@ public class EnderecosPO extends Persistence<EnderecosTO> implements Enderecos {
     public Integer estatisticaTotalDeCEP() {
         return count();
     }
-    
+
     @Override
     @Transactional
     public void excluir(EnderecosTO enderecosTO) {
@@ -63,6 +66,19 @@ public class EnderecosPO extends Persistence<EnderecosTO> implements Enderecos {
             return getEntityManager().createQuery("SELECT e FROM EnderecosTO e WHERE e.cep = :cep", EnderecosTO.class)
                     .setParameter("cep", cep)
                     .getSingleResult();
+        } catch (NoResultException ex) {
+        }
+        return null;
+    }
+
+    @Override
+    public List<EnderecosTO> listarLogradouro(String logradouro) {
+        try {
+            CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<EnderecosTO> cq = cb.createQuery(EnderecosTO.class);
+            Root<EnderecosTO> enderecos = cq.from(EnderecosTO.class);
+            cq.where(cb.like(enderecos.get("logracompl"), "%" + logradouro + "%"));
+            return getEntityManager().createQuery(cq).setMaxResults(5).getResultList();
         } catch (NoResultException ex) {
         }
         return null;

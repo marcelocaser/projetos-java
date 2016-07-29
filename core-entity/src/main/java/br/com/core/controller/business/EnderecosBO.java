@@ -56,6 +56,10 @@ public class EnderecosBO {
         return null;
     }
     
+    public List<EnderecosTO> listarLogradouro(String logradouro) {
+        return this.persistencia.listarLogradouro(logradouro);
+    }
+    
     public List<EnderecosTO> listar(EnderecosTO enderecosTO) {
         return this.persistencia.listar(enderecosTO);
     }

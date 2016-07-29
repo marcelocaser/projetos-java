@@ -23,6 +23,8 @@ public interface Enderecos {
     
     public EnderecosTO consultarPeloCEP(String cep);
     
+    public List<EnderecosTO> listarLogradouro(String logradouro);
+    
     public List<EnderecosTO> listar(EnderecosTO enderecosTO);
     
 }
