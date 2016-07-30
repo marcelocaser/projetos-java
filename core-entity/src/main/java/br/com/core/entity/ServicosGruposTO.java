@@ -50,7 +50,7 @@ public class ServicosGruposTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrupo", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idServicoGrupo", fetch = FetchType.LAZY)
     private List<ServicosTO> servicosTOList;
 
     public ServicosGruposTO() {

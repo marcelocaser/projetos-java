@@ -54,7 +54,7 @@ public class ServicosCategoriasTO implements Serializable {
     @JoinColumn(name = "idTabelaPreco", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TabelasPrecosTO idTabelaPreco;
-    @OneToMany(mappedBy = "idCategoriaServico", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idServicoCategoria", fetch = FetchType.LAZY)
     private List<ServicosTO> servicosTOList;
 
     public ServicosCategoriasTO() {

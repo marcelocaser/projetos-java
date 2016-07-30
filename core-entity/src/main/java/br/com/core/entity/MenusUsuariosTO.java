@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "menus_usuarios", catalog = "bdg", schema = "", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"idMenu", "idMenuPai", "idMenuUsuario", "ativo"})})
+    @UniqueConstraint(columnNames = {"idMenu", "idMenuPai", "idUsuario", "ativo"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MenusUsuariosTO.findAll", query = "SELECT m FROM MenusUsuariosTO m")})
@@ -56,9 +56,9 @@ public class MenusUsuariosTO implements Serializable {
     @JoinColumn(name = "idMenuPai", referencedColumnName = "idMenu")
     @ManyToOne(fetch = FetchType.LAZY)
     private MenusUsuariosTO idMenuPai;
-    @JoinColumn(name = "idMenuUsuario", referencedColumnName = "id")
+    @JoinColumn(name = "idUsuario", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private UsuariosTO idMenuUsuario;
+    private UsuariosTO idUsuario;
 
     public MenusUsuariosTO() {
     }
@@ -122,12 +122,12 @@ public class MenusUsuariosTO implements Serializable {
         this.idMenuPai = idMenuPai;
     }
 
-    public UsuariosTO getIdMenuUsuario() {
-        return idMenuUsuario;
+    public UsuariosTO getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdMenuUsuario(UsuariosTO idMenuUsuario) {
-        this.idMenuUsuario = idMenuUsuario;
+    public void setIdUsuario(UsuariosTO idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

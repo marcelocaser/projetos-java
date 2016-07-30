@@ -62,12 +62,12 @@ public class ServicosTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
-    @JoinColumn(name = "idGrupo", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "idServicoGrupo", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private ServicosGruposTO idGrupo;
-    @JoinColumn(name = "idCategoriaServico", referencedColumnName = "id")
+    private ServicosGruposTO idServicoGrupo;
+    @JoinColumn(name = "idServicoCategoria", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private ServicosCategoriasTO idCategoriaServico;
+    private ServicosCategoriasTO idServicoCategoria;
     @JoinColumn(name = "idTabelaPreco", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TabelasPrecosTO idTabelaPreco;
@@ -151,20 +151,20 @@ public class ServicosTO implements Serializable {
         this.exclusao = exclusao;
     }
 
-    public ServicosGruposTO getIdGrupo() {
-        return idGrupo;
+    public ServicosGruposTO getIdServicoGrupo() {
+        return idServicoGrupo;
     }
 
-    public void setIdGrupo(ServicosGruposTO idGrupo) {
-        this.idGrupo = idGrupo;
+    public void setIdServicoGrupo(ServicosGruposTO idServicoGrupo) {
+        this.idServicoGrupo = idServicoGrupo;
     }
 
-    public ServicosCategoriasTO getIdCategoriaServico() {
-        return idCategoriaServico;
+    public ServicosCategoriasTO getIdServicoCategoria() {
+        return idServicoCategoria;
     }
 
-    public void setIdCategoriaServico(ServicosCategoriasTO idCategoriaServico) {
-        this.idCategoriaServico = idCategoriaServico;
+    public void setIdServicoCategoria(ServicosCategoriasTO idServicoCategoria) {
+        this.idServicoCategoria = idServicoCategoria;
     }
 
     public TabelasPrecosTO getIdTabelaPreco() {

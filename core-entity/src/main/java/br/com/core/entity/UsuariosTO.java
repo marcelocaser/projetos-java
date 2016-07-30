@@ -95,7 +95,7 @@ public class UsuariosTO implements Serializable {
     @JoinColumn(name = "idPessoa", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private PessoasTO idPessoa;
-    @OneToMany(mappedBy = "idMenuUsuario", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private List<MenusUsuariosTO> menusUsuariosTOList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarios", fetch = FetchType.LAZY)
     private List<ConsultasTO> consultasTOList;
