@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @UniqueConstraint(columnNames = {"email"}),
     @UniqueConstraint(columnNames = {"chave"}),
     @UniqueConstraint(columnNames = {"cpf"}),
-    @UniqueConstraint(columnNames = {"cnpj"})})
+    @UniqueConstraint(columnNames = {"cnpj"}),
+    @UniqueConstraint(columnNames = {"login"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UsuariosTO.findAll", query = "SELECT u FROM UsuariosTO u")})
@@ -70,6 +71,9 @@ public class UsuariosTO implements Serializable {
     @Size(min = 1, max = 60)
     @Column(nullable = false, length = 60)
     private String email;
+    @Size(max = 15)
+    @Column(length = 15)
+    private String login;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -167,6 +171,14 @@ public class UsuariosTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getSenha() {
