@@ -57,7 +57,7 @@ public class ServicosTO implements Serializable {
     @NotNull
     @Column(nullable = false)
     private Character servicoClienteSemAnimal;
-    private Integer remarcarConsultarEmDias;
+    private Integer remarcarConsultaEmDias;
     @Temporal(TemporalType.TIMESTAMP)
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
@@ -127,12 +127,12 @@ public class ServicosTO implements Serializable {
         this.servicoClienteSemAnimal = servicoClienteSemAnimal;
     }
 
-    public Integer getRemarcarConsultarEmDias() {
-        return remarcarConsultarEmDias;
+    public Integer getRemarcarConsultaEmDias() {
+        return remarcarConsultaEmDias;
     }
 
-    public void setRemarcarConsultarEmDias(Integer remarcarConsultarEmDias) {
-        this.remarcarConsultarEmDias = remarcarConsultarEmDias;
+    public void setRemarcarConsultaEmDias(Integer remarcarConsultaEmDias) {
+        this.remarcarConsultaEmDias = remarcarConsultaEmDias;
     }
 
     public Date getAlteracao() {
