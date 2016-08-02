@@ -53,7 +53,7 @@ public class MenusPO extends Persistence<MenusTO> implements Menus {
 
     @Override
     public List<MenusUsuariosTO> listarMenuAtivo(MenusUsuariosTO menusUsuariosTO) {
-        if (menusUsuariosTO == null || menusUsuariosTO.getIdMenuUsuario() == null) {
+        if (menusUsuariosTO == null || menusUsuariosTO.getIdUsuario() == null) {
             return null;
         }
         this.evict();
@@ -61,11 +61,11 @@ public class MenusPO extends Persistence<MenusTO> implements Menus {
         CriteriaQuery<MenusUsuariosTO> cq = cb.createQuery(MenusUsuariosTO.class);
         Root<MenusUsuariosTO> menusUsuarios = cq.from(MenusUsuariosTO.class);
         //Busca todos os menus ativos do usuário
-        cq.where(cb.and(cb.equal(menusUsuarios.get("ativo"), cb.parameter(String.class, "ativo"))), cb.and(cb.equal(menusUsuarios.get("idMenuUsuario"), cb.parameter(String.class, "idMenuUsuario"))));
+        cq.where(cb.and(cb.equal(menusUsuarios.get("ativo"), cb.parameter(String.class, "ativo"))), cb.and(cb.equal(menusUsuarios.get("idUsuario"), cb.parameter(String.class, "idUsuario"))));
         cq.orderBy(cb.asc(menusUsuarios.get("idMenuPai")), cb.asc(menusUsuarios.get("ordem")));
         TypedQuery tq = getEntityManager().createQuery(cq);
         tq.setParameter("ativo", STATUS_ATIVO);
-        tq.setParameter("idMenuUsuario", menusUsuariosTO.getIdMenuUsuario());
+        tq.setParameter("idUsuario", menusUsuariosTO.getIdUsuario());
         try {
             return tq.getResultList();
         } catch (NoResultException ex) {

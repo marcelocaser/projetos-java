@@ -11,10 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,11 +51,11 @@ public class ServicosCategoriasTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
+    @ManyToMany(mappedBy = "servicosCategoriasTOList", fetch = FetchType.LAZY)
+    private List<ServicosTO> servicosTOList;
     @JoinColumn(name = "idTabelaPreco", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TabelasPrecosTO idTabelaPreco;
-    @OneToMany(mappedBy = "idServicoCategoria", fetch = FetchType.LAZY)
-    private List<ServicosTO> servicosTOList;
 
     public ServicosCategoriasTO() {
     }
@@ -101,14 +101,6 @@ public class ServicosCategoriasTO implements Serializable {
         this.exclusao = exclusao;
     }
 
-    public TabelasPrecosTO getIdTabelaPreco() {
-        return idTabelaPreco;
-    }
-
-    public void setIdTabelaPreco(TabelasPrecosTO idTabelaPreco) {
-        this.idTabelaPreco = idTabelaPreco;
-    }
-
     @XmlTransient
     public List<ServicosTO> getServicosTOList() {
         return servicosTOList;
@@ -116,6 +108,14 @@ public class ServicosCategoriasTO implements Serializable {
 
     public void setServicosTOList(List<ServicosTO> servicosTOList) {
         this.servicosTOList = servicosTOList;
+    }
+
+    public TabelasPrecosTO getIdTabelaPreco() {
+        return idTabelaPreco;
+    }
+
+    public void setIdTabelaPreco(TabelasPrecosTO idTabelaPreco) {
+        this.idTabelaPreco = idTabelaPreco;
     }
 
     @Override

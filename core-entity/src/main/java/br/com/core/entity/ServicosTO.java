@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -62,12 +64,14 @@ public class ServicosTO implements Serializable {
     private Date alteracao;
     @Temporal(TemporalType.TIMESTAMP)
     private Date exclusao;
+    @JoinTable(name = "aux_servicos_servicos_categorias", joinColumns = {
+        @JoinColumn(name = "idServico", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "idServicoCategoria", referencedColumnName = "id", nullable = false)})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<ServicosCategoriasTO> servicosCategoriasTOList;
     @JoinColumn(name = "idServicoGrupo", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ServicosGruposTO idServicoGrupo;
-    @JoinColumn(name = "idServicoCategoria", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ServicosCategoriasTO idServicoCategoria;
     @JoinColumn(name = "idTabelaPreco", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private TabelasPrecosTO idTabelaPreco;
@@ -151,20 +155,21 @@ public class ServicosTO implements Serializable {
         this.exclusao = exclusao;
     }
 
+    @XmlTransient
+    public List<ServicosCategoriasTO> getServicosCategoriasTOList() {
+        return servicosCategoriasTOList;
+    }
+
+    public void setServicosCategoriasTOList(List<ServicosCategoriasTO> servicosCategoriasTOList) {
+        this.servicosCategoriasTOList = servicosCategoriasTOList;
+    }
+
     public ServicosGruposTO getIdServicoGrupo() {
         return idServicoGrupo;
     }
 
     public void setIdServicoGrupo(ServicosGruposTO idServicoGrupo) {
         this.idServicoGrupo = idServicoGrupo;
-    }
-
-    public ServicosCategoriasTO getIdServicoCategoria() {
-        return idServicoCategoria;
-    }
-
-    public void setIdServicoCategoria(ServicosCategoriasTO idServicoCategoria) {
-        this.idServicoCategoria = idServicoCategoria;
     }
 
     public TabelasPrecosTO getIdTabelaPreco() {
