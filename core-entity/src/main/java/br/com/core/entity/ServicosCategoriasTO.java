@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -56,6 +57,8 @@ public class ServicosCategoriasTO implements Serializable {
     @JoinColumn(name = "idTabelaPreco", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TabelasPrecosTO idTabelaPreco;
+    @OneToMany(mappedBy = "idServicoCategoria", fetch = FetchType.LAZY)
+    private List<AgendasTO> agendasTOList;
 
     public ServicosCategoriasTO() {
     }
@@ -116,6 +119,15 @@ public class ServicosCategoriasTO implements Serializable {
 
     public void setIdTabelaPreco(TabelasPrecosTO idTabelaPreco) {
         this.idTabelaPreco = idTabelaPreco;
+    }
+
+    @XmlTransient
+    public List<AgendasTO> getAgendasTOList() {
+        return agendasTOList;
+    }
+
+    public void setAgendasTOList(List<AgendasTO> agendasTOList) {
+        this.agendasTOList = agendasTOList;
     }
 
     @Override

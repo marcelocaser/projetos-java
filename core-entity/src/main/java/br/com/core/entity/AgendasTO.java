@@ -77,6 +77,9 @@ public class AgendasTO implements Serializable {
     @JoinColumn(name = "idServico", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ServicosTO idServico;
+    @JoinColumn(name = "idServicoCategoria", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ServicosCategoriasTO idServicoCategoria;
 
     public AgendasTO() {
     }
@@ -225,6 +228,14 @@ public class AgendasTO implements Serializable {
 
     public void setIdServico(ServicosTO idServico) {
         this.idServico = idServico;
+    }
+
+    public ServicosCategoriasTO getIdServicoCategoria() {
+        return idServicoCategoria;
+    }
+
+    public void setIdServicoCategoria(ServicosCategoriasTO idServicoCategoria) {
+        this.idServicoCategoria = idServicoCategoria;
     }
 
     @Override
