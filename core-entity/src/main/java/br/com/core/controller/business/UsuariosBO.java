@@ -8,19 +8,19 @@ import br.com.core.util.DateUtil;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marcelocaser
  */
-@Component
+@Service
 public class UsuariosBO {
 
     @Autowired
     Usuarios persistencia;
 
-    public void alterar(UsuariosTO usuariosTO, Boolean isNovaChave) throws NegocioException  {
+    public void alterar(UsuariosTO usuariosTO, Boolean isNovaChave) throws NegocioException {
         antesDeAlterar(usuariosTO);
         if (isNovaChave) {
             usuariosTO = gerarChaveAcesso(usuariosTO);
@@ -71,12 +71,12 @@ public class UsuariosBO {
         usuariosTO = gerarChaveAcesso(usuariosTO);
         usuariosTO = gerarSenhaBase64(usuariosTO);
         UsuariosTO usuario = new UsuariosTO();
-            usuario.setCpf(usuariosTO.getCpf());
-            usuario.setCnpj(usuariosTO.getCnpj());
-            usuario = this.consultar(usuario);
-            if (usuario != null && usuario.getId() != null) {
-                throw new NegocioException("usuariosJaCadastrado");
-            }
+        usuario.setCpf(usuariosTO.getCpf());
+        usuario.setCnpj(usuariosTO.getCnpj());
+        usuario = this.consultar(usuario);
+        if (usuario != null && usuario.getId() != null) {
+            throw new NegocioException("usuariosJaCadastrado");
+        }
         this.persistencia.incluir(usuariosTO);
     }
 
@@ -95,7 +95,7 @@ public class UsuariosBO {
     public List<UsuariosTO> listar(UsuariosTO usuariosTO) {
         return this.persistencia.listar(usuariosTO);
     }
-    
+
     public List<UsuariosTO> listarUsuarios() {
         return this.persistencia.listarUsuarios();
     }

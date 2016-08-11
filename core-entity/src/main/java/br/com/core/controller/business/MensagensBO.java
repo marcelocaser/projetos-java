@@ -33,7 +33,7 @@ public class MensagensBO extends AbstractMessageSource implements ResourceLoader
         this.persistencia = persistencia;
         reload();
     }
-    
+
     @Override
     protected MessageFormat resolveCode(String code, Locale locale) {
         String msg = getText(code, locale);
@@ -87,6 +87,5 @@ public class MensagensBO extends AbstractMessageSource implements ResourceLoader
         }
         return m;
     }
-    
-    
+
 }

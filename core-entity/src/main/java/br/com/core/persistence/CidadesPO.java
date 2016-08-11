@@ -3,14 +3,14 @@ package br.com.core.persistence;
 import br.com.core.entity.CidadesTO;
 import br.com.core.persistence.interfaces.Cidades;
 import java.util.List;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author marcelocaser
  */
-@Component
+@Repository
 public class CidadesPO extends Persistence<CidadesTO> implements Cidades {
 
     public CidadesPO() {

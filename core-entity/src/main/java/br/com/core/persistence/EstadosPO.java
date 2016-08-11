@@ -3,14 +3,14 @@ package br.com.core.persistence;
 import br.com.core.entity.EstadosTO;
 import br.com.core.persistence.interfaces.Estados;
 import java.util.List;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author marce
  */
-@Component
+@Repository
 public class EstadosPO extends Persistence<EstadosTO> implements Estados {
 
     public EstadosPO() {

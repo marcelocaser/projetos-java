@@ -5,13 +5,13 @@ import br.com.core.entity.MenusUsuariosTO;
 import br.com.core.persistence.interfaces.Menus;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marce
  */
-@Component
+@Service
 public class MenusBO {
 
     @Autowired

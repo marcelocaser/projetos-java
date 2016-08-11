@@ -5,13 +5,13 @@ import br.com.core.persistence.interfaces.Enderecos;
 import br.com.core.util.CEPUtil;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marcelocaser
  */
-@Component
+@Service
 public class EnderecosBO {
 
     @Autowired

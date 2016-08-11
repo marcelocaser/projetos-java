@@ -4,13 +4,13 @@ import br.com.core.entity.BairrosTO;
 import br.com.core.persistence.interfaces.Bairros;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marcelocaser
  */
-@Component
+@Service
 public class BairrosBO {
     
     @Autowired

@@ -4,14 +4,14 @@ import br.com.core.entity.BairrosTO;
 import br.com.core.persistence.interfaces.Bairros;
 import java.util.List;
 import javax.persistence.NoResultException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author marcelocaser
  */
-@Component
+@Repository
 public class BairrosPO extends Persistence<BairrosTO> implements Bairros {
 
     public BairrosPO() {

@@ -4,13 +4,13 @@ import br.com.core.entity.EstadosTO;
 import br.com.core.persistence.interfaces.Estados;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marce
  */
-@Component
+@Service
 public class EstadosBO {
     
     @Autowired
