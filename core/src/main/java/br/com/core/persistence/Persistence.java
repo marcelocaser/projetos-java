@@ -20,17 +20,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.eclipse.persistence.exceptions.QueryException;
-import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author marcelocaser
  * @param <T>
  */
-@Repository
 public abstract class Persistence<T extends Serializable> {
 
-    private Class< T> clazz;
+    private Class<T> clazz;
 
     @PersistenceContext
     protected EntityManager entityManager;
@@ -49,7 +47,7 @@ public abstract class Persistence<T extends Serializable> {
         this.entityManager = entityManager;
     }
 
-    public final void setClazz(Class< T> clazzToSet) {
+    public final void setClazz(Class<T> clazzToSet) {
         this.clazz = clazzToSet;
     }
 
@@ -65,7 +63,7 @@ public abstract class Persistence<T extends Serializable> {
         return getEntityManager().find(clazz, id);
     }
 
-    protected List< T> findAll() {
+    protected List<T> findAll() {
         CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(clazz));
         return getEntityManager().createQuery(cq).getResultList();
@@ -176,11 +174,11 @@ public abstract class Persistence<T extends Serializable> {
     protected void clear() {
         getEntityManager().clear();
     }
-    
+
     protected void lock(T entity, LockModeType lockModeType) {
         getEntityManager().lock(entity, lockModeType);
     }
-    
+
     protected boolean contains(T entity) {
         return getEntityManager().contains(entity);
     }

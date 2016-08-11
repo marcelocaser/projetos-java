@@ -6,7 +6,8 @@ package br.com.core.enumerator;
  */
 public enum EnumSecurity {
 
-    SISTEMA_CONTROLADO,
+    //SISTEMA_CONTROLADO,
+    SISTEMA_CONFIGURACAO,
     REQUEST_DASH_BOARD,
     USUARIO_LOGADO,
     PERFIL_ACESSO_LOGADO,
