@@ -8,8 +8,8 @@
 
     <ui:define name="content">
 
-        <reinopet:modalConfirmDialog widgetVar="confirmacaoMaisEndereco" mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecosMaisEndereco" managedBean="#{enderecosBean.removerMaisEndereco()}"/>
-        <reinopet:modalConfirmDialog widgetVar="confirmacaoMaisAnimais" mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:animaisMaisAnimais" managedBean="#{animaisBean.removerMaisAnimais()}"/>
+        <reinopet:confirmDialog widgetVar="confirmacaoMaisEndereco" mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecosMaisEndereco" confirmaSim="#{enderecosBean.removerMaisEndereco()}"/>
+        <reinopet:confirmDialog widgetVar="confirmacaoMaisAnimais" mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:animaisMaisAnimais" confirmaSim="#{animaisBean.removerMaisAnimais()}"/>
 
         <div class="EmptyBox10"></div>
         <h:form id="frmClientesNovo" prependId="false">
@@ -41,7 +41,7 @@
                                     </p:inputMask>
 
                                     <p:outputLabel for="email" value="#{msg.email}"/>
-                                    <p:inputText id="email" value="#{clientesBean.clientesTO.pessoasTO.email}" styleClass="lowercase" required="true" />
+                                    <p:inputText id="email" value="#{clientesBean.clientesTO.pessoasTO.email}" styleClass="lowercase"/>
 
                                     <p:outputLabel for="registroGeral" value="#{msg.pessoasIdentidade}"/>
                                     <p:inputText id="registroGeral" value="#{clientesBean.clientesTO.pessoasTO.registroGeral}" />
@@ -79,6 +79,15 @@
                                     <span>#{msg.pessoasCelularWhatsAppOutro} </span><i class="fa fa-whatsapp Fs15"></i>
                                     <p:inputMask id="whatsAppOutro" value="#{clientesBean.clientesTO.pessoasTO.telefoneWhatsAppOutro}" converter="ConverterSemCaracteres" mask="(99) 9 9999-9999">
                                     </p:inputMask>
+
+                                    <span>#{msg.pessoasFacebook} </span><i class="fa fa-facebook-square Fs15"></i>
+                                    <p:inputText id="facebook" value="#{clientesBean.clientesTO.pessoasTO.facebook}"/>
+
+                                    <p:outputLabel/>
+                                    <p:outputLabel/>
+
+                                    <span>#{msg.pessoasInstagram} </span><i class="fa fa-instagram Fs15"></i>
+                                    <p:inputText id="instagram" value="#{clientesBean.clientesTO.pessoasTO.instagram}"/>
                                 </p:panelGrid>
                             </div>
                         </div>
@@ -89,11 +98,16 @@
                         <div class="ContainerIndent">
                             <div class="Card">
                                 <p:focus id="fcsCep" for="cep"/>
-                                <p:panelGrid id="consultaCep" columns="3" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:panelGrid id="consultaCep" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel for="cep" value="#{msg.enderecosCep}"/>
-                                    <p:inputMask id="cep" value="#{enderecosBean.enderecosComplementosTO.cep}" converter="ConverterSemCaracteres" mask="99.999-999">
+                                    <p:inputMask id="cep" value="#{enderecosBean.enderecosComplementosTO.cep}" converter="ConverterSemCaracteres" mask="99.999-999" required="true">
                                     </p:inputMask>
-                                    <p:commandButton value="#{msg.enderecosConsultaCEP}" action="#{enderecosBean.consultarCEP()}" update="dadosEndereco" process="consultaCep" icon="fa fa-envelope Fs15 White" styleClass="BlueButton RaisedButton"/>
+                                    <p:commandButton value="#{msg.enderecosConsultaCEP}" action="#{enderecosBean.consultarCEP()}" update="consultaCep dadosEndereco" process="consultaCep" icon="fa fa-envelope Fs15 White" styleClass="BlueButton RaisedButton">
+                                        <p:resetInput target="consultaCep dadosEndereco" />
+                                    </p:commandButton>
+                                    <p:commandLink value="#{msg.enderecosNaoSeiOCep}" action="#{enderecosBean.novo()}" update="consultaCep dadosEndereco enderecosLogradouro dadosLogradouro" process="@this" onclick="PF('consultaLogradouro').show()" >
+                                        <p:resetInput target="consultaCep dadosEndereco"  />
+                                    </p:commandLink>
                                 </p:panelGrid>
                                 <p:panelGrid id="dadosEndereco" columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
                                     <p:outputLabel for="logradouro" value="#{msg.enderecosLogradouro}"/>
@@ -172,7 +186,7 @@
                                     </p:inputText>
 
                                     <p:outputLabel for="nascimentoAnimal" value="#{msg.animaisNascimento}"/>
-                                    <p:calendar id="nascimentoAnimal" value="#{animaisBean.animaisTO.nascimento}" pattern="dd/MM/yyyy" mask="true" maxdate="#{animaisBean.dataNascimentoNoFuturo}">
+                                    <p:calendar id="nascimentoAnimal" value="#{animaisBean.animaisTO.nascimento}" pattern="dd/MM/yyyy" mask="true" maxdate="#{animaisBean.dataNascimentoNoFuturo}" showOn="none">
                                     </p:calendar>
 
                                     <p:outputLabel for="sexoAnimal" value="#{msg.animaisSexo}"/>
@@ -395,6 +409,38 @@
                     </div>
                 </p:tab>
             </p:wizard>
+        </h:form>
+        <h:form id="frmEnderecosLogradouro" prependId="false">
+            <p:dialog widgetVar="consultaLogradouro" modal="true" resizable="false" responsive="true" minimizable="false" header="#{msg.enderecosConsultaCEP}">
+                <p:panelGrid id="dadosLogradouro" columns="4" columnClasses="ui-grid-col-1,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
+                    <p:outputLabel for="enderecoLogradouro" value="#{msg.enderecosLogradouro}"/>
+                    <p:inputText id="enderecoLogradouro" value="#{enderecosBean.enderecosTO.logracompl}" required="true">
+                    </p:inputText>
+                    <p:commandButton value="#{msg.enderecosConsultaCEP}" action="#{enderecosBean.consultarLogradouro()}" update="consultaCep dadosEndereco enderecosLogradouro dadosLogradouro" icon="fa fa-envelope Fs15 White" styleClass="BlueButton RaisedButton" />
+                </p:panelGrid>
+                <div class="EmptyBox10"></div>
+                <p:dataTable id="enderecosLogradouro" var="endereco" value="#{enderecosBean.enderecosTOs}" emptyMessage="">
+                    <p:column headerText="#{msg.enderecosCep}">
+                        <h:outputText value="#{endereco.cep}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg.enderecosLogradouro}">
+                        <h:outputText value="#{endereco.logracompl}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg.enderecosBairro}">
+                        <h:outputText value="#{endereco.idBairro.nome}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg.enderecosCidade}">
+                        <h:outputText value="#{endereco.idCidade.nome}" />
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton icon="fa fa-search" actionListener="#{enderecosBean.enderecoSelected(endereco)}" process="enderecosLogradouro" update="dadosEndereco consultaCep" onclick="PF('consultaLogradouro').hide()" />
+                    </p:column>
+                </p:dataTable>
+            </p:dialog>
         </h:form>
     </ui:define>
 

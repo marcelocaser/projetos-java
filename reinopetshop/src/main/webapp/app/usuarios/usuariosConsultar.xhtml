@@ -57,8 +57,14 @@
                             <p:outputLabel for="email" value="#{msg.email}"/>
                             <p:inputText id="email" value="#{usuariosBean.usuariosTO.email}" styleClass="lowercase" />
 
+                            <p:outputLabel for="login" value="#{msg.usuariosLogin}"/>
+                            <p:inputText id="login" value="#{usuariosBean.usuariosTO.login}" styleClass="lowercase" readonly="true"/>
+
                             <span>#{msg.usuariosTelefone} </span><i class="fa fa-phone-square Fs15"></i>
                             <p:inputMask id="telefone" value="#{usuariosBean.usuariosTO.telefone}" converter="ConverterSemCaracteres" mask="(99) 9 9999-9999" readonly="true"/>
+
+                            <p:outputLabel/>
+                            <p:outputLabel/>
 
                             <p:outputLabel for="chave" value="#{msg.usuariosToken}"/>
                             <p:inputText id="chave" value="#{usuariosBean.usuariosTO.chave}" readonly="true" />

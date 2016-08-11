@@ -12,9 +12,9 @@
     </ui:define>
 
     <ui:define name="content">
-        
-        <reinopet:modalConfirmDialog widgetVar="confirmacaoExcluir" mensagem="#{msg.desejaExcluir}" update=":frmUsuariosListar:usuarios" managedBean="#{usuariosBean.excluir()}"/>
-        
+
+        <reinopet:confirmDialog widgetVar="confirmacaoExcluir" mensagem="#{msg.desejaExcluir}" update=":frmUsuariosListar:usuarios" confirmaSim="#{usuariosBean.excluir()}"/>
+
         <div class="Container100">
             <div class="ContainerIndent">
                 <div class="Container100">

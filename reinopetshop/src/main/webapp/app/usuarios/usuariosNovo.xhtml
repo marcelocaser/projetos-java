@@ -51,8 +51,14 @@
                             <p:outputLabel for="email" value="#{msg.email}"/>
                             <p:inputText id="email" value="#{usuariosBean.usuariosTO.email}" styleClass="lowercase" required="true" />
 
+                            <p:outputLabel for="login" value="#{msg.usuariosLogin}"/>
+                            <p:inputText id="login" value="#{usuariosBean.usuariosTO.login}" styleClass="lowercase"/>
+
                             <span>#{msg.usuariosTelefone} </span><i class="fa fa-phone-square Fs15"></i>
                             <p:inputMask id="telefone" value="#{usuariosBean.usuariosTO.telefone}" converter="ConverterSemCaracteres" mask="(99) 9 9999-9999" />
+
+                            <p:outputLabel/>
+                            <p:outputLabel/>
 
                             <p:outputLabel for="senha" value="#{msg.usuariosSenha}"/>
                             <p:password id="senha" value="#{usuariosBean.usuariosTO.senha}" match="confirmarSenha" required="true" />

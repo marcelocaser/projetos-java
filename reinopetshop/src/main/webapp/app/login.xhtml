@@ -44,13 +44,13 @@
                         <div class="Card SoftGrayBack">
                             <h:form prependId="false">
                                 <p:focus for="Email" />
-                                <p:inputText id="Email" placeholder="#{msg.email}" value="#{loginBean.email}" required="true" autocomplete="off" styleClass="Wid90 TexAlCenter"/>
+                                <p:inputText id="Email" placeholder="#{msg.email} / #{msg.usuariosLogin}" value="#{loginBean.emailLogin}" required="true" autocomplete="off" styleClass="Wid90 TexAlCenter"/>
                                 <div class="EmptyBox10"></div>
                                 <p:inputText id="Senha" type="password" placeholder="#{msg.senha}" value="#{loginBean.senha}" required="true" styleClass="Wid90 TexAlCenter"/>
                                 <div class="EmptyBox30"></div>
                                 <p:selectBooleanCheckbox value="#{loginBean.continuarConectado}" itemLabel="#{msg.continuarConectado}"/>
                                 <div class="EmptyBox30"></div>
-                                <p:commandButton value="#{msg.entrarNoSitema}" icon="fa fa-sign-in" action="#{loginBean.login()}" styleClass="Wid100 BlueButton"/>
+                                <p:commandButton value="#{msg.entrarNoSitema}" icon="fa fa-sign-in" action="#{loginBean.login()}" update="@form" styleClass="Wid100 BlueButton"/>
                                 <div class="EmptyBox10 ShowOnMobile"></div>
                                 <p:commandButton value="#{msg.esqueceuASenha}" icon="fa fa-lock" styleClass="Wid100 RedButton"/>
                             </h:form>
@@ -78,7 +78,7 @@
         <h:outputStylesheet name="css/ripple-effect.css" library="adamantium-layout" />
         <h:outputStylesheet name="css/font-awesome.css" library="adamantium-layout" />
         <h:outputStylesheet name="css/adamantium-layout.css" library="adamantium-layout" />
-        
+
         <h:outputStylesheet name="css/reinopetshop.css" library="reinopetshop-layout" />
     </h:body>
 

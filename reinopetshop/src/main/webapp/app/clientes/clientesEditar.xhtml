@@ -8,8 +8,8 @@
 
     <ui:define name="content">
 
-        <reinopet:modalConfirmDialog widgetVar="confirmacaoMaisEndereco" mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecosMaisEndereco" managedBean="#{enderecosBean.removerMaisEndereco()}"/>
-        <reinopet:modalConfirmDialog widgetVar="confirmacaoMaisAnimais" mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:animaisMaisAnimais" managedBean="#{animaisBean.removerMaisAnimais()}"/>
+        <reinopet:confirmDialog widgetVar="confirmacaoMaisEndereco" mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:enderecosMaisEndereco" confirmaSim="#{enderecosBean.removerMaisEndereco()}"/>
+        <reinopet:confirmDialog widgetVar="confirmacaoMaisAnimais" mensagem="#{msg.desejaExcluir}" update=":frmClientesNovo:animaisMaisAnimais" confirmaSim="#{animaisBean.removerMaisAnimais()}"/>
 
         <div class="EmptyBox10"></div>
         <h:form id="frmClientesNovo" prependId="false">
@@ -79,6 +79,15 @@
                                     <span>#{msg.pessoasCelularWhatsAppOutro} </span><i class="fa fa-whatsapp Fs15"></i>
                                     <p:inputMask id="whatsAppOutro" value="#{clientesBean.clientesTO.pessoasTO.telefoneWhatsAppOutro}" converter="ConverterSemCaracteres" mask="(99) 9 9999-9999">
                                     </p:inputMask>
+
+                                    <span>#{msg.pessoasFacebook} </span><i class="fa fa-facebook-square Fs15"></i>
+                                    <p:inputText id="facebook" value="#{clientesBean.clientesTO.pessoasTO.facebook}"/>
+
+                                    <p:outputLabel/>
+                                    <p:outputLabel/>
+
+                                    <span>#{msg.pessoasInstagram} </span><i class="fa fa-instagram Fs15"></i>
+                                    <p:inputText id="instagram" value="#{clientesBean.clientesTO.pessoasTO.instagram}"/>
                                 </p:panelGrid>
                             </div>
                         </div>

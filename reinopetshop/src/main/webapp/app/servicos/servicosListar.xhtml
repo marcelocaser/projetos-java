@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="subheader">
+        Meus Usuarios
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="Container100">
+            <div class="ContainerIndent">
+                <div class="Container100">
+                    <div class="ContainerIndent">
+                        <p:toolbar>
+                            <p:toolbarGroup align="left">
+                                <div class="EmptyBox10"></div>
+                                <h:outputText class="CardTopic TexAlLeft" value=" #{msg.servicosMeusServicos}" />
+                            </p:toolbarGroup>
+
+                            <p:toolbarGroup align="right">
+                                <h:form>
+                                    <p:menuButton value="#{msg.menuOpcoes}">
+                                        <p:menuitem value="#{msg.menuOpcoesNovo}" icon="fa fa-plus Fs15" action="#{servicosBean.novo()}"/>
+                                    </p:menuButton>
+                                </h:form>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <h:form id="frmServicosListar">
+                            <p:dataTable id="usuarios" var="servicosTO" value="#{servicosBean.servicosTOs}" selectionMode="single" selection="#{servicosBean.servicosTO}" rowKey="#{servicosTO.id}" paginatorPosition="bottom"
+                                         rows="15" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" emptyMessage="#{msg.servicosNenhumServicoCadastrado}" reflow="true" >
+
+                                <p:column headerText="#{msg.servicosCodigo}">
+                                    <h:outputText value="#{servicosTO.id}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg.servicosNome}">
+                                    <h:outputText value="#{servicosTO.nome}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg.servicosDescricao}">
+                                    <h:outputText value="#{servicosTO.descricao}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg.servicosGrupo}">
+                                    <h:outputText value="#{servicosTO.servicosCategoriasTOList}" />
+                                </p:column>
+
+                                <p:column styleClass="alignCenter" width="5%">
+                                    <p:commandButton id="consultar" icon="fa fa-search-plus" 
+                                                     action="#{servicosBean.consultar()}">
+                                        <p:tooltip for="consultar"
+                                                   value="#{msg.menuOpcoesToolTipoConsultar}" />
+                                        <f:setPropertyActionListener value="#{servicosTO}"
+                                                                     target="#{servicosBean.servicosTO}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

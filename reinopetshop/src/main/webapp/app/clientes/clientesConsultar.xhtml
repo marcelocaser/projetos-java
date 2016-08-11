@@ -82,6 +82,15 @@
                             <span>#{msg.pessoasCelularWhatsAppOutro} </span><i class="fa fa-whatsapp Fs15"></i>
                             <p:inputMask id="whatsAppOutro" value="#{clientesBean.clientesTO.pessoasTO.telefoneWhatsAppOutro}" converter="ConverterSemCaracteres" mask="(99) 9 9999-9999" readonly="true">
                             </p:inputMask>
+
+                            <span>#{msg.pessoasFacebook} </span><i class="fa fa-facebook-square Fs15"></i>
+                            <p:inputText id="facebook" value="#{clientesBean.clientesTO.pessoasTO.facebook}" readonly="true"/>
+
+                            <p:outputLabel/>
+                            <p:outputLabel/>
+
+                            <span>#{msg.pessoasInstagram} </span><i class="fa fa-instagram Fs15"></i>
+                            <p:inputText id="instagram" value="#{clientesBean.clientesTO.pessoasTO.instagram}" readonly="true"/>
                         </p:panelGrid>
                     </h:form>
                 </div>

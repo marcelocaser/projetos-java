@@ -13,7 +13,7 @@
 
     <ui:define name="content">
 
-        <reinopet:modalConfirmDialog widgetVar="confirmacaoExcluir" mensagem="#{msg.desejaExcluir}" update=":frmClientesListar:clientes" managedBean="#{clientesBean.excluir()}"/>
+        <reinopet:confirmDialog widgetVar="confirmacaoExcluir" mensagem="#{msg.desejaExcluir}" update=":frmClientesListar:clientes" confirmaSim="#{clientesBean.excluir()}"/>
 
         <div class="Container100">
             <div class="ContainerIndent">
@@ -43,7 +43,7 @@
                                 </p:column>
                                 <p:column headerText="#{msg.animal}">
                                     <ui:repeat var="meusAnimais" value="#{clientesTO.animaisTOList}" varStatus="status" >
-                                       #{meusAnimais.nome}<h:outputText value="," rendered="#{!status.last}" />
+                                        #{meusAnimais.nome}<h:outputText value="," rendered="#{!status.last}" />
                                     </ui:repeat>
                                 </p:column>
                                 <p:column headerText="#{msg.pessoasCelularPessoal}" sortBy="#{clientesTO.pessoasTO.telefoneCelularPessoal}">

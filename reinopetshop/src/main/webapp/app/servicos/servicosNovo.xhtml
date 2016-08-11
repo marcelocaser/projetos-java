@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="EmptyBox10"></div>
+        <h:form id="frmServicoNovo" prependId="false">
+            <div class="Container100 ui-fluid">
+                <div class="ContainerIndent">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <div class="EmptyBox10"></div>
+                            <h:outputText class="CardTopic TexAlLeft" value=" #{msg.servicosNovo}" />
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <div class="Card">
+                        <p:panelGrid id="dadosUsuarios" columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel for="id" value="#{msg.id}:" class="ShowOnDesktop" />
+                            <p:inputText id="id" value="#{servicosBean.servicosTO.id}" readonly="true" class="ShowOnDesktop idInput"/>
+
+                            <p:outputLabel/>
+                            <p:outputLabel/>
+
+                            <p:outputLabel for="grupos" value="#{msg.servicosGrupos}" />
+                            <p:selectOneMenu id="grupos" value="#{servicosBean.idServicoGrupo}" required="true" >
+                                <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{servicosBean.servicosGruposTOs}" var="grupos" itemLabel="#{grupos.descricao}" itemValue="#{grupos.id}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="nome" value="#{msg.servicosNome}" />
+                            <p:inputText id="nome" value="#{servicosBean.servicosTO.nome}" required="true" />
+
+                            <p:outputLabel for="descricao" value="#{msg.servicosDescricao}" />
+                            <p:inputText id="descricao" value="#{servicosBean.servicosTO.descricao}" required="true" />
+
+                            <p:outputLabel for="cobrancaDiaria" value="#{msg.servicosCobrancaDiaria}" />
+                            <p:selectBooleanCheckbox id="cobrancaDiaria" value="#{servicosBean.servicosTO.cobrancaDiaria}" />
+
+                            <p:outputLabel for="servicoClienteSemAnimal" value="#{msg.servicosClienteSemAnimal}" />
+                            <p:selectBooleanCheckbox id="servicoClienteSemAnimal" value="#{servicosBean.servicosTO.servicoClienteSemAnimal}" />
+
+                            <p:outputLabel for="remarcarConsultaEmDias" value="#{msg.servicosRemarcarEmDias}" />
+                            <p:inputText id="remarcarConsultaEmDias" value="#{servicosBean.servicosTO.remarcarConsultaEmDias}" />
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

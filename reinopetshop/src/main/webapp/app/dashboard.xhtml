@@ -4,7 +4,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
-                template="/WEB-INF/template.xhtml">
+                template="/WEB-INF/template.xhtml"
+                xmlns:reinopet="http://xmlns.jcp.org/jsf/composite/reinopet">
 
     <ui:define name="head">
         <script type="text/javascript">
@@ -49,7 +50,7 @@
             function scrollTop() {
                 window.scrollTo(0, 0);
             }
-            
+
             $(document).ready(function () {
                 $('.ls-mask-phone8_with_ddd').mask('(99) 9 9999-9999');
             });
@@ -369,21 +370,44 @@
                         <div class="CardTopicMini">#{msg.agendasAgendaDoDia}</div>
                         <div class="EmptyBox20"></div>
                         <ui:repeat var="agendas" varStatus="status" value="#{agendasBean.agendaDoDia}">
-                            <div class="ui-fluid">
-                                <p:selectManyCheckbox layout="responsive" columns="1">
-                                    <h:outputText styleClass="Fleft" value="#{agendas.idAnimal.nome}" /><h:outputText styleClass="Fleft" value="#{agendas.hora}" ><f:convertDateTime pattern=" ' - ' HH:mm" timeZone="GMT-03:00"/></h:outputText><br/><h:outputText styleClass="Fs12" value="#{agendas.idCliente.pessoasTO.nome}" /><br/><br/>
-                                    <!--                                <f:selectItem itemLabel="Call Heather" itemValue="Call Heather" />
-                                                                    <f:selectItem itemLabel="Send Mail To Samuel" itemValue="Send Mail To Samuel" />
-                                                                    <f:selectItem itemLabel="Hangout with Manager" itemValue="Hangout with Manager" />
-                                                                    <f:selectItem itemLabel="Dinner With John" itemValue="Dinner With John" />-->
-                                </p:selectManyCheckbox>
-                            </div>
+                            <!--<div class="ui-fluid">-->
+                            <ui:fragment rendered="#{status.even}">
+                                <div class="Wid45 Fleft OvHidden">
+                                    <p:selectManyCheckbox layout="responsive" columns="1">
+                                        <h:outputText styleClass="Fleft" value="#{agendas.idAnimal.nome}" />
+                                        <h:outputText styleClass="Fleft" value="#{agendas.hora}" >
+                                            <f:convertDateTime pattern=" ' - ' HH:mm" timeZone="GMT-03:00"/>
+                                        </h:outputText><br/>
+                                        <h:outputText styleClass="Fs12" value="#{agendas.idCliente.pessoasTO.nome}" /><br/><br/>
+                                        <!--                                <f:selectItem itemLabel="Call Heather" itemValue="Call Heather" />
+                                                                        <f:selectItem itemLabel="Send Mail To Samuel" itemValue="Send Mail To Samuel" />
+                                                                        <f:selectItem itemLabel="Hangout with Manager" itemValue="Hangout with Manager" />
+                                                                        <f:selectItem itemLabel="Dinner With John" itemValue="Dinner With John" />-->
+                                    </p:selectManyCheckbox>
+                                </div>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{!status.even}">
+                                <div class="Wid45 Fright OvHidden">
+                                    <p:selectManyCheckbox layout="responsive" columns="1">
+                                        <h:outputText styleClass="Fleft" value="#{agendas.idAnimal.nome}" />
+                                        <h:outputText styleClass="Fleft" value="#{agendas.hora}" >
+                                            <f:convertDateTime pattern=" ' - ' HH:mm" timeZone="GMT-03:00"/>
+                                        </h:outputText><br/>
+                                        <h:outputText styleClass="Fs12" value="#{agendas.idCliente.pessoasTO.nome}" /><br/><br/>
+                                        <!--                                <f:selectItem itemLabel="Call Heather" itemValue="Call Heather" />
+                                                                        <f:selectItem itemLabel="Send Mail To Samuel" itemValue="Send Mail To Samuel" />
+                                                                        <f:selectItem itemLabel="Hangout with Manager" itemValue="Hangout with Manager" />
+                                                                        <f:selectItem itemLabel="Dinner With John" itemValue="Dinner With John" />-->
+                                    </p:selectManyCheckbox>
+                                </div>
+                            </ui:fragment>
+                            <!--</div>-->
                         </ui:repeat>
 
                         <div class="EmptyBox20"></div>
                         <div class="SeparatorFull"></div>
                         <p:commandButton value="#{msg.agendasMinhaAgenda}" styleClass="CyanButton Fright" action="#{agendasBean.novo()}"/>
-                        <span class="Red FontAdamantiumBold Fs18">#{agendasBean.agendasTOs.size()}</span><br/>
+                        <span class="Red FontAdamantiumBold Fs18">#{agendasBean.agendaDoMes.size()}</span><br/>
                         <span class="Fs12 FontAdamantiumRegular">#{msg.agendasTotalEsteMes}</span>
 
                         <!--                        <div class="SeparatorFull"></div>
