@@ -35,6 +35,11 @@
         </locale-config>
     </application>
     
+    <!-- ** LISTENER'S CONTROLE DE ACESSO ** -->
+    <lifecycle>
+        <phase-listener>br.com.reinopetshop.web.controller.ReinoPetPhaseListener</phase-listener>
+    </lifecycle>
+    
     <factory>
         <exception-handler-factory>
             org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory
