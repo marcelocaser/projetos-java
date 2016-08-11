@@ -456,4 +456,4 @@
         setInterval(function(){
         if ($.jMaskGlobals.watchDataMask) { $.applyDataMask(); }
         }, globals.watchInterval);
-                }));
+        }));

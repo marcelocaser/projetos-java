@@ -27,27 +27,29 @@ PrimeFaces.locales['pt'] = {
 };
 
 function handleAgendaDialogSubmit(xhr, status, args) {
-    if (args.validationFailed) {
+    if (args.validationFailed || !args.validarHorario) {
         PF('agendaDialog').show();
     } else {
         PF('agendaDialog').hide();
     }
-};
+}
+;
 
 // Find the right method, call on correct element
 function launchIntoFullscreen(element) {
-  if(element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if(element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if(element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  } else if(element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  }
-  // Usage launch fullscreen for browsers that support it!
-  // launchIntoFullscreen(document.documentElement); // the whole page
-  // launchIntoFullscreen(document.getElementById("videoElement")); // any individual element
-};
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
+    // Usage launch fullscreen for browsers that support it!
+    // launchIntoFullscreen(document.documentElement); // the whole page
+    // launchIntoFullscreen(document.getElementById("videoElement")); // any individual element
+}
+;
 
 
