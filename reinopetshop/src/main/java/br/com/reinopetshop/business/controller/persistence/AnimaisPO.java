@@ -4,14 +4,14 @@ import br.com.core.entity.AnimaisTO;
 import br.com.core.persistence.Persistence;
 import br.com.reinopetshop.business.controller.persistence.interfaces.Animais;
 import java.util.List;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author marce
  */
-@Component
+@Repository
 public class AnimaisPO extends Persistence<AnimaisTO> implements Animais {
 
     public AnimaisPO() {
@@ -45,5 +45,5 @@ public class AnimaisPO extends Persistence<AnimaisTO> implements Animais {
     public List<AnimaisTO> listar(AnimaisTO animaisTO) {
         return list(animaisTO);
     }
-    
+
 }

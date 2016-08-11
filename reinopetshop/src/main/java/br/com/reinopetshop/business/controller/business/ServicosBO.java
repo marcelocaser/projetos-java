@@ -5,13 +5,13 @@ import br.com.reinopetshop.business.controller.persistence.interfaces.Servicos;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marce
  */
-@Component
+@Service
 public class ServicosBO {
 
     @Autowired
@@ -21,8 +21,8 @@ public class ServicosBO {
         antesDeAlterar(servicosTO);
         this.persistencia.alterar(servicosTO);
     }
-    
-     private void antesDeAlterar(ServicosTO servicosTO) {
+
+    private void antesDeAlterar(ServicosTO servicosTO) {
         servicosTO.setAlteracao(new Date());
     }
 

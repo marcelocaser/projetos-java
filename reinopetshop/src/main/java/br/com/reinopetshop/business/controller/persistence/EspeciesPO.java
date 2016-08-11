@@ -4,13 +4,13 @@ import br.com.core.entity.EspeciesTO;
 import br.com.core.persistence.Persistence;
 import br.com.reinopetshop.business.controller.persistence.interfaces.Especies;
 import java.util.List;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author marce
  */
-@Component
+@Repository
 public class EspeciesPO extends Persistence<EspeciesTO> implements Especies {
 
     public EspeciesPO() {
@@ -21,7 +21,6 @@ public class EspeciesPO extends Persistence<EspeciesTO> implements Especies {
     public void alterar(EspeciesTO especiesTO) {
         update(especiesTO);
     }
-    
 
     @Override
     public void excluir(EspeciesTO especiesTO) {
@@ -43,5 +42,4 @@ public class EspeciesPO extends Persistence<EspeciesTO> implements Especies {
         return list(especiesTO);
     }
 
-    
 }

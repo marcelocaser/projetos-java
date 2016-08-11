@@ -83,7 +83,7 @@ public class MenusBean extends ReinoPetController {
     public void geraMenu() {
         menuModel = new DefaultMenuModel();
         MenusUsuariosTO menusUsuariosTO = new MenusUsuariosTO();
-        menusUsuariosTO.setIdMenuUsuario(getUsuarioLogado());
+        menusUsuariosTO.setIdUsuario(getUsuarioLogado());
         List<MenusUsuariosTO> listaMenu = menuNegocio.listarMenuAtivo(menusUsuariosTO);
         for (MenusUsuariosTO menu : listaMenu) {
             if (menu.getIdMenuPai() == null) {
@@ -93,22 +93,24 @@ public class MenusBean extends ReinoPetController {
                     submenu.setIcon(menu.getIdMenu().getIcone());
                     submenu.setRendered(menu.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
                     for (MenusUsuariosTO m : menu.getMenusUsuariosTOList()) {
-                        if (m.getMenusUsuariosTOList().isEmpty()) {
-                            DefaultMenuItem mi = new DefaultMenuItem();
-                            mi.setValue(getMessage(m.getIdMenu().getNome()));
-                            mi.setIcon(m.getIdMenu().getIcone());
-                            mi.setCommand(m.getIdMenu().getAcao());
-                            mi.setOnstart("PF('statusDialog').show()");
-                            mi.setOnsuccess("PF('statusDialog').hide()");
-                            mi.setRendered(m.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
-                            submenu.getElements().add(mi);
-                        } else {
-                            DefaultSubMenu sm = new DefaultSubMenu();
-                            sm.setLabel(getMessage(m.getIdMenu().getNome()));
-                            sm.setIcon(m.getIdMenu().getIcone());
-                            sm.setRendered(m.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
-                            sm = geraSubmenu(m);
-                            submenu.getElements().add(sm);
+                        if (m.getIdUsuario().getId().equals(getUsuarioLogado().getId())) {
+                            if (m.getMenusUsuariosTOList().isEmpty()) {
+                                DefaultMenuItem mi = new DefaultMenuItem();
+                                mi.setValue(getMessage(m.getIdMenu().getNome()));
+                                mi.setIcon(m.getIdMenu().getIcone());
+                                mi.setCommand(m.getIdMenu().getAcao());
+                                mi.setOnstart("PF('statusDialog').show()");
+                                mi.setOnsuccess("PF('statusDialog').hide()");
+                                mi.setRendered(m.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
+                                submenu.getElements().add(mi);
+                            } else {
+                                DefaultSubMenu sm = new DefaultSubMenu();
+                                sm.setLabel(getMessage(m.getIdMenu().getNome()));
+                                sm.setIcon(m.getIdMenu().getIcone());
+                                sm.setRendered(m.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
+                                sm = geraSubmenu(m);
+                                submenu.getElements().add(sm);
+                            }
                         }
                     }
                     menuModel.addElement(submenu);
@@ -133,22 +135,24 @@ public class MenusBean extends ReinoPetController {
         submenu.setIcon(menu.getIdMenu().getIcone());
         submenu.setRendered(menu.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
         for (MenusUsuariosTO m : menu.getMenusUsuariosTOList()) {
-            if (m.getMenusUsuariosTOList().isEmpty()) {
-                DefaultMenuItem mi = new DefaultMenuItem();
-                mi.setValue(getMessage(m.getIdMenu().getNome()));
-                mi.setIcon(m.getIdMenu().getIcone());
-                mi.setCommand(m.getIdMenu().getAcao());
-                mi.setOnstart("PF('statusDialog').show()");
-                mi.setOnsuccess("PF('statusDialog').hide()");
-                mi.setRendered(m.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
-                submenu.getElements().add(mi);
-            } else {
-                submenu.getElements().add(geraSubmenu(m));
+            if (m.getIdUsuario().getId().equals(getUsuarioLogado().getId())) {
+                if (m.getMenusUsuariosTOList().isEmpty()) {
+                    DefaultMenuItem mi = new DefaultMenuItem();
+                    mi.setValue(getMessage(m.getIdMenu().getNome()));
+                    mi.setIcon(m.getIdMenu().getIcone());
+                    mi.setCommand(m.getIdMenu().getAcao());
+                    mi.setOnstart("PF('statusDialog').show()");
+                    mi.setOnsuccess("PF('statusDialog').hide()");
+                    mi.setRendered(m.getAtivo().equals(Menus.STATUS_ATIVO) ? Boolean.TRUE : Boolean.FALSE);
+                    submenu.getElements().add(mi);
+                } else {
+                    submenu.getElements().add(geraSubmenu(m));
+                }
             }
         }
         return submenu;
     }
-    
+
     public void atualizaMensagemResources() {
         mensagemNegocio.reload();
     }

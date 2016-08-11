@@ -1,12 +1,13 @@
 package br.com.reinopetshop.web.controller.bean;
 
 import br.com.core.entity.ServicosCategoriasTO;
+import br.com.core.entity.ServicosGruposTO;
 import br.com.core.entity.ServicosTO;
 import br.com.reinopetshop.business.controller.ReinoPetController;
 import br.com.reinopetshop.business.controller.business.ServicosBO;
 import br.com.reinopetshop.business.controller.business.ServicosCategoriasBO;
+import br.com.reinopetshop.business.controller.business.ServicosGruposBO;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -23,26 +24,33 @@ public class ServicosBean extends ReinoPetController {
     private ServicosBO servicosNegocio;
     @Autowired
     private ServicosCategoriasBO servicosCategoriasNegocio;
+    @Autowired
+    private ServicosGruposBO servicosGruposNegocio;
     private ServicosTO servicosTO;
+    private ServicosCategoriasTO servicosCategoriasTO;
     private List<ServicosTO> servicosTOs;
+    private List<ServicosGruposTO> servicosGruposTOs;
     private String idServico;
     private String idServicoCategoria;
+    private String idServicoGrupo;
     private String precoVenda;
     private String valorACobrar;
 
     /* Métodos para tratamento do negócio. */
     public String consultar() {
         try {
-            return "";
+            return "/app/servicos/servicosConsultar";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
     }
-    
+
     public void consultarServicosCategorias() {
-        ServicosCategoriasTO servicosCategoriasTO = servicosCategoriasNegocio.consultar(new ServicosCategoriasTO(new Integer(idServicoCategoria)));
-        if (servicosCategoriasTO.getIdTabelaPreco() != null) {
-            precoVenda = servicosCategoriasTO.getIdTabelaPreco().getPrecoVenda().toString();
+        if (idServicoCategoria != null && !idServicoCategoria.isEmpty()) {
+            servicosCategoriasTO = servicosCategoriasNegocio.consultar(new ServicosCategoriasTO(new Integer(idServicoCategoria)));
+            if (servicosCategoriasTO.getIdTabelaPreco() != null) {
+                precoVenda = servicosCategoriasTO.getIdTabelaPreco().getPrecoVenda().toString();
+            }
         }
     }
 
@@ -72,19 +80,25 @@ public class ServicosBean extends ReinoPetController {
 
     public String listar() {
         try {
-            return "";
+            this.listarServicos();
+            return "/app/servicos/servicosListar";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
     }
 
-    @PostConstruct
     public void listarServicos() {
-        servicosTOs = servicosNegocio.listar(new ServicosTO());
+        if (idServicoGrupo != null && !idServicoGrupo.isEmpty()) {
+            servicosTO = new ServicosTO();
+            servicosTO.setIdServicoGrupo(new ServicosGruposTO(new Integer(idServicoGrupo)));
+            servicosTOs = servicosNegocio.listar(servicosTO);
+        } else {
+            servicosTOs = servicosNegocio.listar(new ServicosTO());
+        }
     }
 
     public void listarServicosCategorias() {
-        if (idServico != null) {
+        if (idServico != null && !idServico.isEmpty()) {
             servicosTO = servicosNegocio.consultar(new ServicosTO(new Integer(idServico)));
             if (servicosTO.getIdTabelaPreco() != null) {
                 precoVenda = servicosTO.getIdTabelaPreco().getPrecoVenda().toString();
@@ -92,13 +106,19 @@ public class ServicosBean extends ReinoPetController {
         }
     }
 
+    public void listarServicosGrupos() {
+        servicosGruposTOs = servicosGruposNegocio.listar(new ServicosGruposTO());
+    }
+
     public String novo() {
         servicosTO = new ServicosTO();
+        servicosCategoriasTO = new ServicosCategoriasTO();
         idServico = null;
         idServicoCategoria = null;
+        idServicoGrupo = null;
         precoVenda = new String();
         valorACobrar = new String();
-        return "";
+        return "/app/servicos/servicosNovo";
     }
 
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */
@@ -118,6 +138,14 @@ public class ServicosBean extends ReinoPetController {
         this.servicosCategoriasNegocio = servicosCategoriasNegocio;
     }
 
+    public ServicosGruposBO getServicosGruposNegocio() {
+        return servicosGruposNegocio;
+    }
+
+    public void setServicosGruposNegocio(ServicosGruposBO servicosGruposNegocio) {
+        this.servicosGruposNegocio = servicosGruposNegocio;
+    }
+
     public ServicosTO getServicosTO() {
         return servicosTO;
     }
@@ -126,12 +154,28 @@ public class ServicosBean extends ReinoPetController {
         this.servicosTO = servicosTO;
     }
 
+    public ServicosCategoriasTO getServicosCategoriasTO() {
+        return servicosCategoriasTO;
+    }
+
+    public void setServicosCategoriasTO(ServicosCategoriasTO servicosCategoriasTO) {
+        this.servicosCategoriasTO = servicosCategoriasTO;
+    }
+
     public List<ServicosTO> getServicosTOs() {
         return servicosTOs;
     }
 
     public void setServicosTOs(List<ServicosTO> servicosTOs) {
         this.servicosTOs = servicosTOs;
+    }
+
+    public List<ServicosGruposTO> getServicosGruposTOs() {
+        return servicosGruposTOs;
+    }
+
+    public void setServicosGruposTOs(List<ServicosGruposTO> servicosGruposTOs) {
+        this.servicosGruposTOs = servicosGruposTOs;
     }
 
     public String getIdServico() {
@@ -148,6 +192,14 @@ public class ServicosBean extends ReinoPetController {
 
     public void setIdServicoCategoria(String idServicoCategoria) {
         this.idServicoCategoria = idServicoCategoria;
+    }
+
+    public String getIdServicoGrupo() {
+        return idServicoGrupo;
+    }
+
+    public void setIdServicoGrupo(String idServicoGrupo) {
+        this.idServicoGrupo = idServicoGrupo;
     }
 
     public String getPrecoVenda() {

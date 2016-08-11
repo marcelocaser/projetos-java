@@ -17,7 +17,6 @@ import br.com.core.entity.EnderecosComplementosTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -38,16 +37,17 @@ public class EnderecosBean extends ReinoPetController {
     private CidadesBO cidadesNegocio;
     @Autowired
     private EnderecosComplementosBO complementosNegocio;
-    @Autowired
     private PessoasBean pessoasBean;
+    private EnderecosTO enderecosTO;
     private EnderecosComplementosTO enderecosComplementosTO;
+    private List<EnderecosTO> enderecosTOs;
     private List<EnderecosComplementosTO> enderecosComplementosTOs;
     private List<EstadosTO> estadosTOs;
     private List<CidadesTO> cidadesTOs;
     private String idEstado;
     private String idCidade;
 
-    private static final String URL_WS_CEP = "http://localhost:8084/cep/ws/consultar.json?cep=[cep]&chave=[chave]";
+    private static final String URL_WS_CEP = "http://localhost:8080/cep/ws/consultar.json?cep=[cep]&chave=[chave]";
 
     /* Métodos para tratamento do negócio. */
     public String adicionarMaisEndereco() {
@@ -59,10 +59,10 @@ public class EnderecosBean extends ReinoPetController {
                 }
             }
             //Adiciona pessoa aos endereço.
-            if (pessoasBean.getPessoasTO() != null && pessoasBean.getPessoasTO().getId() != null) {
-                enderecosComplementosTO.getPessoasTOList().add(pessoasBean.getPessoasTO());
+            if (this.getPessoasBean().getPessoasTO() != null && this.getPessoasBean().getPessoasTO().getId() != null) {
+                enderecosComplementosTO.getPessoasTOList().add(this.getPessoasBean().getPessoasTO());
                 for (int i = 0; i < enderecosComplementosTOs.size(); i++) {
-                    enderecosComplementosTOs.get(i).getPessoasTOList().add(pessoasBean.getPessoasTO());
+                    enderecosComplementosTOs.get(i).getPessoasTOList().add(this.getPessoasBean().getPessoasTO());
                 }
             }
             enderecosComplementosTOs.add(enderecosComplementosTO);
@@ -96,14 +96,10 @@ public class EnderecosBean extends ReinoPetController {
                             this.listarCidades();
                             idCidade = enderecosComplementosTO.getIdEndereco().getIdCidade().getId().toString();
                         } else {
-                            idEstado = null;
-                            idCidade = null;
                             this.novo();
                             setMessage("enderecosErroConsultarCep", EnumTipoMensagem.ERRO);
                         }
                     } else {
-                        idEstado = null;
-                        idCidade = null;
                         this.novo();
                         setMessage("enderecosCepNaoExiste", EnumTipoMensagem.INFO);
                     }
@@ -111,7 +107,16 @@ public class EnderecosBean extends ReinoPetController {
             } else {
                 setMessage("enderecosCepInvalido", EnumTipoMensagem.ERRO);
             }
-            return null;
+            return "";
+        } catch (Exception e) {
+            return tratarExcecao(e);
+        }
+    }
+
+    public String consultarLogradouro() {
+        try {
+            enderecosTOs = enderecosNegocio.listarLogradouro(enderecosTO.getLogracompl());
+            return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
@@ -123,6 +128,14 @@ public class EnderecosBean extends ReinoPetController {
         } catch (Exception e) {
             return tratarExcecao(e);
         }
+    }
+
+    public void enderecoSelected(EnderecosTO endereco) {
+        enderecosComplementosTO.setCep(endereco.getCep());
+        enderecosComplementosTO.setIdEndereco(endereco);
+        idEstado = enderecosComplementosTO.getIdEndereco().getIdCidade().getIdEstado().getId().toString();
+        this.listarCidades();
+        idCidade = enderecosComplementosTO.getIdEndereco().getIdCidade().getId().toString();
     }
 
     public String excluir() {
@@ -167,6 +180,10 @@ public class EnderecosBean extends ReinoPetController {
         }
     }
 
+    public void listarEstados() {
+        estadosTOs = estadosNegocio.listar(new EstadosTO());
+    }
+
     public String removerMaisEndereco() {
         try {
             enderecosComplementosTOs.removeIf(p -> p.getCep().contains(enderecosComplementosTO.getCep()));
@@ -178,12 +195,9 @@ public class EnderecosBean extends ReinoPetController {
         }
     }
 
-    @PostConstruct
-    public void listarEstados() {
-        estadosTOs = estadosNegocio.listar(new EstadosTO());
-    }
-
     public String novo() {
+        enderecosTO = new EnderecosTO();
+        enderecosTOs = new ArrayList<>();
         enderecosComplementosTO = new EnderecosComplementosTO();
         enderecosComplementosTO.setPessoasTOList(new ArrayList<>());
         enderecosComplementosTO.setIdEndereco(new EnderecosTO());
@@ -195,36 +209,23 @@ public class EnderecosBean extends ReinoPetController {
     }
 
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */
-    public EnderecosBO getEnderecosNegocio() {
-        return enderecosNegocio;
+    public PessoasBean getPessoasBean() {
+        if (pessoasBean == null) {
+            pessoasBean = findBean("pessoasBean");
+        }
+        return pessoasBean;
     }
 
-    public void setEnderecosNegocio(EnderecosBO enderecosNegocio) {
-        this.enderecosNegocio = enderecosNegocio;
+    public void setPessoasBean(PessoasBean pessoasBean) {
+        this.pessoasBean = pessoasBean;
     }
 
-    public EstadosBO getEstadosNegocio() {
-        return estadosNegocio;
+    public EnderecosTO getEnderecosTO() {
+        return enderecosTO;
     }
 
-    public void setEstadosNegocio(EstadosBO estadosNegocio) {
-        this.estadosNegocio = estadosNegocio;
-    }
-
-    public CidadesBO getCidadesNegocio() {
-        return cidadesNegocio;
-    }
-
-    public void setCidadesNegocio(CidadesBO cidadesNegocio) {
-        this.cidadesNegocio = cidadesNegocio;
-    }
-
-    public EnderecosComplementosBO getComplementosNegocio() {
-        return complementosNegocio;
-    }
-
-    public void setComplementosNegocio(EnderecosComplementosBO complementosNegocio) {
-        this.complementosNegocio = complementosNegocio;
+    public void setEnderecosTO(EnderecosTO enderecosTO) {
+        this.enderecosTO = enderecosTO;
     }
 
     public EnderecosComplementosTO getEnderecosComplementosTO() {
@@ -233,6 +234,17 @@ public class EnderecosBean extends ReinoPetController {
 
     public void setEnderecosComplementosTO(EnderecosComplementosTO enderecosComplementosTO) {
         this.enderecosComplementosTO = enderecosComplementosTO;
+    }
+
+    public List<EnderecosTO> getEnderecosTOs() {
+        if (enderecosTOs == null) {
+            enderecosTOs = new ArrayList<>();
+        }
+        return enderecosTOs;
+    }
+
+    public void setEnderecosTOs(List<EnderecosTO> enderecosTOs) {
+        this.enderecosTOs = enderecosTOs;
     }
 
     public List<EnderecosComplementosTO> getEnderecosComplementosTOs() {

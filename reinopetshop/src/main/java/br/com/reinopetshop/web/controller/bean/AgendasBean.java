@@ -2,6 +2,7 @@ package br.com.reinopetshop.web.controller.bean;
 
 import br.com.core.entity.AgendasTO;
 import br.com.core.entity.AnimaisTO;
+import br.com.core.entity.ServicosCategoriasTO;
 import br.com.core.entity.ServicosTO;
 import br.com.core.enumerator.EnumTipoMensagem;
 import br.com.core.util.DateUtil;
@@ -11,8 +12,6 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.faces.event.ActionEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -33,38 +32,39 @@ import org.springframework.stereotype.Component;
 @Scope
 public class AgendasBean extends ReinoPetController {
 
-    private ScheduleEvent scheduleEvent;
-    private ScheduleModel eventModel;
     @Autowired
     private AgendasBO agendasNegocio;
+
+    private ClientesBean clientesBean;
+    private AnimaisBean animaisBean;
+    private ServicosBean servicosBean;
+    private PessoasBean pessoasBean;
+    private ScheduleEvent scheduleEvent;
+    private ScheduleModel eventModel;
     private AgendasTO agendasTO;
     private List<AgendasTO> agendasTOs;
+    private List<AgendasTO> agendaDoMes;
     private List<AgendasTO> agendaDoDia;
-    @Autowired
-    private ClientesBean clientesBean;
-    @Autowired
-    private AnimaisBean animaisBean;
-    @Autowired
-    private ServicosBean servicosBean;
-    @Autowired
-    private PessoasBean pessoasBean;
     private String repetirEvento;
     private Date dataEhora;
+    private int diaDaSemana;
     private Boolean mostraBotaoExcluir;
     private Boolean editarEventoAtual;
+    private Boolean validarHorario;
+    private Boolean semanaSeguinte;
 
     public AgendasBean() {
         eventModel = new LazyScheduleModel() {
 
             @Override
             public void loadEvents(Date start, Date end) {
-                //Buscar todos os eventos cadastrados e alimentar calendário
-                buscarAgendamentos();
+                //Buscar todos os eventos cadastrados e alimentar calendario
+                listarAgendamentos();
             }
         };
     }
 
-    /* Métodos para tratamento do negócio. */
+    /* Metodos para tratamento do negocio. */
     public void adicionaEventoCalendario() {
         DefaultScheduleEvent defaultScheduleEvent = new DefaultScheduleEvent();
         this.montaDataEHora();
@@ -90,27 +90,16 @@ public class AgendasBean extends ReinoPetController {
         defaultScheduleEvent.setData(agendasTO);
         scheduleEvent = defaultScheduleEvent;
         eventModel.updateEvent(scheduleEvent);
+        this.listarAgendamentosDoMes();
+        this.listarCompromissosDoDia();
     }
 
-    public void buscarAgendamentos() {
-        this.listar();
-        for (AgendasTO agendas : agendasTOs) {
-            agendasTO = agendas;
-            this.montaDataEHora();
-            eventModel.addEvent(new DefaultScheduleEvent(agendas.getIdAnimal().getNome(), dataEhora, dataEhora, agendas));
-        }
-    }
-
-    public void buscarAgendamentosDoMes() {
-        //Buscar todos os eventos cadastrados e alimentar calendário
-        Date dataAtual = pessoasBean.getPessoasNegocio().getDataAtual();
-        Date dataInicial = DateUtil.getPrimeiroDiaMes(dataAtual);
-        Date dataFinal = DateUtil.getUltimoDiaMes(dataAtual);
-        agendasTOs = agendasNegocio.listarPorPeriodo(dataInicial, dataFinal);
-        for (AgendasTO agendas : agendasTOs) {
-            agendasTO = agendas;
-            this.montaDataEHora();
-            eventModel.addEvent(new DefaultScheduleEvent(agendas.getIdAnimal().getNome(), dataEhora, dataEhora, agendas));
+    public void confirmarHorario() {
+        validarHorario = Boolean.FALSE;
+        if (semanaSeguinte) {
+            this.incluirSemanaSeguinte();
+        } else {
+            this.incluir();
         }
     }
 
@@ -120,10 +109,6 @@ public class AgendasBean extends ReinoPetController {
         } catch (Exception e) {
             return tratarExcecao(e);
         }
-    }
-
-    public void montaDataEHora() {
-        dataEhora = agendasNegocio.dataEHora(agendasTO.getData(), agendasTO.getHora());
     }
 
     public String editar() {
@@ -136,17 +121,13 @@ public class AgendasBean extends ReinoPetController {
 
     public String excluir() {
         try {
-            return "";
-        } catch (Exception ex) {
-            return tratarExcecao(ex);
-        }
-    }
-
-    public String excluir(ActionEvent actionEvent) {
-        try {
             if (agendasTO != null) {
                 agendasNegocio.excluir(agendasTO);
             }
+            setMessage("agendasExcluidoComSucesso", EnumTipoMensagem.INFO);
+            this.novo();
+            this.listarAgendamentosDoMes();
+            this.listarCompromissosDoDia();
             return "";
         } catch (Exception e) {
             return tratarExcecao(e);
@@ -157,50 +138,84 @@ public class AgendasBean extends ReinoPetController {
         try {
             agendasTO.setData(scheduleEvent.getEndDate());
             agendasTO.setHora(scheduleEvent.getStartDate());
-            agendasTO.setValor(new BigDecimal(!servicosBean.getPrecoVenda().isEmpty() ? servicosBean.getPrecoVenda() : "0"));
-            agendasTO.setValorACobrar(new BigDecimal(!servicosBean.getValorACobrar().isEmpty() ? servicosBean.getValorACobrar() : "0"));
-            agendasTO.setIraRepetirEm(!repetirEvento.isEmpty() ? new Integer(repetirEvento) : null);
-            agendasTO.setIdCliente(clientesBean.getClientesTO());
-            agendasTO.setIdAnimal(animaisBean.getAnimaisNegocio().consultar(new AnimaisTO(new Integer(animaisBean.getIdAnimal()))));
-            agendasTO.setIdServico(servicosBean.getServicosNegocio().consultar(new ServicosTO(new Integer(servicosBean.getIdServico()))));
-            if (editarEventoAtual) {
-                agendasNegocio.alterar(agendasTO);
-                eventModel.updateEvent(scheduleEvent);
-            } else {
-                agendasNegocio.incluir(agendasTO);
-                this.adicionaEventoCalendario();
-            }
-            if (!repetirEvento.isEmpty() && !editarEventoAtual) {
-                Date dataProxima = scheduleEvent.getEndDate();
-                for (int i = 1; i <= new Integer(repetirEvento); i++) {
-                    agendasTO = new AgendasTO();
-                    agendasTO.setData(DateUtil.adicionaDiaMesAno(dataProxima, Calendar.MONTH, i, true));
-                    agendasTO.setHora(DateUtil.getHora("07:00:00", DateUtil.HORA));
-                    agendasTO.setIdCliente(clientesBean.getClientesTO());
-                    //agendasTO.setIdAnimal(animaisBean.getAnimaisSelected());
-                    agendasTO.setIdServico(servicosBean.getServicosTO());
+            if (isHorarioValido()) {
+                agendasTO.setValor(new BigDecimal(!servicosBean.getPrecoVenda().isEmpty() ? servicosBean.getPrecoVenda() : "0"));
+                agendasTO.setValorACobrar(new BigDecimal(!servicosBean.getValorACobrar().isEmpty() ? servicosBean.getValorACobrar() : "0"));
+                agendasTO.setIraRepetirEm(!repetirEvento.isEmpty() ? new Integer(repetirEvento) : null);
+                agendasTO.setIdCliente(clientesBean.getClientesTO());
+                agendasTO.setIdAnimal(animaisBean.getAnimaisNegocio().consultar(new AnimaisTO(new Integer(animaisBean.getIdAnimal()))));
+                agendasTO.setIdServico(servicosBean.getServicosNegocio().consultar(new ServicosTO(new Integer(servicosBean.getIdServico()))));
+                agendasTO.setIdServicoCategoria(servicosBean.getIdServicoCategoria().isEmpty() ? null : servicosBean.getServicosCategoriasNegocio().consultar(new ServicosCategoriasTO(new Integer(servicosBean.getIdServicoCategoria()))));
+                if (editarEventoAtual) {
+                    agendasNegocio.alterar(agendasTO);
+                    eventModel.updateEvent(scheduleEvent);
+                } else {
                     agendasNegocio.incluir(agendasTO);
-                    if (agendasTO.getId() != null) {
-                        this.adicionaEventoCalendario();
-                    }
+                    this.adicionaEventoCalendario();
                 }
-                scheduleEvent = new DefaultScheduleEvent();
+                if (!repetirEvento.isEmpty() && !editarEventoAtual) {
+                    this.incluirSemanaSeguinte();
+                }
+                setMessage("agendasCadastraComSucesso", EnumTipoMensagem.INFO);
+                this.novo();
+                this.listarAgendamentosDoMes();
+                this.listarCompromissosDoDia();
+                primefacesAddParamCallback("validarHorario", Boolean.TRUE);
+                primefacesUpdate("agenda");
             }
-            setMessage("agendasCadastraComSucesso", EnumTipoMensagem.INFO);
             return "";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
     }
 
-    @PostConstruct
-    public void init() {
-        this.buscarAgendamentosDoMes();
-        this.listarCompromissosDoDia();
+    private String incluirSemanaSeguinte() {
+        semanaSeguinte = Boolean.TRUE;
+        //validarHorario = getConfiguracaoDoSistema().getValidaHorario();
+        try {
+            Date dataProxima = scheduleEvent.getEndDate();
+            for (; diaDaSemana <= new Integer(repetirEvento);) {
+                agendasTO = new AgendasTO();
+                agendasTO.setData(DateUtil.adicionaDiaMesAno(dataProxima, Calendar.WEEK_OF_MONTH, diaDaSemana, Boolean.TRUE));
+                agendasTO.setHora(scheduleEvent.getStartDate());
+                if (isHorarioValido()) {
+                    agendasTO.setIdCliente(clientesBean.getClientesTO());
+                    agendasTO.setIdAnimal(animaisBean.getAnimaisTO());
+                    agendasTO.setIdServico(servicosBean.getServicosTO());
+                    agendasTO.setIdServicoCategoria(servicosBean.getIdServicoCategoria().isEmpty() ? null : servicosBean.getServicosCategoriasNegocio().consultar(new ServicosCategoriasTO(new Integer(servicosBean.getIdServicoCategoria()))));
+                    agendasNegocio.incluir(agendasTO);
+                    diaDaSemana++;
+                    validarHorario = getConfiguracaoDoSistema().getValidaHorario();
+                    if (agendasTO.getId() != null) {
+                        this.adicionaEventoCalendario();
+                    }
+                } else {
+                    return "";
+                }
+            }
+            scheduleEvent = new DefaultScheduleEvent();
+        } catch (Exception ex) {
+            tratarExcecao(ex);
+        }
+        return "";
+    }
+
+    private boolean isHorarioValido() {
+        if (!validarHorario) {
+            return Boolean.TRUE;
+        }
+        agendasTOs = agendasNegocio.listarBanhoPorDataHora(agendasTO.getData(), agendasTO.getHora());
+        if (agendasTOs.size() >= getConfiguracaoDoSistema().getMaximoAgendamentosMesmaHora()) {
+            primefacesExecute("PF('confirmacaoMesmoHorario').show()");
+            primefacesAddParamCallback("validarHorario", Boolean.FALSE);
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 
     public String listar() {
         try {
+            //TODO valida, pois deixa mais lento a abertura do agendamento. Executado toda vez que abre o calendario
             agendasTOs = agendasNegocio.listar();
             return "";
         } catch (Exception e) {
@@ -208,31 +223,97 @@ public class AgendasBean extends ReinoPetController {
         }
     }
 
-    public void listarUltimosCompromissos() {
+    public void listarAgendamentos() {
+        this.listar();
+        for (AgendasTO agendas : agendasTOs) {
+            agendasTO = agendas;
+            this.montaDataEHora();
+            eventModel.addEvent(new DefaultScheduleEvent(agendas.getIdAnimal().getNome(), dataEhora, dataEhora, agendas));
+        }
+    }
+
+    public void listarAgendamentosDoMes() {
+        //Buscar todos os eventos cadastrados e alimentar calendario
+        Date dataAtual = getPessoasBean().getPessoasNegocio().getDataAtual();
+        Date dataInicial = DateUtil.getPrimeiroDiaMes(dataAtual);
+        Date dataFinal = DateUtil.getUltimoDiaMes(dataAtual);
+        agendaDoMes = agendasNegocio.listarPorPeriodo(dataInicial, dataFinal);
+        this.listarAgendamentos();
+//        for (AgendasTO agendas : agendaDoMes) {
+//            agendasTO = agendas;
+//            this.montaDataEHora();
+//            eventModel.addEvent(new DefaultScheduleEvent(agendas.getIdAnimal().getNome(), dataEhora, dataEhora, agendas));
+//        }
     }
 
     public void listarCompromissosDoDia() {
-        Date dataAtual = pessoasBean.getPessoasNegocio().getDataAtual();
-        agendaDoDia = agendasNegocio.listarPorPeriodo(dataAtual, dataAtual);
+        Date dataAtual = getPessoasBean().getPessoasNegocio().getDataAtual();
+        agendaDoDia = agendasNegocio.listarPorPeriodo(dataAtual, dataAtual, getConfiguracaoDoSistema().getMaximoAgendamentosPainel());
+    }
+
+    public void montaDataEHora() {
+        dataEhora = agendasNegocio.dataEHora(agendasTO.getData(), agendasTO.getHora());
     }
 
     public String novo() {
         agendasTO = new AgendasTO();
-        clientesBean.novo();
-        animaisBean.novo();
-        servicosBean.novo();
+        getClientesBean().novo();
+        getAnimaisBean().novo();
+        getServicosBean().novo();
         repetirEvento = null;
-        mostraBotaoExcluir = false;
-        editarEventoAtual = false;
+        mostraBotaoExcluir = Boolean.FALSE;
+        editarEventoAtual = Boolean.FALSE;
+        validarHorario = getConfiguracaoDoSistema().getValidaHorario();
+        semanaSeguinte = Boolean.FALSE;
+        diaDaSemana = BigDecimal.ONE.intValue();
         return "/app/agendas/agendasNovo";
     }
 
-    public void incluir(ActionEvent actionEvent) {
-        this.incluir();
-        this.listarCompromissosDoDia();
+    /* Metodos para tratamento de eventos e de tela em geral. Evite mudar. */
+    public ClientesBean getClientesBean() {
+        if (clientesBean == null) {
+            clientesBean = findBean("clientesBean");
+        }
+        return clientesBean;
     }
 
-    /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */
+    public void setClientesBean(ClientesBean clientesBean) {
+        this.clientesBean = clientesBean;
+    }
+
+    public AnimaisBean getAnimaisBean() {
+        if (animaisBean == null) {
+            animaisBean = findBean("animaisBean");
+        }
+        return animaisBean;
+    }
+
+    public void setAnimaisBean(AnimaisBean animaisBean) {
+        this.animaisBean = animaisBean;
+    }
+
+    public ServicosBean getServicosBean() {
+        if (servicosBean == null) {
+            servicosBean = findBean("servicosBean");
+        }
+        return servicosBean;
+    }
+
+    public void setServicosBean(ServicosBean servicosBean) {
+        this.servicosBean = servicosBean;
+    }
+
+    public PessoasBean getPessoasBean() {
+        if (pessoasBean == null) {
+            pessoasBean = findBean("pessoasBean");
+        }
+        return pessoasBean;
+    }
+
+    public void setPessoasBean(PessoasBean pessoasBean) {
+        this.pessoasBean = pessoasBean;
+    }
+
     public ScheduleEvent getScheduleEvent() {
         if (scheduleEvent == null) {
             scheduleEvent = new DefaultScheduleEvent();
@@ -279,6 +360,14 @@ public class AgendasBean extends ReinoPetController {
         this.agendasTOs = agendasTOs;
     }
 
+    public List<AgendasTO> getAgendaDoMes() {
+        return agendaDoMes;
+    }
+
+    public void setAgendaDoMes(List<AgendasTO> agendaDoMes) {
+        this.agendaDoMes = agendaDoMes;
+    }
+
     public List<AgendasTO> getAgendaDoDia() {
         return agendaDoDia;
     }
@@ -303,6 +392,14 @@ public class AgendasBean extends ReinoPetController {
         this.dataEhora = dataEhora;
     }
 
+    public int getDiaDaSemana() {
+        return diaDaSemana;
+    }
+
+    public void setDiaDaSemana(int diaDaSemana) {
+        this.diaDaSemana = diaDaSemana;
+    }
+
     public Boolean getMostraBotaoExcluir() {
         return mostraBotaoExcluir;
     }
@@ -319,16 +416,36 @@ public class AgendasBean extends ReinoPetController {
         this.editarEventoAtual = editarEventoAtual;
     }
 
+    public Boolean getValidarHorario() {
+        return validarHorario;
+    }
+
+    public void setValidarHorario(Boolean validarHorario) {
+        this.validarHorario = validarHorario;
+    }
+
+    public Boolean getSemanaSeguinte() {
+        return semanaSeguinte;
+    }
+
+    public void setSemanaSeguinte(Boolean semanaSeguinte) {
+        this.semanaSeguinte = semanaSeguinte;
+    }
+
     public void onEventSelect(SelectEvent selectEvent) {
         scheduleEvent = (ScheduleEvent) selectEvent.getObject();
-        this.novo();
-        mostraBotaoExcluir = true;
-        editarEventoAtual = true;
+        //this.novo();
+        mostraBotaoExcluir = Boolean.TRUE;
+        editarEventoAtual = Boolean.TRUE;
         agendasTO = (AgendasTO) scheduleEvent.getData();
         repetirEvento = String.valueOf(agendasTO.getIraRepetirEm() != null ? agendasTO.getIraRepetirEm() : "");
         clientesBean.setClientesTO(agendasTO.getIdCliente());
         animaisBean.setIdAnimal(String.valueOf(agendasTO.getIdAnimal().getId() != null ? agendasTO.getIdAnimal().getId() : ""));
         servicosBean.setIdServico(String.valueOf(agendasTO.getIdServico().getId() != null ? agendasTO.getIdServico().getId() : ""));
+        servicosBean.setIdServicoCategoria(agendasTO.getIdServicoCategoria() != null ? String.valueOf(agendasTO.getIdServicoCategoria().getId() != null ? agendasTO.getIdServicoCategoria().getId() : "") : "");
+        servicosBean.setIdServicoGrupo(String.valueOf(agendasTO.getIdServico().getIdServicoGrupo().getId() != null ? agendasTO.getIdServico().getIdServicoGrupo().getId() : ""));
+        servicosBean.listarServicos();
+        servicosBean.listarServicosCategorias();
         servicosBean.setPrecoVenda(String.valueOf(agendasTO.getValor() != null ? agendasTO.getValor() : ""));
         servicosBean.setValorACobrar(String.valueOf(agendasTO.getValorACobrar() != null ? agendasTO.getValorACobrar() : ""));
     }
@@ -346,7 +463,7 @@ public class AgendasBean extends ReinoPetController {
         scheduleEvent = (ScheduleEvent) event.getScheduleEvent();
         agendasTO = (AgendasTO) scheduleEvent.getData();
         Date dataProxima = agendasTO.getData();
-        agendasTO.setData(DateUtil.adicionaDiaMesAno(dataProxima, Calendar.DAY_OF_MONTH, event.getDayDelta(), true));
+        agendasTO.setData(DateUtil.adicionaDiaMesAno(dataProxima, Calendar.DAY_OF_MONTH, event.getDayDelta(), Boolean.TRUE));
         agendasNegocio.alterar(agendasTO);
         this.atualizaEventoCalendario();
     }

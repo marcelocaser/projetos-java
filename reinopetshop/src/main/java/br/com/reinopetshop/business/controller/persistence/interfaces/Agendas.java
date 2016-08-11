@@ -19,11 +19,15 @@ public interface Agendas {
     public AgendasTO consultar(AgendasTO agendasTO);
 
     public List<AgendasTO> listar(AgendasTO agendasTO);
-    
+
     public List<AgendasTO> listar();
-    
+
+    public List<AgendasTO> listarBanhoPorDataHora(Date data, Date hora);
+
     public List<AgendasTO> listarPorPeriodo(Date dataInicial, Date dataFinal);
-    
-    public List<AgendasTO> listarUltimosCompromissos();
+
+    public List<AgendasTO> listarPorPeriodo(Date dataInicial, Date dataFinal, Integer maximoDeAgendamentos);
+
+    public List<AgendasTO> listarUltimosCompromissos(Integer maximoDeAgendamentos);
 
 }

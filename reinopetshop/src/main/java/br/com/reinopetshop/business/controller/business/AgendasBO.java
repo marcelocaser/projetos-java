@@ -6,13 +6,13 @@ import br.com.reinopetshop.business.controller.persistence.interfaces.Agendas;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marce
  */
-@Component
+@Service
 public class AgendasBO {
 
     @Autowired
@@ -44,7 +44,7 @@ public class AgendasBO {
 
     public void excluir(AgendasTO agendasTO) {
         antesDeExcluir(agendasTO);
-        this.persistencia.excluir(agendasTO);
+        this.persistencia.alterar(agendasTO);
 
     }
 
@@ -64,13 +64,21 @@ public class AgendasBO {
     public List<AgendasTO> listar() {
         return this.persistencia.listar();
     }
-    
-     public List<AgendasTO> listarPorPeriodo(Date dataInicial, Date dataFinal) {
-         return this.persistencia.listarPorPeriodo(dataInicial, dataFinal);
-     }
 
-    public List<AgendasTO> listarUltimosCompromissos() {
-        return this.persistencia.listarUltimosCompromissos();
+    public List<AgendasTO> listarBanhoPorDataHora(Date data, Date hora) {
+        return this.persistencia.listarBanhoPorDataHora(data, hora);
+    }
+
+    public List<AgendasTO> listarPorPeriodo(Date dataInicial, Date dataFinal) {
+        return this.persistencia.listarPorPeriodo(dataInicial, dataFinal);
+    }
+
+    public List<AgendasTO> listarPorPeriodo(Date dataInicial, Date dataFinal, Integer maximoDeAgendamentos) {
+        return this.persistencia.listarPorPeriodo(dataInicial, dataFinal, maximoDeAgendamentos);
+    }
+
+    public List<AgendasTO> listarUltimosCompromissos(Integer maximoDeAgendamentos) {
+        return this.persistencia.listarUltimosCompromissos(maximoDeAgendamentos);
     }
 
 }

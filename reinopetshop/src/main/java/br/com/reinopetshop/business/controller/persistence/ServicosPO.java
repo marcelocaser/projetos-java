@@ -4,14 +4,14 @@ import br.com.core.entity.ServicosTO;
 import br.com.core.persistence.Persistence;
 import br.com.reinopetshop.business.controller.persistence.interfaces.Servicos;
 import java.util.List;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author marce
  */
-@Component
+@Repository
 public class ServicosPO extends Persistence<ServicosTO> implements Servicos {
 
     public ServicosPO() {

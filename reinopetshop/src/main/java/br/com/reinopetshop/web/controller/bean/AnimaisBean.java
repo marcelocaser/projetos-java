@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -37,11 +36,10 @@ public class AnimaisBean extends ReinoPetController {
     private AnimaisBO animaisNegocio;
     @Autowired
     private PessoasBO pessoasNegocio;
+    private ClientesBean clientesBean;
     private AnimaisTO animaisTO;
     private RacasTO racasTO;
     private List<AnimaisTO> animaisTOs;
-    @Autowired
-    private ClientesBean clientesBean;
     private List<EspeciesTO> especiesTOs;
     private List<RacasTO> racasTOs;
     private String idEspecies;
@@ -74,7 +72,7 @@ public class AnimaisBean extends ReinoPetController {
     public String consultar() {
         try {
             if (idAnimal != null) {
-                //animaisSelected = animaisNegocio.consultar(new AnimaisTO(new Integer(idAnimal)));
+                animaisTO = animaisNegocio.consultar(new AnimaisTO(new Integer(idAnimal)));
             } else {
                 animaisTO = animaisNegocio.consultar(animaisTO);
             }
@@ -103,7 +101,7 @@ public class AnimaisBean extends ReinoPetController {
     public String incluir() {
         try {
             for (AnimaisTO animais : animaisTOs) {
-                animais.setIdCliente(clientesBean.getClientesTO());
+                animais.setIdCliente(this.getClientesBean().getClientesTO());
                 if (racasTO == null) {
                     racasTO = racasNegocio.consultar(new RacasTO(new Integer(idRacas)));
                     animais.setIdRaca(racasTO);
@@ -126,20 +124,18 @@ public class AnimaisBean extends ReinoPetController {
         }
     }
 
-    @PostConstruct
-    public void listarEspecies() {
-        this.validaDataNascimentoNoFuturo();
-        especiesTOs = especiesNegocio.listar(new EspeciesTO());
-    }
-
     public void listarAnimaisPorCliente() {
-        if (clientesBean.getClientesTO() != null && clientesBean.getClientesTO().getPessoasTO().getNome() != null) {
+        if (this.getClientesBean().getClientesTO() != null && this.getClientesBean().getClientesTO().getPessoasTO().getNome() != null) {
             //Consulta cliente pelo nome
-            PessoasTO pessoasTO = pessoasNegocio.consultar(clientesBean.getClientesTO().getPessoasTO());
+            PessoasTO pessoasTO = pessoasNegocio.consultar(this.getClientesBean().getClientesTO().getPessoasTO());
             if (pessoasTO != null) {
-                clientesBean.setClientesTO(pessoasTO.getClientesTO());
+                this.getClientesBean().setClientesTO(pessoasTO.getClientesTO());
             }
         }
+    }
+
+    public void listarEspecies() {
+        especiesTOs = especiesNegocio.listar(new EspeciesTO());
     }
 
     public void listarRacas() {
@@ -190,7 +186,7 @@ public class AnimaisBean extends ReinoPetController {
             dataNascimentoNoFuturo = DateUtil.dataFormatter(dataAtual);
         }
     }
-    
+
     public String removerMaisAnimais() {
         try {
             animaisTOs.removeIf(p -> p.getNome().contains(animaisTO.getNome()));
@@ -233,6 +229,17 @@ public class AnimaisBean extends ReinoPetController {
 
     public void setPessoasNegocio(PessoasBO pessoasNegocio) {
         this.pessoasNegocio = pessoasNegocio;
+    }
+
+    public ClientesBean getClientesBean() {
+        if (clientesBean == null) {
+            clientesBean = findBean("clientesBean");
+        }
+        return clientesBean;
+    }
+
+    public void setClientesBean(ClientesBean clientesBean) {
+        this.clientesBean = clientesBean;
     }
 
     public AnimaisTO getAnimaisTO() {
@@ -320,5 +327,5 @@ public class AnimaisBean extends ReinoPetController {
     public void setDataNascimentoNoFuturo(String dataNascimentoNoFuturo) {
         this.dataNascimentoNoFuturo = dataNascimentoNoFuturo;
     }
-    
+
 }

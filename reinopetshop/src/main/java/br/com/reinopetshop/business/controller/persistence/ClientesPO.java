@@ -13,14 +13,14 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author marce
  */
-@Component
+@Repository
 public class ClientesPO extends Persistence<ClientesTO> implements Clientes {
 
     public ClientesPO() {
@@ -63,7 +63,7 @@ public class ClientesPO extends Persistence<ClientesTO> implements Clientes {
      * @return
      */
     @Override
-    public List<ClientesTO> listarClientes() {
+    public List<ClientesTO> listar() {
         this.evict();
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<ClientesTO> cq = cb.createQuery(ClientesTO.class);
@@ -92,9 +92,7 @@ public class ClientesPO extends Persistence<ClientesTO> implements Clientes {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<ClientesTO> cq = cb.createQuery(ClientesTO.class);
         Root<ClientesTO> clientes = cq.from(ClientesTO.class);
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.isNull(clientes.get("exclusao")));
-        cq.where(predicates.toArray(new Predicate[predicates.size()]));
+        cq.where(cb.isNull(clientes.get("exclusao")));
         cq.orderBy(cb.desc(clientes.get("id")));
         Query query = getEntityManager().createQuery(cq).setMaxResults(maximoDeClientes);
         try {

@@ -5,14 +5,14 @@ import br.com.core.persistence.Persistence;
 import br.com.reinopetshop.business.controller.persistence.interfaces.Pessoas;
 import java.util.Date;
 import java.util.List;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author marce
  */
-@Component
+@Repository
 public class PessoasPO extends Persistence<PessoasTO> implements Pessoas {
 
     public PessoasPO() {

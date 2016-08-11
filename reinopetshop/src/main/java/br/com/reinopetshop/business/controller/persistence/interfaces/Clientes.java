@@ -23,7 +23,7 @@ public interface Clientes {
 
     public List<ClientesTO> listar(ClientesTO clientesTO);
 
-    public List<ClientesTO> listarClientes();
+    public List<ClientesTO> listar();
 
     public List<ClientesTO> listarClientesPeloNome(String nome);
 

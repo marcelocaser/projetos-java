@@ -7,7 +7,6 @@ import br.com.reinopetshop.business.controller.ReinoPetController;
 import br.com.reinopetshop.business.controller.business.ClientesBO;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import org.primefaces.event.FlowEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -21,17 +20,12 @@ import org.springframework.stereotype.Component;
 @Scope
 public class ClientesBean extends ReinoPetController {
 
-    private static final Integer maximoDeCliente = 6;
-    @Autowired
-    private EnderecosBean enderecosBean;
-    @Autowired
-    private AnimaisBean animaisBean;
-    @Autowired
-    private PessoasBean pessoasBean;
-    @Autowired
-    private AgendasBean agendasBean;
     @Autowired
     private ClientesBO clientesNegocio;
+
+    private EnderecosBean enderecosBean;
+    private AnimaisBean animaisBean;
+    private PessoasBean pessoasBean;
     private ClientesTO clientesTO;
     private List<ClientesTO> clientesTOs;
     private List<ClientesTO> ultimosClientesAdicionados;
@@ -44,19 +38,19 @@ public class ClientesBean extends ReinoPetController {
             //ClientesTO cli = new ClientesTO(clientesTO.getId());
             //this.novo();
             clientesTO = clientesNegocio.consultar(new ClientesTO(clientesTO.getId()));
-            enderecosBean.setEnderecosComplementosTOs(clientesTO.getPessoasTO().getEnderecosComplementosTOList());
-            animaisBean.setAnimaisTOs(clientesTO.getAnimaisTOList());
+            this.getEnderecosBean().setEnderecosComplementosTOs(clientesTO.getPessoasTO().getEnderecosComplementosTOList());
+            this.getAnimaisBean().setAnimaisTOs(clientesTO.getAnimaisTOList());
             return "/app/clientes/clientesConsultar";
         } catch (Exception e) {
             return tratarExcecao(e);
         }
     }
-    
-   public String consultar(Integer idCliente) {
-       this.novo();
-       clientesTO.setId(idCliente);
-       return this.consultar();
-   }
+
+    public String consultar(Integer idCliente) {
+        this.novo();
+        clientesTO.setId(idCliente);
+        return this.consultar();
+    }
 
     public String editar() {
         try {
@@ -69,9 +63,9 @@ public class ClientesBean extends ReinoPetController {
     public String excluir() {
         try {
             clientesNegocio.excluir(clientesTO);
-//            animaisBean.excluir();
-//            pessoasBean.excluir();
-//            enderecosBean.excluir();
+//            this.getAnimaisBean().excluir();
+//            this.getPessoasBean().excluir();
+//            this.getEnderecosBean().excluir();
 //            agendasBean.excluir();
             this.listarUltimosClientes();
             return this.listar();
@@ -80,37 +74,31 @@ public class ClientesBean extends ReinoPetController {
         }
     }
 
-    @PostConstruct
-    public void init() {
-        this.listarUltimosClientes();
-        this.listar();
-    }
-
     public String incluir() {
         try {
             //Cliente cadastrado. Atulizar os dados.
             if (clientesTO.getId() != null) {
-                pessoasBean.setPessoasTO(clientesTO.getPessoasTO());
-                pessoasBean.incluir();
-                enderecosBean.incluir();
-                //animaisBean.incluir();
+                this.getPessoasBean().setPessoasTO(clientesTO.getPessoasTO());
+                this.getPessoasBean().incluir();
+                this.getEnderecosBean().incluir();
+                //this.getAnimaisBean().incluir();
                 setMessage("clientesAlteradoComSucesso", EnumTipoMensagem.INFO);
             } else {
                 // Verifica se CPF não cadastrado!
                 if (clientesTO.getPessoasTO().getCpf() != null) {
                     if (!this.clientesNegocio.isPessoaJaCadastrada(clientesTO)) {
-                        pessoasBean.setPessoasTO(clientesTO.getPessoasTO());
-                        pessoasBean.incluir();
+                        this.getPessoasBean().setPessoasTO(clientesTO.getPessoasTO());
+                        this.getPessoasBean().incluir();
                         //Verifica se inseriu nova pessoa.
-                        if (pessoasBean.getPessoasTO() != null && pessoasBean.getPessoasTO().getId() != null) {
+                        if (this.getPessoasBean().getPessoasTO() != null && this.getPessoasBean().getPessoasTO().getId() != null) {
                             //Salva o endereço
-                            enderecosBean.adicionarMaisEndereco();
-                            enderecosBean.incluir();
+                            this.getEnderecosBean().adicionarMaisEndereco();
+                            this.getEnderecosBean().incluir();
                             this.clientesNegocio.incluir(clientesTO);
                             if (clientesTO.getId() != null) {
                                 //Salva animais
-                                animaisBean.adicionarMaisAnimal();
-                                animaisBean.incluir();
+                                this.getAnimaisBean().adicionarMaisAnimal();
+                                this.getAnimaisBean().incluir();
                             } else {
                                 setMessage("clientesNaoInserido", EnumTipoMensagem.ATENCAO);
                                 return "";
@@ -126,7 +114,8 @@ public class ClientesBean extends ReinoPetController {
                 }
                 setMessage("clientesCadastradoComSucesso", EnumTipoMensagem.INFO);
             }
-            this.init();
+            this.listar();
+            this.listarUltimosClientes();
             return this.consultar();
         } catch (Exception e) {
             return tratarExcecao(e);
@@ -135,7 +124,7 @@ public class ClientesBean extends ReinoPetController {
 
     public String listar() {
         try {
-            clientesTOs = clientesNegocio.listarClientes();
+            clientesTOs = clientesNegocio.listar();
             totalClientesCadastrados = clientesTOs.size();
             return "/app/clientes/clientesListar";
         } catch (Exception e) {
@@ -158,24 +147,27 @@ public class ClientesBean extends ReinoPetController {
     }
 
     public void listarUltimosClientes() {
-        ultimosClientesAdicionados = clientesNegocio.listarUltimosClientes(maximoDeCliente);
+        ultimosClientesAdicionados = clientesNegocio.listarUltimosClientes(getConfiguracaoDoSistema().getMaximoClientesPainel());
     }
 
     public String novo() {
         clientesTO = new ClientesTO();
         clientesTO.setPessoasTO(new PessoasTO());
 
-        enderecosBean.novo();
-        pessoasBean.novo();
-        enderecosBean.setEnderecosComplementosTOs(null);
-        animaisBean.novo();
-        animaisBean.setAnimaisTOs(new ArrayList<>());
+        this.getEnderecosBean().novo();
+        this.getPessoasBean().novo();
+        this.getEnderecosBean().setEnderecosComplementosTOs(null);
+        this.getAnimaisBean().novo();
+        this.getAnimaisBean().setAnimaisTOs(new ArrayList<>());
 
         return "/app/clientes/clientesNovo";
     }
 
     /* Métodos para tratamento de eventos e de tela em geral. Evite mudar. */
     public EnderecosBean getEnderecosBean() {
+        if (enderecosBean == null) {
+            enderecosBean = findBean("enderecosBean");
+        }
         return enderecosBean;
     }
 
@@ -184,6 +176,9 @@ public class ClientesBean extends ReinoPetController {
     }
 
     public AnimaisBean getAnimaisBean() {
+        if (animaisBean == null) {
+            animaisBean = findBean("animaisBean");
+        }
         return animaisBean;
     }
 
@@ -192,27 +187,14 @@ public class ClientesBean extends ReinoPetController {
     }
 
     public PessoasBean getPessoasBean() {
+        if (pessoasBean == null) {
+            pessoasBean = findBean("pessoasBean");
+        }
         return pessoasBean;
     }
 
     public void setPessoasBean(PessoasBean pessoasBean) {
         this.pessoasBean = pessoasBean;
-    }
-
-    public AgendasBean getAgendasBean() {
-        return agendasBean;
-    }
-
-    public void setAgendasBean(AgendasBean agendasBean) {
-        this.agendasBean = agendasBean;
-    }
-
-    public ClientesBO getClientesNegocio() {
-        return clientesNegocio;
-    }
-
-    public void setClientesNegocio(ClientesBO clientesNegocio) {
-        this.clientesNegocio = clientesNegocio;
     }
 
     public ClientesTO getClientesTO() {

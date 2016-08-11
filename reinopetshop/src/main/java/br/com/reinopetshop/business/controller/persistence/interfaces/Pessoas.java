@@ -9,7 +9,7 @@ import java.util.List;
  * @author marce
  */
 public interface Pessoas {
-    
+
     public void alterar(PessoasTO pessoasTO);
 
     public void excluir(PessoasTO pessoasTO);
@@ -19,7 +19,7 @@ public interface Pessoas {
     public PessoasTO consultar(PessoasTO pessoasTO);
 
     public List<PessoasTO> listar(PessoasTO pessoasTO);
-    
+
     public Date getDataAtual();
-    
+
 }

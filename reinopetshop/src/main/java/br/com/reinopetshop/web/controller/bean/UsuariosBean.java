@@ -4,6 +4,7 @@ import br.com.core.controller.business.UsuariosBO;
 import br.com.core.entity.UsuariosTO;
 import br.com.core.enumerator.EnumTipoMensagem;
 import br.com.core.persistence.interfaces.Usuarios;
+import br.com.core.util.CriptografiaUtil;
 import br.com.reinopetshop.business.controller.ReinoPetController;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,9 @@ public class UsuariosBean extends ReinoPetController {
     UsuariosBO usuariosNegocio;
     private UsuariosTO usuariosTO;
     private List<UsuariosTO> usuariosTOs;
+    private String senha;
     private String confirmarSenha;
+    private String senhaAnterior;
     private Boolean isCPF;
     private Boolean isNovaChave;
 
@@ -30,6 +33,8 @@ public class UsuariosBean extends ReinoPetController {
     public String consultar() {
         try {
             this.tipoDeCadastro();
+            senha = CriptografiaUtil.decryptBase64(usuariosTO.getSenha());
+            confirmarSenha = CriptografiaUtil.decryptBase64(usuariosTO.getSenha());
             return "/app/usuarios/usuariosConsultar";
         } catch (Exception e) {
             return tratarExcecao(e);
@@ -58,10 +63,16 @@ public class UsuariosBean extends ReinoPetController {
         try {
             if (usuariosTO != null) {
                 if (usuariosTO.getId() == null) {
+                    usuariosTO.setSenha(senha);
                     this.usuariosNegocio.incluir(usuariosTO);
                     setMessage("usuariosCadastradoComSucesso", EnumTipoMensagem.INFO);
                     return this.listar();
                 } else {
+                    if (!senhaAnterior.equals(CriptografiaUtil.decryptBase64(usuariosTO.getSenha()))) {
+                        setMessage("usuariosSenhaInformaNaoConfere", EnumTipoMensagem.ERRO);
+                        return "";
+                    }
+                    usuariosTO.setSenha(senha);
                     this.usuariosNegocio.alterar(usuariosTO, isNovaChave);
                     setMessage("usuariosAlteradoComSucesso", EnumTipoMensagem.INFO);
                     return this.consultar();
@@ -114,12 +125,28 @@ public class UsuariosBean extends ReinoPetController {
         this.usuariosTOs = usuariosTOs;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public String getConfirmarSenha() {
         return confirmarSenha;
     }
 
     public void setConfirmarSenha(String confirmarSenha) {
         this.confirmarSenha = confirmarSenha;
+    }
+
+    public String getSenhaAnterior() {
+        return senhaAnterior;
+    }
+
+    public void setSenhaAnterior(String senhaAnterior) {
+        this.senhaAnterior = senhaAnterior;
     }
 
     public Boolean getIsCPF() {

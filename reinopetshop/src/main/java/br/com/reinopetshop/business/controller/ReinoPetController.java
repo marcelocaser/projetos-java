@@ -1,6 +1,7 @@
 package br.com.reinopetshop.business.controller;
 
 import br.com.core.controller.Controller;
+import br.com.core.entity.SistemasConfiguracoesTO;
 import br.com.core.entity.UsuariosTO;
 import br.com.core.enumerator.EnumSecurity;
 import br.com.core.enumerator.EnumTipoMensagem;
@@ -19,6 +20,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ViewExpiredException;
 import javax.persistence.PersistenceException;
+import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
@@ -39,13 +41,14 @@ public class ReinoPetController extends Controller implements ReinoPetConstantes
     }
 
     /**
-     * Retorna o sistema logado.
+     * Retorna as configuracoes do sistema.
      *
-     * @return SistemaTO
+     * @return SistemasConfiguracoesTO
      */
-    /*public SistemaTO getSistemaLogado() {
-     return (SistemaTO) getParamSession(EnumSecurity.SISTEMA_CONTROLADO);
-     }*/
+    public SistemasConfiguracoesTO getConfiguracaoDoSistema() {
+        return (SistemasConfiguracoesTO) getParamSession(EnumSecurity.SISTEMA_CONFIGURACAO);
+    }
+
     /**
      * Insere um parâmetro no request.
      *
@@ -217,6 +220,42 @@ public class ReinoPetController extends Controller implements ReinoPetConstantes
      */
     protected Object getParamSession(EnumSecurity key) {
         return super.getParamSession(key.name());
+    }
+
+    /**
+     * Execute a javascript after current ajax request is completed.
+     *
+     * @param javaScript - Javascript statement to execute
+     */
+    protected void primefacesExecute(String javaScript) {
+        if (javaScript != null && !javaScript.isEmpty()) {
+            RequestContext.getCurrentInstance().execute(javaScript);
+        }
+    }
+
+    /**
+     * Update a component with ajax.
+     *
+     * @param idComponente - Client side identifiers of the components
+     */
+    protected void primefacesUpdate(String idComponente) {
+        if (idComponente != null && !idComponente.isEmpty()) {
+            RequestContext.getCurrentInstance().update(idComponente);
+        }
+    }
+
+    /**
+     * Add a parameter for ajax oncomplete client side callbacks. Value would be
+     * serialized to json. Currently supported values are plain objects,
+     * primitives, JSONObject and JSONArray.
+     *
+     * @param name - name of the parameter
+     * @param value - value of the parameter
+     */
+    protected void primefacesAddParamCallback(String name, Boolean value) {
+        if (name != null && !name.isEmpty() && value != null) {
+            RequestContext.getCurrentInstance().addCallbackParam(name, value);
+        }
     }
 
     /**

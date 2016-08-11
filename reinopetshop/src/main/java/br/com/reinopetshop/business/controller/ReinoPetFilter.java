@@ -43,7 +43,7 @@ public class ReinoPetFilter implements Filter, ReinoPetConstantes {
             // recupera o atributo de sessão USUARIO_LOGADO.
             if (this.hSession != null
                     && this.hRequest.isRequestedSessionIdValid()) {
-                usuarioLogado = (UsuariosTO) this.hSession.getAttribute(EnumSecurity.USUARIO_LOGADO.toString());
+                usuarioLogado = (UsuariosTO) this.hSession.getAttribute(EnumSecurity.USUARIO_LOGADO.name());
             }
 
             // Se usuário logado, aplica o controle de acesso URL. Se não,

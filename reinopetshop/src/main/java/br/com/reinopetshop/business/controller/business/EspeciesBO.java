@@ -4,15 +4,15 @@ import br.com.core.entity.EspeciesTO;
 import br.com.reinopetshop.business.controller.persistence.interfaces.Especies;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marce
  */
-@Component
+@Service
 public class EspeciesBO {
-    
+
     @Autowired
     Especies persistencia;
 
@@ -36,5 +36,5 @@ public class EspeciesBO {
     public List<EspeciesTO> listar(EspeciesTO especiesTO) {
         return this.persistencia.listar(especiesTO);
     }
-    
+
 }

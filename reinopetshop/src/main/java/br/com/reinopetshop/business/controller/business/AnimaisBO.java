@@ -5,13 +5,13 @@ import br.com.reinopetshop.business.controller.persistence.interfaces.Animais;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marce
  */
-@Component
+@Service
 public class AnimaisBO {
 
     @Autowired
@@ -48,5 +48,5 @@ public class AnimaisBO {
     public List<AnimaisTO> listar(AnimaisTO animaisTO) {
         return this.persistencia.listar(animaisTO);
     }
-    
+
 }

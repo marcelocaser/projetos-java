@@ -5,13 +5,13 @@ import br.com.reinopetshop.business.controller.persistence.interfaces.Pessoas;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author marce
  */
-@Component
+@Service
 public class PessoasBO {
 
     @Autowired
@@ -48,7 +48,7 @@ public class PessoasBO {
     public List<PessoasTO> listar(PessoasTO pessoasTO) {
         return this.persistencia.listar(pessoasTO);
     }
-        
+
     public Date getDataAtual() {
         return this.persistencia.getDataAtual();
     }

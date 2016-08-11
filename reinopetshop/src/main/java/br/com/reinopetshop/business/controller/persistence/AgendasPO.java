@@ -15,14 +15,14 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author marce
  */
-@Component
+@Repository
 public class AgendasPO extends Persistence<AgendasTO> implements Agendas {
 
     public AgendasPO() {
@@ -38,7 +38,7 @@ public class AgendasPO extends Persistence<AgendasTO> implements Agendas {
     @Override
     @Transactional
     public void excluir(AgendasTO agendasTO) {
-        deleteById(agendasTO.getId());
+        delete(agendasTO);
     }
 
     @Override
@@ -69,14 +69,33 @@ public class AgendasPO extends Persistence<AgendasTO> implements Agendas {
     }
 
     @Override
+    public List<AgendasTO> listarBanhoPorDataHora(Date data, Date hora) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<AgendasTO> cq = cb.createQuery(AgendasTO.class);
+        Root<AgendasTO> agenda = cq.from(AgendasTO.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(agenda.get("data"), cb.parameter(Date.class, "data")));
+        predicates.add(cb.equal(agenda.get("hora"), cb.parameter(Date.class, "hora")));
+        predicates.add(cb.isNull(agenda.get("exclusao")));
+        cq.where(predicates.toArray(new Predicate[predicates.size()]));
+        TypedQuery tq = getEntityManager().createQuery(cq);
+        tq.setParameter("data", data);
+        tq.setParameter("hora", hora);
+        return tq.getResultList();
+    }
+
+    @Override
     public List<AgendasTO> listarPorPeriodo(Date dataInicial, Date dataFinal) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<AgendasTO> cq = cb.createQuery(AgendasTO.class);
         Root<AgendasTO> agenda = cq.from(AgendasTO.class);
+        List<Predicate> predicates = new ArrayList<>();
         ParameterExpression<Date> dataInicio = cb.parameter(Date.class, "dataInicio");
         ParameterExpression<Date> dataFim = cb.parameter(Date.class, "dataFim");
         Expression<Date> data = agenda.get("data");
-        cq.where(cb.between(data, dataInicio, dataFim));
+        predicates.add(cb.isNull(agenda.get("exclusao")));
+        predicates.add(cb.between(data, dataInicio, dataFim));
+        cq.where(predicates.toArray(new Predicate[predicates.size()]));
         TypedQuery tq = getEntityManager().createQuery(cq);
         tq.setParameter("dataInicio", dataInicial);
         tq.setParameter("dataFim", dataFinal);
@@ -84,12 +103,31 @@ public class AgendasPO extends Persistence<AgendasTO> implements Agendas {
     }
 
     @Override
-    public List<AgendasTO> listarUltimosCompromissos() {
+    public List<AgendasTO> listarPorPeriodo(Date dataInicial, Date dataFinal, Integer maximoDeAgendamentos) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<AgendasTO> cq = cb.createQuery(AgendasTO.class);
+        Root<AgendasTO> agenda = cq.from(AgendasTO.class);
+        List<Predicate> predicates = new ArrayList<>();
+        ParameterExpression<Date> dataInicio = cb.parameter(Date.class, "dataInicio");
+        ParameterExpression<Date> dataFim = cb.parameter(Date.class, "dataFim");
+        Expression<Date> data = agenda.get("data");
+        predicates.add(cb.isNull(agenda.get("exclusao")));
+        predicates.add(cb.between(data, dataInicio, dataFim));
+        cq.where(predicates.toArray(new Predicate[predicates.size()]));
+        TypedQuery tq = getEntityManager().createQuery(cq).setMaxResults(maximoDeAgendamentos);
+        tq.setParameter("dataInicio", dataInicial);
+        tq.setParameter("dataFim", dataFinal);
+        return tq.getResultList();
+    }
+
+    @Override
+    public List<AgendasTO> listarUltimosCompromissos(Integer maximoDeAgendamentos) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<AgendasTO> cq = cb.createQuery(AgendasTO.class);
         Root<AgendasTO> agenda = cq.from(AgendasTO.class);
         cq.orderBy(cb.desc(agenda.get("id")));
-        Query query = getEntityManager().createQuery(cq);
+        cq.where(cb.isNull(agenda.get("exclusao")));
+        Query query = getEntityManager().createQuery(cq).setMaxResults(maximoDeAgendamentos);
         try {
             return query.getResultList();
         } catch (NoResultException ex) {

@@ -8,8 +8,8 @@ import java.util.List;
  * @author marce
  */
 public interface Especies {
-    
-     public void alterar(EspeciesTO especiesTO);
+
+    public void alterar(EspeciesTO especiesTO);
 
     public void excluir(EspeciesTO especiesTO);
 
@@ -18,5 +18,5 @@ public interface Especies {
     public EspeciesTO consultar(EspeciesTO especiesTO);
 
     public List<EspeciesTO> listar(EspeciesTO especiesTO);
-    
+
 }
