@@ -2,7 +2,6 @@ package br.com.core.persistence;
 
 import br.com.core.entity.ConsultasTO;
 import br.com.core.entity.UsuariosTO;
-import br.com.core.persistence.interfaces.Consultas;
 import java.util.List;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,19 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
  * @author marcelocaser
  */
 @Repository
-public class ConsultasPO extends Persistence<ConsultasTO> implements Consultas {
+public class ConsultasPO extends Persistence<ConsultasTO> {
 
     public ConsultasPO() {
         setClazz(ConsultasTO.class);
     }
 
-    @Override
     @Transactional
     public void alterar(ConsultasTO consultasTO) {
         update(consultasTO);
     }
 
-    @Override
     public List<ConsultasTO> consultarEstatisticaCEPConsultados(UsuariosTO usuariosTO, Integer[] range) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<ConsultasTO> cq = cb.createQuery(ConsultasTO.class);
@@ -44,7 +41,6 @@ public class ConsultasPO extends Persistence<ConsultasTO> implements Consultas {
         return q.getResultList();
     }
 
-    @Override
     public Integer estatisticaTotalDeCEPDesdeCadastro(UsuariosTO usuariosTO) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -57,24 +53,20 @@ public class ConsultasPO extends Persistence<ConsultasTO> implements Consultas {
         return (q.getSingleResult()).intValue();
     }
 
-    @Override
     @Transactional
     public void excluir(ConsultasTO consultasTO) {
         delete(consultasTO);
     }
 
-    @Override
     @Transactional
     public void incluir(ConsultasTO consultasTO) {
         create(consultasTO);
     }
 
-    @Override
     public ConsultasTO consultar(ConsultasTO consultasTO) {
         return find(consultasTO);
     }
 
-    @Override
     public List<ConsultasTO> listar(ConsultasTO consultasTO) {
         return list(consultasTO);
     }

@@ -1,4 +1,4 @@
-package br.com.core.persistence.interfaces;
+package br.com.core.controller.business.interfaces;
 
 import br.com.core.entity.SistemasConfiguracoesTO;
 import java.util.List;

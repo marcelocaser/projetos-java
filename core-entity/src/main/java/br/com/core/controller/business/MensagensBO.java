@@ -1,7 +1,8 @@
 package br.com.core.controller.business;
 
+import br.com.core.controller.business.interfaces.Mensagens;
 import br.com.core.entity.MensagensTO;
-import br.com.core.persistence.interfaces.Mensagens;
+import br.com.core.persistence.MensagensPO;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +18,10 @@ import org.springframework.core.io.ResourceLoader;
  *
  * @author marce
  */
-public class MensagensBO extends AbstractMessageSource implements ResourceLoaderAware {
+public class MensagensBO extends AbstractMessageSource implements ResourceLoaderAware, Mensagens {
 
     @Autowired
-    private Mensagens persistencia;
+    private MensagensPO persistencia;
 
     private ResourceLoader resourceLoader;
     private final Map<String, Map<String, String>> properties = new HashMap<>();
@@ -29,7 +30,7 @@ public class MensagensBO extends AbstractMessageSource implements ResourceLoader
         reload();
     }
 
-    public MensagensBO(Mensagens persistencia) {
+    public MensagensBO(MensagensPO persistencia) {
         this.persistencia = persistencia;
         reload();
     }
@@ -44,6 +45,11 @@ public class MensagensBO extends AbstractMessageSource implements ResourceLoader
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = (resourceLoader != null ? resourceLoader : new DefaultResourceLoader());
+    }
+
+    @Override
+    public List<MensagensTO> listar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getText(String code, Locale locale) {
@@ -78,7 +84,7 @@ public class MensagensBO extends AbstractMessageSource implements ResourceLoader
         for (MensagensTO text : texts) {
             Map<String, String> v = new HashMap<>();
             switch (text.getIdIdioma().getLocal()) {
-                case Mensagens.en:
+                case en:
                     v.put(text.getIdIdioma().getLocal(), text.getMensagem());
                 default:
                     v.put(text.getIdIdioma().getLocal(), text.getMensagem());

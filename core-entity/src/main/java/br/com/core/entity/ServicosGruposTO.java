@@ -41,7 +41,7 @@ public class ServicosGruposTO implements Serializable {
     private Integer id;
     @Size(max = 150)
     @Column(length = 150)
-    private String descricao;
+    private String nome;
     @Basic(optional = false)
     @NotNull
     @Column(nullable = false)
@@ -73,12 +73,12 @@ public class ServicosGruposTO implements Serializable {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getNome() {
+        return nome;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public Character getStatus() {

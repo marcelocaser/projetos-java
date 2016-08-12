@@ -1,8 +1,9 @@
 package br.com.core.controller.business;
 
+import br.com.core.controller.business.interfaces.Usuarios;
 import br.com.core.entity.UsuariosTO;
 import br.com.core.exception.NegocioException;
-import br.com.core.persistence.interfaces.Usuarios;
+import br.com.core.persistence.UsuariosPO;
 import br.com.core.util.CriptografiaUtil;
 import br.com.core.util.DateUtil;
 import java.util.Date;
@@ -15,11 +16,17 @@ import org.springframework.stereotype.Service;
  * @author marcelocaser
  */
 @Service
-public class UsuariosBO {
+public class UsuariosBO implements Usuarios {
 
     @Autowired
-    Usuarios persistencia;
+    UsuariosPO persistencia;
 
+    @Override
+    public void alterar(UsuariosTO usuariosTO) {
+         this.persistencia.alterar(usuariosTO);
+    }
+
+    @Override
     public void alterar(UsuariosTO usuariosTO, Boolean isNovaChave) throws NegocioException {
         antesDeAlterar(usuariosTO);
         if (isNovaChave) {
@@ -35,18 +42,21 @@ public class UsuariosBO {
 
     private void antesDeExcluir(UsuariosTO usuariosTO) {
         usuariosTO.setExclusao(new Date());
-        usuariosTO.setStatus(Usuarios.EXCLUIDO);
+        usuariosTO.setStatus(EXCLUIDO);
     }
 
+    @Override
     public UsuariosTO consultar(UsuariosTO usuariosTO) {
         return this.persistencia.consultar(usuariosTO);
     }
 
+    @Override
     public void excluir(UsuariosTO usuariosTO) {
         antesDeExcluir(usuariosTO);
         this.persistencia.alterar(usuariosTO);
     }
 
+    @Override
     public UsuariosTO gerarChaveAcesso(UsuariosTO usuariosTO) {
         if (usuariosTO != null && usuariosTO.getEmail() != null
                 && (usuariosTO.getCnpj() != null || usuariosTO.getCpf() != null)) {
@@ -57,6 +67,7 @@ public class UsuariosBO {
         return usuariosTO;
     }
 
+    @Override
     public UsuariosTO gerarSenhaBase64(UsuariosTO usuariosTO) throws NegocioException {
         if (usuariosTO != null && usuariosTO.getSenha() != null) {
             usuariosTO.setSenha(CriptografiaUtil.encryptBase64(usuariosTO.getSenha()));
@@ -66,8 +77,9 @@ public class UsuariosBO {
         return usuariosTO;
     }
 
+    @Override
     public void incluir(UsuariosTO usuariosTO) throws NegocioException {
-        usuariosTO.setStatus(Usuarios.ATIVO);
+        usuariosTO.setStatus(ATIVO);
         usuariosTO = gerarChaveAcesso(usuariosTO);
         usuariosTO = gerarSenhaBase64(usuariosTO);
         UsuariosTO usuario = new UsuariosTO();
@@ -80,11 +92,12 @@ public class UsuariosBO {
         this.persistencia.incluir(usuariosTO);
     }
 
+    @Override
     public boolean isChaveDeAcessoValida(String chave) {
         if (chave != null && !chave.isEmpty()) {
             UsuariosTO usuariosTO = new UsuariosTO();
             usuariosTO.setChave(chave);
-            usuariosTO.setStatus('A');
+            usuariosTO.setStatus(ATIVO);
             if (this.persistencia.listar(usuariosTO).size() > 0) {
                 return true;
             }
@@ -92,10 +105,12 @@ public class UsuariosBO {
         return false;
     }
 
+    @Override
     public List<UsuariosTO> listar(UsuariosTO usuariosTO) {
         return this.persistencia.listar(usuariosTO);
     }
 
+    @Override
     public List<UsuariosTO> listarUsuarios() {
         return this.persistencia.listarUsuarios();
     }
