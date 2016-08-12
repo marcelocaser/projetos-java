@@ -2,9 +2,9 @@ package br.com.reinopetshop.web.controller.bean;
 
 import br.com.core.controller.business.MensagensBO;
 import br.com.core.controller.business.MenusBO;
+import br.com.core.controller.business.interfaces.Menus;
 import br.com.core.entity.MenusTO;
 import br.com.core.entity.MenusUsuariosTO;
-import br.com.core.persistence.interfaces.Menus;
 import br.com.reinopetshop.business.controller.ReinoPetController;
 import java.util.List;
 import org.primefaces.model.menu.DefaultMenuItem;

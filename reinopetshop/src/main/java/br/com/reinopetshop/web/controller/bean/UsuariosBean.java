@@ -1,9 +1,9 @@
 package br.com.reinopetshop.web.controller.bean;
 
 import br.com.core.controller.business.UsuariosBO;
+import br.com.core.controller.business.interfaces.Usuarios;
 import br.com.core.entity.UsuariosTO;
 import br.com.core.enumerator.EnumTipoMensagem;
-import br.com.core.persistence.interfaces.Usuarios;
 import br.com.core.util.CriptografiaUtil;
 import br.com.reinopetshop.business.controller.ReinoPetController;
 import java.util.List;

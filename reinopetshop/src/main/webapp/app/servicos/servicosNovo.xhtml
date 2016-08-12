@@ -29,7 +29,7 @@
                             <p:outputLabel for="grupos" value="#{msg.servicosGrupos}" />
                             <p:selectOneMenu id="grupos" value="#{servicosBean.idServicoGrupo}" required="true" >
                                 <f:selectItem itemLabel="#{msg.selecione}" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{servicosBean.servicosGruposTOs}" var="grupos" itemLabel="#{grupos.descricao}" itemValue="#{grupos.id}" />
+                                <f:selectItems value="#{servicosBean.servicosGruposTOs}" var="grupos" itemLabel="#{grupos.nome}" itemValue="#{grupos.id}" />
                             </p:selectOneMenu>
 
                             <p:outputLabel for="nome" value="#{msg.servicosNome}" />

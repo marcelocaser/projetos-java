@@ -38,6 +38,10 @@
                                     <h:outputText value="#{servicosTO.id}" />
                                 </p:column>
 
+                                <p:column headerText="#{msg.servicosGrupo}">
+                                    <h:outputText value="#{servicosTO.idServicoGrupo.nome}" />
+                                </p:column>
+
                                 <p:column headerText="#{msg.servicosNome}">
                                     <h:outputText value="#{servicosTO.nome}" />
                                 </p:column>
@@ -46,8 +50,10 @@
                                     <h:outputText value="#{servicosTO.descricao}" />
                                 </p:column>
 
-                                <p:column headerText="#{msg.servicosGrupo}">
-                                    <h:outputText value="#{servicosTO.servicosCategoriasTOList}" />
+                                <p:column headerText="#{msg.servicosCategoria}">
+                                    <ui:repeat var="servicosCategoria" value="#{servicosTO.servicosCategoriasTOList}" varStatus="status" >
+                                        #{servicosCategoria.nome}<h:outputText value="," rendered="#{!status.last}" />
+                                    </ui:repeat>
                                 </p:column>
 
                                 <p:column styleClass="alignCenter" width="5%">
