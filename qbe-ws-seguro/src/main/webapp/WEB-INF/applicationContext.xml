@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- was: <?xml version="1.0" encoding="UTF-8"?> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+                        http://www.springframework.org/schema/aop 
+                        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                        http://www.springframework.org/schema/task
+                        http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+    <!--bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/jdbc.properties" />
+
+<bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+    p:driverClassName="${jdbc.driverClassName}"
+    p:url="${jdbc.url}"
+    p:username="${jdbc.username}"
+    p:password="${jdbc.password}" /-->
+
+    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+    
+    <!-- Enabale @Scheduled -->
+    <task:annotation-driven/>
+    
+    <!-- Enable Spring Annotation Configuration -->
+    <context:annotation-config />
+    
+    <!-- Scan for all of Spring components such as Spring Service -->
+    <context:component-scan base-package="br.com" />
+    
+    <!-- E-mail of Spring -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost" />
+        <property name="port" value="25" />
+        <property name="username" value="" />
+        <property name="password" value="" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">false</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <!-- Necessary to get the entity manager injected into the factory bean -->
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+    
+    <!-- Define EclipseLink JPA Vendor Adapter -->
+    <bean id="jpaVendorAdapter"
+          class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">
+        <property name="databasePlatform"
+                  value="org.eclipse.persistence.platform.database.MySQLPlatform" />
+        <property name="generateDdl" value="true" />
+        <property name="showSql" value="true" />
+    </bean>
+    
+    <!-- Entity Manager Factory -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="QBE_PU"></property>
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+    </bean>
+    
+    <!-- Transaction Manager -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
+    <!-- Enable class scheduler -->
+    <!--<bean id="scheduler" class="br.com.alcasis.smsway.business.services.Scheduler"></bean>-->
+    
+    <!-- Enable Message Source -->
+    <bean id="propertiesMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <property name="basename" value="/WEB-INF/messages/messages"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds" value="0"/>
+        <property name="fallbackToSystemLocale" value="false"/>
+    </bean>
+
+    <!-- Deixar 'id="msg"' como padrão -->
+    <!--    <bean id="msg" class="br.com.core.controller.business.MensagensBO">
+        <constructor-arg ref="mensagensPO"/>
+        <property name="parentMessageSource" ref="propertiesMessageSource"/>
+    </bean>-->
+    
+    <!-- Detect @Transactional -->
+    <!--<tx:annotation-driven transaction-manager="transactionManager" />-->
+    
+</beans>
