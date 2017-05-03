@@ -1,6 +1,8 @@
 package br.com.core.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,8 +13,9 @@ import javax.xml.bind.annotation.XmlType;
  * @author marcelocaser
  */
 @XmlRootElement
-@XmlType(propOrder = {"status", "cep", "logradouro", "cidade", "uf", "bairro", "ibge"})
-@JsonIgnoreProperties(ignoreUnknown = true)
+@XmlType(propOrder = {"status", "cep", "logradouro", "cidade", "uf", "bairro", "ibge", "idEndereco"})
+@JsonIgnoreProperties()
+@JsonPropertyOrder(value = {"status", "cep", "logradouro", "cidade", "uf", "bairro", "ibge", "idEndereco"})
 public class RetornoCEP implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,7 +34,7 @@ public class RetornoCEP implements Serializable {
     private String cep;
     @Column(name = "ibge")
     private String ibge;
-    @Column(name = "idEndereco")
+    @JsonProperty(value = "endereco")
     private Integer idEndereco;
 
     public RetornoCEP() {

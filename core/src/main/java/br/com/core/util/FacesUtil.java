@@ -12,6 +12,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpSession;
  * @author marcelocaser
  */
 public class FacesUtil {
+
+    public static final Double MAX_AGE_SECONDS = new Double(60 * 60 * 24 * 365 * 10); //10 anos
 
     private FacesUtil() {
     }
@@ -420,6 +423,22 @@ public class FacesUtil {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Cria um novo Cookie
+     * 
+     * @param cookieName - É o nome do novo Cookie
+     * @param cookieValue - É o valor que será armazenado
+     * @return - Cookie criado
+     */
+    public static Cookie createCookie(String cookieName, String cookieValue) {
+        Cookie cookie = new Cookie(cookieName, cookieValue);
+        cookie.setPath("/");
+        cookie.setMaxAge(MAX_AGE_SECONDS.intValue());
+        cookie.setHttpOnly(Boolean.TRUE);
+        cookie.setSecure(Boolean.FALSE);
+        return cookie;
     }
 
 }
