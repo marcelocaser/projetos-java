@@ -1,7 +1,0 @@
-br\com\e\feira\web\controller\bean\FeiraBean.class
-br\com\e\feira\business\controller\persistence\interfaces\FeirasPreCadastros.class
-br\com\e\feira\business\controller\persistence\interfaces\Feiras.class
-br\com\e\feira\business\controller\persistence\FeirasPO.class
-br\com\e\feira\business\controller\business\FeirasBO.class
-br\com\e\feira\business\controller\business\FeirasPreCadastrosBO.class
-br\com\e\feira\business\controller\persistence\FeirasPreCadastrosPO.class
